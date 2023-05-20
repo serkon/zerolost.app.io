@@ -1,0 +1,32 @@
+$prefix: '';
+$variable-prefix: '';
+$enable-shadows: false;
+$btn-active-bg-shade-amount: 20%;
+$font-family-base: var(--#{$prefix}font-family);
+$font-family-code: var(--#{$prefix}font-family);
+$font-size-base: var(--#{$prefix}font-size);
+$body-color: #545454;
+$body-bg: white;
+$input-bg: white;
+$btn-color: white;
+$btn-font-weight: 400;
+$btn-font-family: $font-family-base;
+$btn-box-shadow: none;
+$btn-border-radius: 0.25rem;
+$border-radius: 0.1875rem;
+$input-border-radius: 0.1875rem;
+$input-border-color: var(--secondary-100);
+$form-select-border-color: var(--secondary-100);
+$form-select-color: var(--secondary-400);
+$form-select-feedback-icon-size: 1rem 1rem;
+$zindex-modal-backdrop: 6;
+
+:root {
+  --#{$prefix}font-family: 'Rubik', 'Inter', 'Poppins', 'Quicksand', sans-serif;
+  --#{$prefix}font-size: 1em;
+  --#{$prefix}border-radius: 1em;
+
+  @include media-breakpoint-up(xxxl) {
+    --#{$prefix}font-size: 2em;
+  }
+}

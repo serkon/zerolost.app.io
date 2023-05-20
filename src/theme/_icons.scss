@@ -1,0 +1,96 @@
+$icon-prefix: 'ti';
+$icon-config: (
+  'sm': ( min-width:0.875rem, min-height: 0.875rem, ),
+  'md': ( min-width: 0.875rem, min-height: 0.875rem, ),
+  'lg': ( min-width: 1.3125rem, min-height: 1.3125rem, ),
+  'xl': ( min-width: 1.5rem, min-height: 1.5rem, ),
+  'xxl': ( min-width: 2.5rem, min-height: 2.5rem, ),
+);
+
+%icon {
+  position: relative;
+  display: flex;
+  gap: 0.375rem;
+  align-items: center;
+  justify-content: flex-start !important;
+
+  @each $size, $value in $icon-config {
+    &-#{$size}::before {
+      @each $prop-name, $prop-value in $value {
+        --#{$icon-prefix}-#{$size}-#{$prop-name}: #{$prop-value};
+
+        #{$prop-name}: var(--#{$icon-prefix}-#{$size}-#{$prop-name});
+      }
+    }
+  }
+
+  &::before {
+    // top: 0;
+    // left: 0;
+    // z-index: 1;
+    margin-left: 2px;
+  }
+
+  &::after {
+    // top: 0;
+    // left: 0;
+    // z-index: 1;
+    margin-right: 2px;
+  }
+
+  &-left {
+    &::before {
+      margin-left: 2px;
+    }
+  }
+
+  &-right {
+    &::after {
+      margin-right: 2px;
+    }
+
+    &-outline {
+      &::before {
+        right: 0;
+      }
+    }
+  }
+}
+
+[class^='#{$icon-prefix}'],
+[class*=' #{$icon-prefix}'] {
+  @extend %icon, %icon-md;
+
+  &:empty {
+    justify-content: center !important;
+    margin: 0;
+    padding: 0;
+
+    &::before, &::after {
+      margin: 0;
+    }
+  }
+}
+
+.#{$icon-prefix} {
+
+  @each $size, $value in $icon-config {
+    &-#{$size} {
+
+      @extend %icon-#{$size};
+    }
+  }
+
+  &-right {
+    @extend %icon-right;
+  }
+
+  &-left {
+
+    @extend %icon-left;
+  }
+}
+
+a + b, .d {
+  background-size: 0, 0;
+}

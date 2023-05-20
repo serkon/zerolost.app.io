@@ -1,0 +1,149 @@
+$btn-hover-bg-shade-amount: 20%;
+$btn-active-bg-shade-amount: 39%;
+$default-color: 500;
+$theme: (
+  light:(
+    '500': #ffffff,
+    '600': rgb(255 255 255 / 10%),
+    '700': rgb(255 255 255 / 20%),
+    '800': rgb(255 255 255 / 30%),
+  ),
+  brand: (
+    '100': #d7e1f0,
+    '200': #afc2e2,
+    '300': #88a4d3,
+    '400': #6085c5,
+    '500': #3867b6,
+    '600': #2d5292,
+    '700': #223e6d,
+    '800': #162949,
+    '900': #0b1524,
+  ),
+  primary: (
+    '100': #d0e6ff,
+    '200': #a2cdff,
+    '300': #73b3ff,
+    '400': #459aff,
+    '500': #1681ff,
+    '600': #1267cc,
+    '700': #0d4d99,
+    '800': #093466,
+    '900': #041a33,
+  ),
+  secondary: (
+    '100': #e0e2e4,
+    '200': #c2c6ca,
+    '300': #a3a9af,
+    '400': #858d95,
+    '500': #66707a,
+    '600': #525a62,
+    '700': #3d4349,
+    '800': #292d31,
+    '900': #141618,
+  ),
+  info: (
+    '100': #ccf0ff,
+    '200': #99e1ff,
+    '300': #66d1ff,
+    '400': #33c2ff,
+    '500': #00b3ff,
+    '600': #008fcc,
+    '700': #006b99,
+    '800': #004866,
+    '900': #002433,
+  ),
+  danger: (
+    '100': #ffdfde,
+    '200': #ffbfbd,
+    '300': #ff9e9d,
+    '400': #ff7e7c,
+    '500': #ff5e5b,
+    '600': #cc4b49,
+    '700': #993837,
+    '800': #662624,
+    '900': #331312,
+  ),
+  success: (
+    '100': #cdf7ec,
+    '200': #9befd9,
+    '300': #6ae6c6,
+    '400': #38deb3,
+    '500': #06d6a0,
+    '600': #05ab80,
+    '700': #048060,
+    '800': #025640,
+    '900': #012b20,
+  ),
+  warning: (
+    '100': #fcf5d5,
+    '200': #f8ebaa,
+    '300': #f5e180,
+    '400': #f1d755,
+    '500': #eecd2b,
+    '600': #bea422,
+    '700': #8f7b1a,
+    '800': #5f5211,
+    '900': #302909,
+  ),
+);
+
+@each $color, $item in $theme {
+  // add to theme colors
+  $color-list: (
+      $color: map.get($item, #{$default-color}),
+    );
+  $theme-colors: map.merge($theme-colors, $color-list);
+}
+
+// set variable
+:root {
+  --bs-white-rgb: 255, 255, 255;
+  --bs-black-rgb: 0, 0, 0;
+  --bs-bg-opacity: 1;
+
+  @each $color, $item in $theme {
+    @each $key, $value in $item {
+      --#{$prefix}#{$color}-#{$key}: #{$value};
+      --#{$prefix}#{$color}-#{$key}-rgb: #{to-rgb($value)};
+
+      // .#{$name}-#{$key} {
+      //   background-color: #{$value};
+      // }
+    }
+  }
+}
+
+// set color classes
+
+@each $color, $item in $theme {
+  @each $key, $value in $item {
+    .#{$prefix}#{$color}-#{$key} {
+      color: #{$value};
+    }
+
+    .#{$prefix}bg-#{$color}-#{$key} {
+      background-color: #{$value};
+    }
+  }
+}
+
+// Color Shade and Tint Generator
+// :root {
+//   @mixin variations($name, $color) {
+//     $percentages: (80%, 60%, 40%, 20%, 0, -20%, -40%, -60%, -80%);
+//     @each $percentage in $percentages {
+//       $i: list.index($percentages, $percentage);
+//       $variation: $color;
+//       @if $percentage > 0 {
+//         $variation: color.mix(white, $color, $percentage);
+//       }
+//       @else if $percentage < 0 {
+//         $variation: color.mix(black, $color, $percentage * -1);
+//       }
+//       --bs-#{$name}-#{$i * 100}: #{$variation};
+//     }
+//   }
+//   @each $name, $value in $colors {
+//     @include variations($name, $value);
+//   }
+// }

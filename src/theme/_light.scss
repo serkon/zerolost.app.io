@@ -1,0 +1,16 @@
+@use 'sass:map';
+
+$colors: (
+  cta: blue,
+  domates: red,
+);
+$success: #549f3a;
+$warning: #e3b41e;
+$danger: #b94863;
+$cta: #61ffd9;
+$theme-colors: (
+  'cta': $cta,
+  'success': $success,
+  'warning': $warning,
+  'danger': $danger,
+);

@@ -1,0 +1,53 @@
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+
+@import './theme/light';
+/**
+ * Bootstrap Configuration
+ *
+ * To change default SCSS configuration of the bootstrap please look the configuration variables from below link
+ * @import "bootstrap/scss/variables";
+ */
+
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/maps';
+@import 'node_modules/bootstrap/scss/mixins';
+@import 'node_modules/bootstrap/scss/utilities';
+
+// custom bootstrap configurations:
+
+@debug 'asdasdserkan';
+
+@import './theme/grid';
+@import './theme/variables';
+@import 'node_modules/bootstrap/scss/bootstrap'; // grid and variables must be loaded before bootstrap.scss
+@import './theme/colors';
+@import './theme/buttons';
+@import './theme/icons';
+@import './theme/fonts';
+
+html, body, #root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100vh;
+  // height: 100vh;
+}
+
+html {
+
+  body {
+    position: relative;
+    margin: 0;
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}

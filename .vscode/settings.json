@@ -1,0 +1,98 @@
+{
+  "workbench.colorTheme": "GitHub Plus",
+  "workbench.iconTheme": "helium-icon-theme",
+  "git.autofetch": true,
+  "security.workspace.trust.untrustedFiles": "newWindow",
+  "workbench.list.smoothScrolling": true,
+  "window.nativeTabs": true,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "stylelint.snippet": ["css", "less", "postcss", "scss"],
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue"],
+  "stylelint.enable": true,
+  "stylelint.config": null,
+  "files.autoSave": "onFocusChange",
+  "files.defaultLanguage": "typescript",
+  "files.autoSaveDelay": 1000,
+  "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true,
+    "source.fixAll": true
+  },
+  "eslint.format.enable": true,
+  "editor.formatOnSave": true,
+  "eslint.enable": true,
+  "eslint.run": "onType",
+  "eslint.validate": ["vue", "typescript", "javascript", "javascriptreact", "typescriptreact", "json", "jsonc"],
+  "eslint.lintTask.options": "--ext .ts,.html",
+  "eslint.options": {
+    "extensions": [".ts", ".html"]
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.editor.showIcons": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
+    }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
+    }
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
+    }
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": true
+    }
+  },
+  "[html]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": true
+    }
+  },
+  "editor.suggestSelection": "first",
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    "javascript": "javascriptreact"
+  },
+  "typescript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "typescript.suggest.paths": false,
+  "javascript.suggest.paths": false,
+  "docify.programmingLanguage": "javascript"
+}

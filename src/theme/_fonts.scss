@@ -1,0 +1,83 @@
+@import '~@fontsource/rubik/300.css';
+@import '~@fontsource/rubik/400.css';
+@import '~@fontsource/rubik/500.css';
+@import '~@fontsource/rubik/600.css';
+@import '~@fontsource/rubik/700.css';
+@import '~@fontsource/rubik/800.css';
+@import '~@fontsource/rubik/900.css';
+
+:root {
+  --font-family: 'Rubik', 'Inter', 'Poppins', 'Quicksand', sans-serif;
+}
+
+$font-prefix: '';
+$font-config-d: (
+  'd1': ( font-size:5rem, line-height: 6rem, ),
+  'd2': ( font-size: 4.5rem, line-height: 5.4rem, ),
+  'd3': ( font-size: 4rem, line-height: 4.8rem, ),
+  'd4': ( font-size: 3.5rem, line-height: 4.2rem, ),
+  'd5': ( font-size: 3rem, line-height: 3.6rem, ),
+  'd6': ( font-size: 2.625rem, line-height: 3.15rem, ),
+);
+$font-config-h: (
+  h1: ( font-size: 2.5rem, line-height: 3rem, ),
+  h2: ( font-size: 2rem, line-height: 2.4rem, ),
+  h3: ( font-size: 1.75rem, line-height: 2.4rem, ),
+  h4: ( font-size: 1.5rem, line-height: 1.8rem, ),
+  h5: ( font-size: 1.25rem, line-height: 1.5rem, ),
+  h6: ( font-size: 1rem, line-height: 1.2rem, ),
+);
+$font-config-body: (
+  'lead': ( font-size: 1.25rem, line-height: 1.875rem, letter-spacing: -0.01rem),
+  'body-16': ( font-size: 1rem, line-height: 1.75rem, ),
+  'body-14': ( font-size: 0.875rem, line-height: 1.25rem, ),
+  'caption-16': ( font-size: 1rem, line-height: 1rem, ),
+  'caption-14': ( font-size: 0.875rem, line-height: 0.875rem, ),
+  'caption-12': ( font-size: 0.75rem, line-height: 0.75rem, ),
+  'caption-10': ( font-size: 0.625rem, line-height: 0.625rem, ),
+  'caption-8': ( font-size: 0.5rem, line-height: 0.5rem, ),
+);
+
+%d {
+  margin: 0;
+  font-style: normal;
+  letter-spacing: -0.03rem;
+}
+
+%h {
+  margin: 0;
+  font-style: normal;
+  letter-spacing: -0.02rem;
+}
+
+@each $selector, $value in $font-config-d {
+  .#{$selector}, %#{$selector} {
+    @extend %d;
+
+    @each $prop-name, $prop-value in $value {
+      --#{$font-prefix}-#{$selector}-#{$prop-name}: #{$prop-value};
+
+      #{$prop-name}: var(--#{$font-prefix}-#{$selector}-#{$prop-name});
+    }
+  }
+}
+@each $selector, $value in $font-config-h {
+  #{$selector}, %#{$selector} {
+    @extend %h;
+
+    @each $prop-name, $prop-value in $value {
+      --#{$font-prefix}-#{$selector}-#{$prop-name}: #{$prop-value};
+
+      #{$prop-name}: var(--#{$font-prefix}-#{$selector}-#{$prop-name});
+    }
+  }
+}
+@each $selector, $value in $font-config-body {
+  .#{$selector}, %#{$selector} {
+    @each $prop-name, $prop-value in $value {
+      --#{$font-prefix}-#{$selector}-#{$prop-name}: #{$prop-value};
+
+      #{$prop-name}: var(--#{$font-prefix}-#{$selector}-#{$prop-name});
+    }
+  }
+}
