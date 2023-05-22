@@ -25,8 +25,11 @@ export interface SliderProps {
  * ```ts
  * let resetCount = 0;
  * const resetSlider = ()=>{  resetCount = resetCount + 1}
+ * const setColumn = (columns: number):void => {
+ *   console.log('setColumn', (columns));
+ * };
  * <button onClick={resetSlider}>Reset At</button>
- * <Slider count={3} onClick={setColumn} reset={resetCount} />
+ * <Slider initial={5} start={3} count={12} onClick={setColumn} reset={3} />
  * ```
  */
 

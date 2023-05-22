@@ -1,8 +1,9 @@
 $icon-prefix: 'ti';
 $icon-config: (
-  'sm': ( min-width:0.875rem, min-height: 0.875rem, ),
-  'md': ( min-width: 0.875rem, min-height: 0.875rem, ),
-  'lg': ( min-width: 1.3125rem, min-height: 1.3125rem, ),
+  'xs': ( min-width:1rem, min-height: 1rem, ),
+  'sm': ( min-width: 1.25rem, min-height: 1.25rem, ),
+  'md': ( min-width: 1.25rem, min-height: 1.25rem, ),
+  'lg': ( min-width: 1.5rem, min-height: 1.5rem, ),
   'xl': ( min-width: 1.5rem, min-height: 1.5rem, ),
   'xxl': ( min-width: 2.5rem, min-height: 2.5rem, ),
 );
@@ -15,7 +16,8 @@ $icon-config: (
   justify-content: flex-start !important;
 
   @each $size, $value in $icon-config {
-    &-#{$size}::before {
+    &-#{$size}::before, &-#{$size}::after {
+
       @each $prop-name, $prop-value in $value {
         --#{$icon-prefix}-#{$size}-#{$prop-name}: #{$prop-value};
 
@@ -25,28 +27,31 @@ $icon-config: (
   }
 
   &::before {
-    // top: 0;
-    // left: 0;
-    // z-index: 1;
-    margin-left: 2px;
+    // margin-left: -2px;
   }
 
   &::after {
-    // top: 0;
-    // left: 0;
-    // z-index: 1;
-    margin-right: 2px;
+    content: none;
+    // margin-right: 2px;
   }
 
   &-left {
     &::before {
-      margin-left: 2px;
+      content: '';
+    }
+
+    &::after {
+      content: none;
     }
   }
 
   &-right {
+    &::before {
+      content: none;
+    }
+
     &::after {
-      margin-right: 2px;
+      content: '';
     }
 
     &-outline {
@@ -57,9 +62,9 @@ $icon-config: (
   }
 }
 
-[class^='#{$icon-prefix}'],
-[class*=' #{$icon-prefix}'] {
-  @extend %icon, %icon-md;
+[class^='#{$icon-prefix}'], [class*=' #{$icon-prefix}'] {
+
+  @extend %icon;
 
   &:empty {
     justify-content: center !important;
@@ -72,25 +77,18 @@ $icon-config: (
   }
 }
 
-.#{$icon-prefix} {
+@each $size, $value in $icon-config {
+  [class^='#{$icon-prefix}-#{$size}'], [class*=' #{$icon-prefix}-#{$size}'] {
 
-  @each $size, $value in $icon-config {
-    &-#{$size} {
-
-      @extend %icon-#{$size};
-    }
-  }
-
-  &-right {
-    @extend %icon-right;
-  }
-
-  &-left {
-
-    @extend %icon-left;
+    @extend %icon-#{$size};
   }
 }
+[class^='#{$icon-prefix}-right'], [class*=' #{$icon-prefix}-right'] {
 
-a + b, .d {
-  background-size: 0, 0;
+  @extend %icon-right;
+}
+
+[class^='#{$icon-prefix}-left'], [class*=' #{$icon-prefix}-left'] {
+
+  @extend %icon-left;
 }

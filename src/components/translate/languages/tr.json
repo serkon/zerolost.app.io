@@ -1,5 +1,6 @@
 {
   "HELLO": "Merhaba",
+  "HOME": "Anasayfa",
   "WITH_PARAM": "Test {param}",
   "LOADING": "Loading...",
   "TITLE": "Kurtarma"

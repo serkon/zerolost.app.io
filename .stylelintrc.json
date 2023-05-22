@@ -252,6 +252,7 @@
     "no-duplicate-at-import-rules": true,
     "at-rule-name-space-after": "always",
     "no-invalid-position-at-import-rule": null,
-    "import-notation": "string"
+    "import-notation": "string",
+    "color-function-notation": "legacy"
   }
 }

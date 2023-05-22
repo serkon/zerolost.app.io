@@ -1,5 +1,6 @@
 {
   "HELLO": "Merhaba",
+  "HOME": "Maison",
   "WITH_PARAM": "Test {param}",
   "LOADING": "Loading...",
   "TITLE": "Recovery"

@@ -3,6 +3,7 @@
 @use 'sass:map';
 
 @import './theme/light';
+@import 'node_modules/@srknc/icons/dist/icon-list';
 /**
  * Bootstrap Configuration
  *
@@ -25,8 +26,8 @@
 @import 'node_modules/bootstrap/scss/bootstrap'; // grid and variables must be loaded before bootstrap.scss
 @import './theme/colors';
 @import './theme/buttons';
-@import './theme/icons';
 @import './theme/fonts';
+@import './theme/icons';
 
 html, body, #root {
   box-sizing: border-box;
@@ -38,7 +39,6 @@ html, body, #root {
 }
 
 html {
-
   body {
     position: relative;
     margin: 0;

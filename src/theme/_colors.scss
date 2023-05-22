@@ -3,21 +3,26 @@ $btn-active-bg-shade-amount: 39%;
 $default-color: 500;
 $theme: (
   light:(
-    '500': #ffffff,
-    '600': rgb(255 255 255 / 10%),
-    '700': rgb(255 255 255 / 20%),
-    '800': rgb(255 255 255 / 30%),
+    '100': rgba(255, 255, 255, 10%),
+    '200': rgba(255, 255, 255, 20%),
+    '300': rgba(255, 255, 255, 30%),
+    '400': rgba(255, 255, 255, 40%),
+    '500': rgba(255, 255, 255, 100%),
+    '600': rgba(255, 255, 255, 60%),
+    '700': rgba(255, 255, 255, 70%),
+    '800': rgba(255, 255, 255, 80%),
+    '900': rgba(255, 255, 255, 90%),
   ),
   brand: (
-    '100': #d7e1f0,
-    '200': #afc2e2,
-    '300': #88a4d3,
-    '400': #6085c5,
-    '500': #3867b6,
-    '600': #2d5292,
-    '700': #223e6d,
-    '800': #162949,
-    '900': #0b1524,
+    '100': #D4E1FA,
+    '200': #A9C3F4,
+    '300': #7EA5EF,
+    '400': #5387E9,
+    '500': #2869E4,
+    '600': #2054B6,
+    '700': #183F89,
+    '800': #102A5B,
+    '900': #08152E,
   ),
   primary: (
     '100': #d0e6ff,
@@ -102,6 +107,7 @@ $theme: (
   --bs-bg-opacity: 1;
 
   @each $color, $item in $theme {
+
     @each $key, $value in $item {
       --#{$prefix}#{$color}-#{$key}: #{$value};
       --#{$prefix}#{$color}-#{$key}-rgb: #{to-rgb($value)};
@@ -116,6 +122,7 @@ $theme: (
 // set color classes
 
 @each $color, $item in $theme {
+
   @each $key, $value in $item {
     .#{$prefix}#{$color}-#{$key} {
       color: #{$value};
