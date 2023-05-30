@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@fontsource/rubik": "^4.5.14",
-    "@srknc/icons": "^0.0.9",
+    "@srknc/icons": "^0.0.14",
     "@tabler/icons-react": "^2.20.0",
     "@tabler/icons-webfont": "^2.20.0",
     "axios": "^1.4.0",

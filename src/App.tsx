@@ -3,6 +3,7 @@ import './App.scss';
 import React, { useEffect } from 'react';
 
 import { Drawer } from './components/drawer/drawer.component';
+import { RouteList } from './components/drawer/Routing';
 import { useTranslate } from './components/translate/translate.component';
 
 const App = (): React.JSX.Element => {
@@ -14,7 +15,7 @@ const App = (): React.JSX.Element => {
 
   return (
     <>
-      <Drawer />
+      <Drawer items={RouteList} />
     </>
   );
 };

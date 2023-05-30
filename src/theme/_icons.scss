@@ -1,6 +1,6 @@
 $icon-prefix: 'ti';
 $icon-config: (
-  'xs': ( min-width:1rem, min-height: 1rem, ),
+  'xs': ( min-width: 1rem, min-height: 1rem, ),
   'sm': ( min-width: 1.25rem, min-height: 1.25rem, ),
   'md': ( min-width: 1.25rem, min-height: 1.25rem, ),
   'lg': ( min-width: 1.5rem, min-height: 1.5rem, ),
@@ -13,7 +13,6 @@ $icon-config: (
   display: flex;
   gap: 0.375rem;
   align-items: center;
-  justify-content: flex-start !important;
 
   @each $size, $value in $icon-config {
     &-#{$size}::before, &-#{$size}::after {
@@ -67,7 +66,7 @@ $icon-config: (
   @extend %icon;
 
   &:empty {
-    justify-content: center !important;
+    justify-content: center;
     margin: 0;
     padding: 0;
 
