@@ -1,6 +1,6 @@
 :root {
   --drawer-sidebar-width-opened: 240px;
-  --drawer-sidebar-width-closed: 84px;
+  --drawer-sidebar-width-closed: 72px;
   --drawer-sidebar-background-color: var(--brand-700);
   --drawer-sidebar-font-color: var(--light-500);
   --drawer-logo-url: url('~/public/images/logo.svg');
@@ -9,46 +9,18 @@
 }
 
 .drawer {
-  max-height: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
 
-  .drawer-sidebar {
+  .left {
     position: relative;
-    min-width: var(--drawer-sidebar-width-closed);
-    max-width: var(--drawer-sidebar-width-opened);
+    display: flex;
+    flex-direction: column;
     border-right: 0.25rem solid var(--brand-200);
     background-color: var(--drawer-sidebar-background-color);
     color: var(--drawer-sidebar-font-color);
     transition: all 200ms ease-in-out;
-
-    .drawer-logo {
-      display: flex;
-      align-items: center;
-      height: var(--drawer-header-height);
-      cursor: pointer;
-      gap: 0.5rem;
-      transition: all 200ms ease-in-out;
-
-      .logo, .logo-text {
-        height: 16px;
-      }
-    }
-
-    .side-navigation {
-      max-height: 100vh;
-      opacity: 1;
-      transition: all 400ms ease-in-out;
-
-      &.top-level-nav-menu {
-        flex: 1 1 auto;
-        overflow-y: auto;
-        height: 0;
-      }
-
-      &.hide {
-        max-height: 0;
-        opacity: 0;
-      }
-    }
 
     .opener {
       position: absolute;
@@ -64,27 +36,99 @@
       transition: all 500ms ease-in-out;
     }
 
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 0 15px;
+      height: var(--drawer-header-height);
+      cursor: pointer;
+      transition: all 400ms ease-in-out;
+
+      .logo, .logo-text {
+        height: 16px;
+        transition: all 200ms ease-in-out;
+      }
+    }
+
+    .navigation {
+      overflow: hidden;
+
+      .menu {
+        display: flex;
+        flex-direction: column;
+
+        .btn {
+          justify-content: flex-start;
+          width: 100%;
+          cursor: pointer;
+
+          .plus {
+            flex-grow: 1;
+            justify-content: flex-end;
+
+            &::before {
+              transform: scale(0.5);
+            }
+          }
+        }
+
+        &.top-level {
+          margin: 0 15px;
+        }
+
+        &.sub-level {
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          transition: all 400ms ease-in-out;
+
+          .btn {
+            opacity: 0.5;
+
+            &::before {
+              opacity: 0.2;
+              transform: scale(1);
+            }
+          }
+        }
+
+        &.hide {
+          // max-height: 0;
+          // opacity: 0;
+          // animation: hide 200ms 0ms ease-in-out forwards !important;
+        }
+
+        &.show {
+          max-height: 100vh;
+          opacity: 1;
+          overflow: visible;
+          // animation: show 300ms 0ms ease-in-out forwards !important;
+        }
+      }
+    }
+
     &.opened {
       max-width: var(--drawer-sidebar-width-opened);
       width: var(--drawer-sidebar-width-opened);
 
-      .drawer-logo {
-        background-position: 32px center;
+      .logo-container {
+        .logo-text {
+          opacity: 1;
+          margin-left: 8px;
+        }
       }
     }
 
     &.closed {
       max-width: var(--drawer-sidebar-width-closed);
       width: var(--drawer-sidebar-width-closed);
-      transition: all 400ms ease-in-out;
 
-      .drawer-logo {
-        justify-content: center;
-        gap: 0;
-
+      .logo-container {
         .logo-text {
-          // animation: hide-span-item 250ms 10ms ease-in-out forwards;
-          display: none;
+          margin-left: 0;
+          width: 0;
+          opacity: 0;
         }
       }
 
@@ -92,63 +136,37 @@
         transform: rotate(180deg);
         transition: all 500ms ease-in-out;
       }
+
+      .navigation {
+        /* stylelint-disable-next-line no-descending-specificity */
+        .btn {
+
+          @for $i from 1 through 30 {
+            &:nth-child(3n + #{$i}) {
+              transform-origin: top center;
+              animation: scale-zoom 400ms ($i * 60ms) ease-in-out forwards;
+            }
+          }
+
+          span {
+            display: none;
+          }
+        }
+      }
     }
   }
-}
 
-.ripple {
-  animation: ripple 0.6s linear infinite;
-  // border-radius: 100%;
-}
-
-.opened-menu-item {
-  justify-content: flex-start;
-
-  .plus {
+  .right {
     flex-grow: 1;
-    justify-content: flex-end;
-
-    &::before {
-      transform: scale(0.5);
-    }
+    border: 1px solid blue;
   }
 }
 
-.closed-menu-item {
-  justify-content: flex-start;
-
-  @for $i from 1 through 30 {
-    &:nth-child(3n + #{$i}) {
-      transform-origin: top center;
-      animation: scale-zoom 400ms ($i * 60ms) ease-in-out forwards;
-    }
-  }
-}
-
-.submenu {
-  &::before {
-    opacity: 0.2;
-    transform: scale(1);
-  }
-}
-
-.hide-span-item {
-  animation: hide-span-item 200ms 10ms ease-in-out forwards;
-}
-
-@keyframes ripple {
-  0% {
-    box-shadow: 0 0 0 0 rgba(var(--light-500-rgb), 0.1), 0 0 0 20px rgba(var(--light-500-rgb), 0.1), 0 0 0 40px rgba(var(--light-500-rgb), 0.1), 0 0 0 60px rgba(var(--light-500-rgb), 0.1);
-  }
-
-  100% {
-    box-shadow: 0 0 0 20px rgba(var(--light-500-rgb), 0.1), 0 0 0 40px rgba(var(--light-500-rgb), 0.1), 0 0 0 60px rgba(var(--light-500-rgb), 0.1), 0 0 0 80px rgba(var(--light-500-rgb), 0);
-  }
-}
 @keyframes scale-zoom {
   0% {
     opacity: 0;
     transform: scale(0);
+    gap: 4px;
   }
 
   80% {
@@ -158,29 +176,35 @@
   100% {
     transform: scale(1);
     opacity: 1;
-    justify-content: center;
+    // justify-content: center;
     gap: 0;
   }
 }
-@keyframes hide-span-item {
+@keyframes hide {
   0% {
-    width: auto;
+    max-height: 100vh;
+    visibility: visible;
+    overflow: hidden;
     opacity: 1;
   }
 
   100% {
-    width: 0;
+    max-height: 0;
+    visibility: hidden;
+    overflow: hidden;
     opacity: 0;
   }
 }
-@keyframes hide-menu-item {
+@keyframes show {
   0% {
-    opacity: 1;
-    max-height: 100vh;
+    opacity: 0;
+    max-height: 0;
+    visibility: hidden;
   }
 
   100% {
-    opacity: 0;
-    max-height: 0;
+    max-height: 100vh;
+    opacity: 1;
+    visibility: visible;
   }
 }
