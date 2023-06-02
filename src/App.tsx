@@ -1,4 +1,5 @@
 import './App.scss';
+import 'src/components/authentication/authenticator.interceptor';
 
 import React, { useEffect } from 'react';
 

@@ -3,6 +3,7 @@ import 'simplebar-react/dist/simplebar.min.css';
 
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Outlet } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import { RouteItems } from 'src/components/drawer/Routing';
 import { useTranslate } from 'src/components/translate/translate.component';
@@ -17,7 +18,6 @@ export const Drawer = ({ items }: { items: RouteItems[] }): React.JSX.Element =>
 
   return (
     <>
-
       <section className="drawer">
         <aside className={'left' + (open ? ' opened' : ' closed')}>
           <button className="btn btn-outline ti-xs btn-warning ti-arrow-left ti-left opener" onClick={handleOpenerClick} />
@@ -32,7 +32,7 @@ export const Drawer = ({ items }: { items: RouteItems[] }): React.JSX.Element =>
           </div>
         </aside>
         <aside className="right">
-          right
+          <Outlet />
         </aside>
       </section>
     </>
