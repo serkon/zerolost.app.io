@@ -10,5 +10,8 @@
   "PASSWORD": "Password",
   "LOGIN": "Login",
   "REMEMBER_ME": "Remember me",
-  "FORGOT_PASSWORD": "Forgot password?"
+  "FORGOT_PASSWORD": "Forgot password?",
+  "DO_NOT_HAVE_ACCOUNT": "Don't have an account?",
+  "REGISTER": "Register",
+  "OPSCYCLE_FOOTER": "OpsCylcle © 2023, Her hakkı Serkon Media Internatinal’a aittir"
 }

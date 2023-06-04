@@ -1,6 +1,6 @@
 import './login.screen.scss';
 
-import {TextInput} from '@mantine/core';
+import {Divider,TextInput} from '@mantine/core';
 import type { Location } from 'history';
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -68,6 +68,14 @@ export const LoginScreen = (): JSX.Element => {
             <button type="submit" className="btn btn-brand btn-lg" disabled={loading}>
               {!loading ? translate('LOGIN') : <img src="/images/loading.svg" className="loading-icon" />}
             </button>
+          </section>
+          <Divider my="xs" label="or" labelPosition="center" />
+          <section className="d-flex gap-1 flex-column">
+            <div className="d-flex align-items-center justify-content-center gap-2">
+              <span className="d-flex align-items-center caption-16 fw-medium secondary-500">{translate('DO_NOT_HAVE_ACCOUNT')}</span>
+              <Link to={'/register'}>{translate('REGISTER')}</Link>
+            </div>
+            <p className="text-center caption-12 secondary-300">{translate('OPSCYCLE_FOOTER')}</p>
           </section>
         </form>
       </div>
