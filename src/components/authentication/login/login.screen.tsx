@@ -1,11 +1,13 @@
 import './login.screen.scss';
 
+import {TextInput} from '@mantine/core';
 import type { Location } from 'history';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Authenticator } from 'src/components/authentication/authenticator.component';
-import { Input } from 'src/components/input/input.component';
 import { useTranslate } from 'src/components/translate/translate.component';
+
+import Logo from './images/login-logo.svg';
 
 export const LoginScreen = (): JSX.Element => {
   const { translate } = useTranslate();
@@ -38,17 +40,37 @@ export const LoginScreen = (): JSX.Element => {
   };
 
   return (
-    <div className="login-screen container">
-      <img src="/images/logo.svg" alt="logo" className="logo" />
-      <p className="direction">You must log in to view the page at {from}</p>
-      {state?.error && <p className="error">{state?.error}</p>}
-      <form onSubmit={handleSubmit} className="login-form">
-        <Input label={translate('Username')} defaultValue={'player1'} width="100%" name="username" />
-        <Input label={translate('Password')} defaultValue={'player1'} type="password" name="password" iconRight="eyes" />
-        <button type="submit" className="btn-primary login-button" disabled={loading}>
-          {!loading ? translate('Login') : <img src="/images/common/loading.svg" className="loading-icon" />}
-        </button>
-      </form>
+    <div className="login-screen d-flex flex-grow-1">
+      <div className="left d-flex flex-column">
+        <img src={Logo} alt="logo" className="logo" />
+      </div>
+      <div className="right d-flex flex-column align-items-center">
+        {state?.error && <p className="error">{state?.error}</p>}
+        <form onSubmit={handleSubmit} className="login-form">
+          <section className="d-flex gap-4 flex-column">
+            <h1>{translate('WELCOME')}</h1>
+            <p className="lead secondary-500 m-0">{translate('LOGIN_DESCRIPTION')}</p>
+          </section>
+          <section className="d-flex gap-3 flex-column">
+            <TextInput type="text" label={translate('USERNAME')} placeholder={translate('USERNAME')} defaultValue={'serkon'} name="username" />
+            <TextInput type="password" label={translate('PASSWORD')} placeholder={translate('PASSWORD')} defaultValue={'123456'} name="password" />
+          </section>
+          <section className="d-flex flex-column mt-4 gap-32">
+            <div className="d-flex justify-content-between">
+              <div className="form-check">
+                <input className="form-check-input" type="checkbox" value="" id="remmeber-me" />
+                <label className="form-check-label caption-16 secondary-500" htmlFor="remmeber-me">{translate('REMEMBER_ME')}</label>
+              </div>
+              <div>
+                <Link className="brand-500 caption-16" to={'/forgot-password'}>{translate('FORGOT_PASSWORD')}</Link>
+              </div>
+            </div>
+            <button type="submit" className="btn btn-brand btn-lg" disabled={loading}>
+              {!loading ? translate('LOGIN') : <img src="/images/loading.svg" className="loading-icon" />}
+            </button>
+          </section>
+        </form>
+      </div>
     </div>
   );
 };

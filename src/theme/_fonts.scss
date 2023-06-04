@@ -7,7 +7,7 @@
 @import '~@fontsource/rubik/900.css';
 
 :root {
-  --font-family: 'Rubik', 'Inter', 'Poppins', 'Quicksand', sans-serif;
+  --font-family: 'Inter', 'Rubik', 'Poppins', 'Quicksand', sans-serif;
 }
 
 $font-prefix: '';
@@ -52,6 +52,7 @@ $font-config-body: (
 
 @each $selector, $value in $font-config-d {
   .#{$selector}, %#{$selector} {
+
     @extend %d;
 
     @each $prop-name, $prop-value in $value {
@@ -63,6 +64,7 @@ $font-config-body: (
 }
 @each $selector, $value in $font-config-h {
   #{$selector}, %#{$selector} {
+
     @extend %h;
 
     @each $prop-name, $prop-value in $value {
@@ -74,6 +76,7 @@ $font-config-body: (
 }
 @each $selector, $value in $font-config-body {
   .#{$selector}, %#{$selector} {
+
     @each $prop-name, $prop-value in $value {
       --#{$font-prefix}-#{$selector}-#{$prop-name}: #{$prop-value};
 

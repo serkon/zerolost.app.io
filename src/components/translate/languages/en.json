@@ -3,5 +3,12 @@
   "HOME": "Home",
   "WITH_PARAM": "Test {param}",
   "LOADING": "Loading...",
-  "TITLE": "Recovery"
+  "TITLE": "Recovery",
+  "WELCOME": "Welcome",
+  "LOGIN_DESCRIPTION": "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate.",
+  "USERNAME": "Username",
+  "PASSWORD": "Password",
+  "LOGIN": "Login",
+  "REMEMBER_ME": "Remember me",
+  "FORGOT_PASSWORD": "Forgot password?"
 }

@@ -1,0 +1,10 @@
+.mantine-Input-input {
+
+  @extend .form-control, .form-control-lg;
+}
+
+.mantine-InputWrapper-label {
+  color: var(--secondary-600);
+
+  @extend .caption-10;
+}

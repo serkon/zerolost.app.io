@@ -2,7 +2,7 @@ $btn-config: (
   'xs': ( min-width: 24px, min-height: 24px, padding: 0 4px, font-size: 10px, line-height: 10px ),
   'sm': ( min-width: 32px, min-height: 32px, padding: 0 6px, font-size: 12px, line-height: 16px ),
   'md': ( min-width: 36px, min-height: 36px, padding: 0 8px, font-size: 14px, line-height: 18px ),
-  'lg': ( min-width: 48px, min-height: 48px, padding: 0 12px 0 10px, font-size: 16px, line-height: 20px ),
+  'lg': ( min-width: 40px, min-height: 40px, padding: 0 12px, font-size: 16px, line-height: 20px ),
   'xl': ( min-width: 48px, min-height: 48px, padding: 0 16px, font-size: 18px, line-height: 22px ),
 );
 $btn-bg: 500;
@@ -56,20 +56,25 @@ $btn-active-bg: 700;
     $light: if($name==light, var(--#{$prefix}#{secondary}-#{600}), var(--#{$prefix}btn-color)); // var(--#{$prefix}btn-color); //
 
     --#{$prefix}btn-bg: var(--#{$prefix}#{$name}-#{500}); // #{map.get($item, #{$btn-bg})};
-    --#{$prefix}btn-border: var(--#{$prefix}#{$name}-#{300}); // #{map.get($item, #{$btn-border})};
+    --#{$prefix}btn-border: var(--#{$prefix}#{$name}-#{500}); // #{map.get($item, #{$btn-border})};
     --#{$prefix}btn-hover-color: #{$btn-color};
-    --#{$prefix}btn-hover-bg: rgba(var(--#{$prefix}#{$name}-#{500}-rgb), 0.05); // #{map.get($item, #{$btn-hover-bg})};
+    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$name}-#{600}); // #{map.get($item, #{$btn-hover-bg})};
     --#{$prefix}btn-hover-border-color: var(--#{$prefix}#{$name}-#{600}); // #{map.get($item, #{$btn-hover-bg})};
     --#{$prefix}btn-active-color: #{$btn-color};
-    --#{$prefix}btn-active-bg: rgba(var(--#{$prefix}#{$name}-#{500}-rgb), 0.1); // #{map.get($item, #{$btn-active-bg})};
+    --#{$prefix}btn-active-bg: rgba(var(--#{$prefix}#{$name}-#{600}-rgb), 0.95); // #{map.get($item, #{$btn-active-bg})};
     --#{$prefix}btn-active-border-color: var(--#{$prefix}#{$name}-#{600}); // #{map.get($item, #{$btn-active-bg})};
 
     // border-color: var(--#{$prefix}btn-bg);
     // background-color: var(--#{$prefix}btn-bg);
     color: #{$light};
 
-    &.btn-outline, &.btn-ghost {
+    &:disabled {
       border-color: var(--#{$prefix}btn-border);
+      background-color: var(--#{$prefix}btn-border);
+    }
+
+    &.btn-outline, &.btn-ghost {
+      border-color: var(--#{$prefix}#{$name}-#{300});
       color: var(--#{$prefix}btn-bg);
 
       &:hover {

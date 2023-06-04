@@ -23,9 +23,11 @@
 @import './theme/variables';
 @import 'node_modules/bootstrap/scss/bootstrap'; // grid and variables must be loaded before bootstrap.scss
 @import './theme/colors';
+@import './theme/inputs';
 @import './theme/buttons';
 @import './theme/fonts';
 @import './theme/icons';
+@import './theme/mantine';
 
 html, body, #root {
   box-sizing: border-box;
@@ -44,7 +46,7 @@ html {
     margin: 0;
     overflow: hidden;
     // background-image: url('https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg');
-    font-family: var(--font-family);
+    font-family: var(--#{$prefix}font-family);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

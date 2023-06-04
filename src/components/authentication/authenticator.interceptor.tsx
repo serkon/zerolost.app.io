@@ -7,10 +7,8 @@ import { AuthorizationHeader, HttpResponse, RefreshTokenResponse } from './dto';
 api.interceptors.request.use(
   (request: InternalAxiosRequestConfig<any>) => {
     const token = window.localStorage.getItem(AuthorizationHeader.AccessToken);
-    // const headers: AxiosRequestHeaders = Object.assign({}, request.headers);
 
-    debugger;
-    console.log('dasd');
+    // const headers: AxiosRequestHeaders = Object.assign({}, request.headers);
     if (token) {
       request.headers[AuthorizationHeader.Authorization] = `${AuthorizationHeader.Bearer} ${token}`;
     }

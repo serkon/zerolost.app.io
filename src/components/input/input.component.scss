@@ -1,84 +1,59 @@
 .input-component {
-  position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
+  gap: 4px;
 
-  input {
-    display: flex;
-    padding: var(--input-padding);
-    padding-top: 23px;
-    padding-bottom: 6px;
-    width: 100%;
-    height: var(--input-height);
-    border: 1px solid var(--color-black-50);
-    border-radius: var(--input-border-radius);
-    color: var(--color-black-dark);
-    font-family: var(--font-family);
-    font-size: var(--input-font-size);
-    line-height: var(--input-line-height);
-    outline: none;
-
-    + span {
-      position: absolute;
-      top: 20px;
-      left: 16px;
-      color: var(--color-black-semi);
-      font-size: 16px;
-      transition: all 0.2s ease-in-out;
-      pointer-events: none;
-    }
-
-    &:focus,
-    &:valid {
-      & + span {
-        content: attr(placeholder);
-        position: absolute;
-        top: 12px;
-        left: 17px;
-        border-radius: var(--input-border-radius);
-        font-size: 12px;
-        transition: all 0.2s ease-in-out;
-      }
-    }
+  span.label {
+    // font-size: 14px;
   }
 
-  &.ghost,
-  &.outline {
-    background-color: transparent;
+  .input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
   }
 
   .icon {
     position: absolute;
-    top: 20px;
-    right: 0;
+    right: 12px;
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
     mask-repeat: no-repeat;
     mask-position: center;
+
+    &::before {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   &.with-icon {
     input {
-      padding-right: 48px;
+      padding-right: 36px;
     }
 
     .icon {
-      background-color: var(--color-black-semi);
-    }
-  }
-
-  .icon-left {
-    padding-left: 52px;
-
-    .icon {
-      left: 24.5px;
+      color: var(--secondary-500);
     }
   }
 
-  .icon-right {
-    .icon {
-      right: 18px;
+  &.icon-left {
+    input {
+      padding-left: 36px;
+    }
+
+    .icon.i-left {
+      left: 11.5px;
+    }
+  }
+
+  &.icon-right {
+    .icon.i-right {
+      right: 11.5px;
     }
   }
 }
