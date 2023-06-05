@@ -1,0 +1,30 @@
+.list-items {
+  display: flex;
+  flex-direction: column;
+  width: 336px;
+  border-right: 1px solid var(--brand-100);
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 82px;
+    border-bottom: 1px solid var(--brand-100);
+  }
+
+  .filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    border-bottom: 1px solid var(--brand-100);
+  }
+
+  .search {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 40px;
+    border-bottom: 1px solid var(--brand-100);
+  }
+}

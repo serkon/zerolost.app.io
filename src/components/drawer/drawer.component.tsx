@@ -31,7 +31,7 @@ export const Drawer = ({ items }: { items: RouteItems[] }): React.JSX.Element =>
             </SimpleBar>
           </div>
         </aside>
-        <aside className="right">
+        <aside className="right d-flex flex-grow-1">
           <Outlet />
         </aside>
       </section>
