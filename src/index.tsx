@@ -18,7 +18,7 @@ import { store } from 'src/store/store';
  */
 import App from './App';
 import { AboutScreen } from './screens/about/about.screen';
-import { HomeScreen } from './screens/home/home.screen';
+import { ScreenStorageOverview } from './screens/storage/overview/overview.component';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const strickMode = process.env.NODE_ENV === 'production';
@@ -29,13 +29,12 @@ const Content = (): React.JSX.Element => (
       <Translate current="en">
         <Routes>
           <Route path="/" element={<App />}>
-            <Route
-              path=""
-              element={
-                <Authenticator.Navigate>
-                  <HomeScreen />
-                </Authenticator.Navigate>
-              }
+            <Route path="" element={<Navigate to="storage" />} />
+            <Route path="storage/:parametreAdi?" element={
+              <Authenticator.Navigate>
+                <ScreenStorageOverview />
+              </Authenticator.Navigate>
+            }
             />
             <Route
               path="about"

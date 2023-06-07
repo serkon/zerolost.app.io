@@ -1,0 +1,193 @@
+[
+  {
+    "name": "Secondary Storage",
+    "ip": "192.168.0.1",
+    "model": "Sun Storage VMware",
+    "version": "1.0",
+    "port": 54321,
+    "username": "admin",
+    "password": "password1",
+    "healthy": true,
+    "disk": {
+      "size": "1 TB",
+      "used": "500 GB",
+      "system": 2,
+      "data": 4,
+      "percentage": 50,
+      "cache": 6,
+      "log": 10
+    }
+  },
+  {
+    "name": "ZFS Storage",
+    "ip": "192.168.0.2",
+    "model": "Dell EMC Unity",
+    "version": "2.1",
+    "port": 12345,
+    "username": "admin",
+    "password": "password2",
+    "healthy": true,
+    "disk": {
+      "size": "2 TB",
+      "used": "1 TB",
+      "system": 3,
+      "data": 6,
+      "percentage": 50,
+      "cache": 4,
+      "log": 2
+    }
+  },
+  {
+    "name": "Secondary Storage",
+    "ip": "192.168.0.3",
+    "model": "Sun Storage VMware",
+    "version": "3.2",
+    "port": 67890,
+    "username": "admin",
+    "password": "password3",
+    "healthy": true,
+    "disk": {
+      "size": "500 GB",
+      "used": "200 GB",
+      "system": 1,
+      "data": 2,
+      "percentage": 40,
+      "cache": 3,
+      "log": 9
+    }
+  },
+  {
+    "name": "ZFS Storage",
+    "ip": "192.168.0.4",
+    "model": "NetApp AFF",
+    "version": "1.5",
+    "port": 54329,
+    "username": "admin",
+    "password": "password4",
+    "healthy": false,
+    "disk": {
+      "size": "1.5 TB",
+      "used": "800 GB",
+      "system": 2,
+      "data": 4,
+      "percentage": 95,
+      "cache": 2,
+      "log": 7
+    }
+  },
+  {
+    "name": "Secondary Storage",
+    "ip": "192.168.0.5",
+    "model": "Sun Storage VMware",
+    "version": "2.5",
+    "port": 8000,
+    "username": "admin",
+    "password": "password5",
+    "healthy": true,
+    "disk": {
+      "size": "2.5 TB",
+      "used": "1 TB",
+      "system": 3,
+
+      "data": 6,
+      "percentage": 80,
+      "cache": 8,
+      "log": 3
+    }
+  },
+  {
+    "name": "ZFS Storage",
+    "ip": "192.168.0.6",
+    "model": "HPE Nimble Storage",
+    "version": "3.8",
+    "port": 67893,
+    "username": "admin",
+    "password": "password6",
+    "healthy": true,
+    "disk": {
+      "size": "1 TB",
+      "used": "500 GB",
+      "system": 2,
+      "data": 4,
+      "percentage": 50,
+      "cache": 9,
+      "log": 6
+    }
+  },
+  {
+    "name": "Secondary Storage",
+    "ip": "192.168.0.7",
+    "model": "Sun Storage VMware",
+    "version": "1.2",
+    "port": 54327,
+    "username": "admin",
+    "password": "password7",
+    "healthy": true,
+    "disk": {
+      "size": "2 TB",
+      "used": "1 TB",
+      "system": 3,
+      "data": 6,
+      "percentage": 70,
+      "cache": 2,
+      "log": 4
+    }
+  },
+  {
+    "name": "ZFS Storage",
+    "ip": "192.168.0.8",
+    "model": "Pure Storage FlashArray",
+    "version": "2.0",
+    "port": 12347,
+    "username": "admin",
+    "password": "password8",
+    "healthy": true,
+    "disk": {
+      "size": "1.5 TB",
+      "used": "800 GB",
+      "system": 2,
+      "data": 4,
+      "percentage": 53,
+      "cache": 5,
+      "log": 8
+    }
+  },
+  {
+    "name": "Secondary Storage",
+    "ip": "192.168.0.9",
+    "model": "Sun Storage VMware",
+    "version": "3.5",
+    "port": 67892,
+    "username": "admin",
+    "password": "password9",
+    "healthy": false,
+    "disk": {
+      "size": "500 GB",
+      "used": "200 GB",
+      "system": 1,
+      "data": 2,
+      "percentage": 85,
+      "cache": 10,
+      "log": 1
+    }
+  },
+  {
+    "name": "ZFS Storage",
+    "ip": "192.168.0.10",
+    "model": "IBM Spectrum Virtualize",
+    "version": "1.9",
+    "port": 54328,
+    "username": "admin",
+    "password": "password10",
+    "healthy": true,
+    "disk": {
+      "size": "2.5 TB",
+      "used": "1 TB",
+      "system": 3,
+      "data": 6,
+      "percentage": 60,
+      "cache": 7,
+      "log": 5
+    }
+  }
+]

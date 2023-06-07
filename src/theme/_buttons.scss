@@ -78,20 +78,35 @@ $btn-active-bg: 700;
       color: var(--#{$prefix}btn-bg);
 
       &:hover {
-        // background-color: transparent;
         border-color: var(--#{$prefix}btn-hover-bg);
-        color: if($name==light, var(--#{$prefix}#{light}-#{500}), var(--#{$prefix}btn-color)); // var(--#{$prefix}btn-color);
+        color: if($name==light, var(--#{$prefix}#{light}-#{900}), var(--#{$prefix}btn-color)); // var(--#{$prefix}btn-color);
+        // background-color: transparent;
+
+        @if ($name==light) {
+          background-color: var(--#{$prefix}#{light}-#{200}); // var(--#{$prefix}btn-color);
+        }
       }
 
       &:focus {
-        background-color: transparent;
-        color: var(--#{$prefix}btn-bg);
+        // background-color: transparent;
+        color: var(--#{$prefix}light-500);
+
+        @if ($name==light) {
+          background-color: var(--#{$prefix}#{light}-#{200}); // var(--#{$prefix}btn-color);
+        }
       }
 
       &:active {
         border-color: var(--#{$prefix}btn-active-bg);
-        background-color: var(--#{$prefix}btn-active-bg);
         color: var(--#{$prefix}btn-color);
+
+        @if ($name==light) {
+          background-color: var(--#{$prefix}#{light}-#{300}); // var(--#{$prefix}btn-color);
+        }
+
+        @else {
+          background-color: var(--#{$prefix}btn-active-bg);
+        }
       }
     }
   }

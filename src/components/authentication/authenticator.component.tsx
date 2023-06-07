@@ -15,29 +15,29 @@ export class Authenticator {
 
   static async signIn({ username, password }: { username: string; password: string }, successCallback?: () => void, errorCallback?: () => void): Promise<void> {
     try {
-      const login: AxiosResponse<HttpResponse<LoginResponse>> = await api.post('/login', {
-        data: {
-          email: username,
-          password,
-        },
+      const login: AxiosResponse<HttpResponse<LoginResponse>> = await api.post('/auth/login', {
+        // data: {
+        email: username,
+        password,
+        // },
       });
 
       Authenticator.tokens = login.data.data;
-      window.localStorage.setItem(AuthorizationHeader.AccessToken, (login.data.data as LoginResponse).accessToken);
-      window.localStorage.setItem(AuthorizationHeader.RefreshToken, (login.data.data as LoginResponse).refreshToken);
+      window.localStorage.setItem(AuthorizationHeader.AccessToken, login.data.data.authToken);
+      // window.localStorage.setItem(AuthorizationHeader.RefreshToken, (login.data as LoginResponse).refreshToken);
       window.sessionStorage.setItem('isAuthenticated', 'true');
       await this.getUser();
-      successCallback && successCallback();
+      successCallback?.();
     } catch (e) {
-      Authenticator.signOut();
-      errorCallback && errorCallback();
+      await Authenticator.signOut();
+      errorCallback?.();
     }
   }
 
   static async getUser(): Promise<User> {
     // Datayı boş gönderirsen header'da gönderdiğin access token ile girdiğin için mevcut kullanıcıyı getirir.
     // const user: AxiosResponse<HttpResponse<User>> = await api.post('/user', { data: 'sFlt01rLo65zIpwwHc7teuuQxgBlzhti' });
-    const user: AxiosResponse<HttpResponse<User>> = await api.post('/user', { data: Authenticator.user?.id });
+    const user: AxiosResponse<HttpResponse<User>> = await api.get('/auth/me');
 
     Authenticator.user = user.data.data;
     window.localStorage.setItem('user', JSON.stringify(Authenticator.user));
@@ -46,16 +46,22 @@ export class Authenticator {
   }
 
   static async signOut(successCallback?: () => void, errorCallback?: () => void): Promise<void> {
-    try {
-      await api.post('/logout', { [AuthorizationHeader.RefreshToken]: window.localStorage.getItem(AuthorizationHeader.RefreshToken) || Authenticator.tokens?.refreshToken });
-      Authenticator.user = null;
-      Authenticator.tokens = null;
+    const removeStorage = ():void => {
       window.localStorage.removeItem(AuthorizationHeader.AccessToken);
       window.localStorage.removeItem(AuthorizationHeader.RefreshToken);
       window.localStorage.removeItem('user');
-      successCallback && successCallback();
+    };
+
+    try {
+      // await api.post('/logout', { [AuthorizationHeader.RefreshToken]: window.localStorage.getItem(AuthorizationHeader.RefreshToken) || Authenticator.tokens?.refreshToken });
+      await api.get('/logout');
+      Authenticator.user = null;
+      Authenticator.tokens = null;
+      removeStorage();
+      successCallback?.();
     } catch (e) {
-      errorCallback && errorCallback();
+      removeStorage();
+      errorCallback?.();
     }
   }
 

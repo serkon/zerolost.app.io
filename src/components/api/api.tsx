@@ -1,9 +1,7 @@
-const env = process.env.REACT_APP_API_URL;
-
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: env,
+  baseURL: process.env.REACT_APP_API_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -12,8 +10,8 @@ export const api = axios.create({
     Pragma: 'no-cache',
     Timeout: 5000,
     Expires: '0',
-    WithCredentials: true,
+    withCredentials: false,
   },
 });
 
-api.defaults.withCredentials = true;
+api.defaults.withCredentials = false;

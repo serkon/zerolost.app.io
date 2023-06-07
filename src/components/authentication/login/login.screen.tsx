@@ -52,8 +52,8 @@ export const LoginScreen = (): JSX.Element => {
             <p className="lead secondary-500 m-0">{translate('LOGIN_DESCRIPTION')}</p>
           </section>
           <section className="d-flex gap-3 flex-column">
-            <TextInput type="text" label={translate('USERNAME')} placeholder={translate('USERNAME')} defaultValue={'serkon'} name="username" />
-            <TextInput type="password" label={translate('PASSWORD')} placeholder={translate('PASSWORD')} defaultValue={'123456'} name="password" />
+            <TextInput type="text" label={translate('USERNAME')} placeholder={translate('USERNAME')} defaultValue={'serkankonakci@gmail.com'} name="username" />
+            <TextInput type="password" label={translate('PASSWORD')} placeholder={translate('PASSWORD')} defaultValue={'S12345'} name="password" />
           </section>
           <section className="d-flex flex-column mt-4 gap-32">
             <div className="d-flex justify-content-between">
