@@ -3,5 +3,7 @@
   "HOME": "Anasayfa",
   "WITH_PARAM": "Test {param}",
   "LOADING": "Loading...",
-  "TITLE": "Kurtarma"
+  "TITLE": "Kurtarma",
+  "WELCOME": "Hoşgeldiniz",
+  "DELETE_MY_ACCOUNT": "Hesabımı Sil"
 }

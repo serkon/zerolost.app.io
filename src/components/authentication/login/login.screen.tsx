@@ -2,7 +2,7 @@ import './login.screen.scss';
 
 import {Divider,TextInput} from '@mantine/core';
 import type { Location } from 'history';
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Authenticator } from 'src/components/authentication/authenticator.component';
 import { useTranslate } from 'src/components/translate/translate.component';
@@ -10,12 +10,19 @@ import { useTranslate } from 'src/components/translate/translate.component';
 import Logo from './images/login-logo.svg';
 
 export const LoginScreen = (): JSX.Element => {
-  const { translate } = useTranslate();
   const navigate = useNavigate();
   const location: Location = useLocation();
   const from = (location.state as any)?.from?.pathname || '/';
   const [state, setState] = React.useState<{ error: string } | null>(null);
   const [loading, setLoading] = React.useState(false);
+  const {translateState, translateLanguage, translate } = useTranslate();
+
+  // eslint-disable-next-line
+  const [_lang, setLang] = useState(translateState.language);
+  const onLanguageChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    setLang(event.target.value);
+    translateLanguage(event.target.value);
+  };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -46,6 +53,10 @@ export const LoginScreen = (): JSX.Element => {
       </div>
       <div className="right d-flex flex-column align-items-center">
         {state?.error && <p className="error">{state?.error}</p>}
+        <select value={translateState.language} onChange={onLanguageChange} className="language secondary-300 caption-12" aria-label="Select Language">
+          <option value="tr">TR</option>
+          <option value="en">EN</option>
+        </select>
         <form onSubmit={handleSubmit} className="login-form">
           <section className="d-flex gap-4 flex-column">
             <h1>{translate('WELCOME')}</h1>
