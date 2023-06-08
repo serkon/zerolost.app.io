@@ -10,7 +10,7 @@ export interface User {
 }
 */
 
-interface Role {
+export interface Role {
   createdBy: string;
   createdDate: string;
   lastModifiedBy: string;

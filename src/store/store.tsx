@@ -1,9 +1,16 @@
 import { applyMiddleware, CombinedState, combineReducers, legacy_createStore as createStore } from 'redux';
 
 import { GroupReducer } from './reducers/GroupReducer';
+import { UserReducer } from './reducers/user.reducer';
+
+export interface Action<T> {
+  type: string;
+  payload: T;
+}
 
 const combine = combineReducers({
   groups: GroupReducer,
+  user: UserReducer,
 });
 const loggerMiddleware =
   (storeAPI: any) =>

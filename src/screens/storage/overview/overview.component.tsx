@@ -76,7 +76,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
           <SimpleBar style={{ minHeight: 0, display: 'flex' }} >
             <ul className="storages">
               {storages?.map((storage:Storage) => (
-                <li key={storage.id} className="item">
+                <li key={storage.ip} className="item">
                   <StorageCard value={storage} />
                 </li>
               ))}
@@ -116,10 +116,6 @@ interface Storage {
 
 const StorageCard = ({value}: { value: Storage }): React.ReactElement => {
   const [data, setData] = useState('');
-
-  useEffect(() => {
-    console.log('storage:', value);
-  });
 
   return (
     <section className="storage d-flex flex-column gap-4">
