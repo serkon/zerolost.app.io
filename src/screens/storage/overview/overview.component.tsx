@@ -5,6 +5,7 @@ import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSett
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
+import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
 import Storages from './storage.sample.json';
@@ -25,7 +26,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   return (
     <>
       <div className="list-items">
-        <section className="header px-3">
+        <section className="list-items-header px-3">
           <h2 className="h2 fw-extra-bold secondary-500">Storage</h2>
           <p className="m-0 secondary-400 fw-light caption-14">No data will be lost, never you will be code</p>
         </section>
@@ -87,7 +88,9 @@ export const ScreenStorageOverview = (): React.ReactElement => {
           </SimpleBar>
         </section>
       </div>
-      <div>dsadad</div>
+      <div className="screen-detail flex-grow-1">
+        <Header />
+      </div>
     </>
   );
 };

@@ -1,6 +1,8 @@
-header {
-  display: flex;
-  padding: 1.5rem 0;
+.top-header {
+  --height: 88px;
+
+  align-items: center;
+  height: var(--height);
   gap: 1rem;
 
   section.navigations {
@@ -17,10 +19,13 @@ header {
       border: none;
       border-radius: 2px;
       background-color: transparent;
-      color: white;
       appearance: none;
       outline: none;
       cursor: pointer;
     }
+  }
+
+  .user {
+    cursor: pointer;
   }
 }
