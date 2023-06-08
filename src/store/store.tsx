@@ -10,7 +10,7 @@ export interface Action<T> {
 
 const combine = combineReducers({
   groups: GroupReducer,
-  user: UserReducer,
+  userStore: UserReducer,
 });
 const loggerMiddleware =
   (storeAPI: any) =>
