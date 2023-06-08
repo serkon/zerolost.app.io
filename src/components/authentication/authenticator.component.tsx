@@ -12,6 +12,12 @@ export class Authenticator {
   static tokens: LoginResponse | null = null;
 
   static isAuthenticated(): boolean {
+    const user = window.localStorage.getItem('user');
+
+    if (window.sessionStorage.getItem('isAuthenticated')==='true' && !!user) {
+      store.dispatch(set_user(JSON.parse(user)));
+    }
+
     return window.sessionStorage.getItem('isAuthenticated')==='true';
   }
 
@@ -65,7 +71,7 @@ export class Authenticator {
 
     try {
       // await api.post('/logout', { [AuthorizationHeader.RefreshToken]: window.localStorage.getItem(AuthorizationHeader.RefreshToken) || Authenticator.tokens?.refreshToken });
-      await api.get('/logout');
+      await api.get('/auth/logout');
       Authenticator.user = null;
       Authenticator.tokens = null;
       removeUserCredentials();
