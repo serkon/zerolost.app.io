@@ -1,7 +1,7 @@
-.list-items {
+.list-items-container {
   display: flex;
   flex-direction: column;
-  width: 336px;
+  min-width: 336px;
   border-right: 1px solid var(--brand-100);
 
   .list-items-header {
@@ -31,7 +31,7 @@
     box-shadow: 0 2px 8px rgba(52, 52, 52, 4%), 0 0 24px rgba(52, 52, 52, 4%);
   }
 
-  .list {
+  .item-list {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -46,29 +46,55 @@
         box-shadow: 0 2px 8px rgba(52, 52, 52, 4%), 0 0 24px rgba(52, 52, 52, 4%);
         background-color: white;
       }
-
-      section.storage {
-        padding: 16px;
-        border-bottom: 1px solid var(--brand-100);
-        cursor: pointer;
-
-        &:hover {
-          background-color: rgba(var(--brand-500-rgb), 0.04);
-        }
-
-        .disk-used, .disk-size {
-          height: 7px;
-          border-radius: 3.5px;
-        }
-
-        .disk-used {
-          // background-color: var(--success-500);
-        }
-
-        .disk-size {
-          background-color: rgba(var(--brand-500-rgb), 0.1);
-        }
-      }
     }
   }
+}
+
+.screen-detail-container {
+  overflow: auto;
+
+  .card-list {
+    display: grid;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(var(--secondary-500-rgb), 0.1);
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 12px;
+    // grid-template-columns: minmax(0, 400px) repeat(3, 1fr);
+    // grid-template-columns: min-content auto;
+    // grid-auto-rows: 114px;
+  }
+
+  .filter-shadow {
+    box-shadow: 0 2px 8px rgba(52, 52, 52, 2%), 0 0 24px rgba(52, 52, 52, 2%);
+  }
+}
+
+.card-more {
+  display: grid;
+  // grid-auto-rows: 100px;
+  padding: 24px;
+  // width: fit-content;
+  border: none !important;
+  background: rgba(102, 112, 122, 5%);
+}
+
+.dash {
+  background-image: repeating-linear-gradient(-60deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(30deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(120deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(210deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px);
+  background-repeat: no-repeat;
+  background-position: 0 0, 0 0, 100% 0, 0 100%;
+  background-size: 1px 100%, 100% 1px, 1px 100% , 100% 1px;
+}
+
+.online, .offline {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.online {
+  background-color: var(--success-400);
+}
+
+.offline {
+  background-color: var(--danger-400);
 }

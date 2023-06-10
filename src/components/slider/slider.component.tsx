@@ -33,7 +33,7 @@ export interface SliderProps {
  * ```
  */
 
-export const Slider = React.forwardRef<number, SliderProps>(({ start = 2, count, onClick, reset, initial=0, ...rest }, forwardedRef) => {
+export const Slider = React.forwardRef<number, SliderProps>(({ start = 2, count, onClick, reset, initial = 0, ...rest }, forwardedRef) => {
   const [steps, setSteps] = React.useState<number[]>([]);
   const [value, setValue] = React.useState<number>(initial ?? count - 1);
   const [width, setWidth] = React.useState<number>(0);

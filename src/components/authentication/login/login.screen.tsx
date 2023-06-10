@@ -1,6 +1,6 @@
 import './login.screen.scss';
 
-import {Divider,TextInput} from '@mantine/core';
+import { Divider, TextInput } from '@mantine/core';
 import type { Location } from 'history';
 import React, { ChangeEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ export const LoginScreen = (): JSX.Element => {
   const from = (location.state as any)?.from?.pathname || '/';
   const [state, setState] = React.useState<{ error: string } | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const {translateState, translateLanguage, translate } = useTranslate();
+  const { translateState, translateLanguage, translate } = useTranslate();
 
   // eslint-disable-next-line
   const [_lang, setLang] = useState(translateState.language);
@@ -53,11 +53,12 @@ export const LoginScreen = (): JSX.Element => {
       </div>
       <div className="right d-flex flex-column align-items-center">
         {state?.error && <p className="error">{state?.error}</p>}
-        <select value={translateState.language} onChange={onLanguageChange} className="language secondary-300 caption-12" aria-label="Select Language">
-          <option value="tr">TR</option>
-          <option value="en">EN</option>
-        </select>
+
         <form onSubmit={handleSubmit} className="login-form">
+          <select value={translateState.language} onChange={onLanguageChange} className="form-select secondary-300 ms-auto w-auto" aria-label="Select Language">
+            <option value="tr">TR</option>
+            <option value="en">EN</option>
+          </select>
           <section className="d-flex gap-4 flex-column">
             <h1>{translate('WELCOME')}</h1>
             <p className="lead secondary-500 m-0">{translate('LOGIN_DESCRIPTION')}</p>
@@ -70,10 +71,14 @@ export const LoginScreen = (): JSX.Element => {
             <div className="d-flex justify-content-between">
               <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="remmeber-me" />
-                <label className="form-check-label caption-16 secondary-500" htmlFor="remmeber-me">{translate('REMEMBER_ME')}</label>
+                <label className="form-check-label caption-16 secondary-500" htmlFor="remmeber-me">
+                  {translate('REMEMBER_ME')}
+                </label>
               </div>
               <div>
-                <Link className="brand-500 caption-16" to={'/forgot-password'}>{translate('FORGOT_PASSWORD')}</Link>
+                <Link className="brand-500 caption-16" to={'/forgot-password'}>
+                  {translate('FORGOT_PASSWORD')}
+                </Link>
               </div>
             </div>
             <button type="submit" className="btn btn-brand btn-lg" disabled={loading}>

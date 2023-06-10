@@ -110,8 +110,8 @@
     }
 
     &.opened {
+      min-width: var(--drawer-sidebar-width-opened);
       max-width: var(--drawer-sidebar-width-opened);
-      width: var(--drawer-sidebar-width-opened);
 
       .logo-container {
         .logo-text {
@@ -122,8 +122,8 @@
     }
 
     &.closed {
+      min-width: var(--drawer-sidebar-width-closed);
       max-width: var(--drawer-sidebar-width-closed);
-      width: var(--drawer-sidebar-width-closed);
 
       .logo-container {
         .logo-text {

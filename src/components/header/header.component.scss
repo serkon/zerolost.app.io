@@ -1,9 +1,15 @@
 .top-header {
-  --height: 88px;
+  --height: 82px;
 
+  position: sticky;
+  top: 0;
+  z-index: 2;
   align-items: center;
-  height: var(--height);
+  min-height: var(--height);
+  border-bottom: 1px solid transparent;
+  background-color: white;
   gap: 1rem;
+  transition: all 200ms ease-in-out;
 
   section.navigations {
     display: flex;
@@ -28,4 +34,10 @@
   .user {
     cursor: pointer;
   }
+}
+
+.scrolled {
+  transition: all 400ms ease-in-out;
+  border-bottom: 1px solid var(--brand-100);
+  box-shadow: 0 2px 8px rgba(52, 52, 52, 4%), 0 0 24px rgba(52, 52, 52, 4%);
 }

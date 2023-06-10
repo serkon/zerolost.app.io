@@ -25,6 +25,9 @@ $zindex-modal-backdrop: 6;
   --#{$prefix}font-family: 'Rubik', 'Inter', 'Poppins', 'Quicksand', sans-serif;
   --#{$prefix}font-size: 1em;
   --#{$prefix}border-radius: 1em;
+  --bs-border-width: 1px;
+  --bs-border-style: solid;
+  --bs-border-radius: 4px;
 
   @include media-breakpoint-up(xxxl) {
     --#{$prefix}font-size: 2em;

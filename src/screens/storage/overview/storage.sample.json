@@ -170,24 +170,5 @@
       "cache": 10,
       "log": 1
     }
-  },
-  {
-    "name": "ZFS Storage",
-    "ip": "192.168.0.10",
-    "model": "IBM Spectrum Virtualize",
-    "version": "1.9",
-    "port": 54328,
-    "username": "admin",
-    "password": "password10",
-    "healthy": true,
-    "disk": {
-      "size": "2.5 TB",
-      "used": "1 TB",
-      "system": 3,
-      "data": 6,
-      "percentage": 60,
-      "cache": 7,
-      "log": 5
-    }
   }
 ]

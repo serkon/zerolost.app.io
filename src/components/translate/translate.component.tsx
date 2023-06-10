@@ -38,28 +38,29 @@ export const Translate: React.FC<Props> = ({ current = 'en', children }) => {
   }, [current]);
 
   return (
-    <TranslateContext.Provider value={{
-      translateState: state,
-      translateLanguage,
-      translate: (key: string, params?: any): string => {
-        let text = getObjectPathValue(state.content, key) || key;
-        const type = params !== null && typeof params !== 'undefined' ? params.constructor.name : null;
+    <TranslateContext.Provider
+      value={{
+        translateState: state,
+        translateLanguage,
+        translate: (key: string, params?: any): string => {
+          let text = getObjectPathValue(state.content, key) || key;
+          const type = params !== null && typeof params !== 'undefined' ? params.constructor.name : null;
 
-        if (type === 'Array') {
-          params.forEach((param: any, paramIndex: number) => {
-            text = text.replace(new RegExp(`{${paramIndex}}`, 'g'), param);
-          });
-        } else if (type === 'Object') {
-          Object.keys(params).forEach((keyName: string) => {
-            text = text.replace(new RegExp(`{${keyName}}`, 'g'), params[keyName]);
-          });
-        }
+          if (type === 'Array') {
+            params.forEach((param: any, paramIndex: number) => {
+              text = text.replace(new RegExp(`{${paramIndex}}`, 'g'), param);
+            });
+          } else if (type === 'Object') {
+            Object.keys(params).forEach((keyName: string) => {
+              text = text.replace(new RegExp(`{${keyName}}`, 'g'), params[keyName]);
+            });
+          }
 
-        return text;
-      },
-    }}
+          return text;
+        },
+      }}
     >
-      { <>{children}</>}
+      {<>{children}</>}
     </TranslateContext.Provider>
   );
 };

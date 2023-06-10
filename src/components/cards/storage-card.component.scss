@@ -1,0 +1,22 @@
+.storage-card {
+  padding: 16px;
+  border-bottom: 1px solid var(--brand-100);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(var(--brand-500-rgb), 0.04);
+  }
+
+  .disk-used, .disk-size {
+    height: 7px;
+    border-radius: 3.5px;
+  }
+
+  .disk-used {
+    // background-color: var(--success-500);
+  }
+
+  .disk-size {
+    background-color: rgba(var(--brand-500-rgb), 0.1);
+  }
+}

@@ -37,6 +37,7 @@ module.exports = {
     },
   },
   rules: {
+    // 'prettier/prettier': ['error'],
     '@typescript-eslint/no-empty-interface': 0,
     'comma-dangle': ['error', 'always-multiline'],
     'prefer-destructuring': [

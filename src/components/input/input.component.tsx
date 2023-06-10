@@ -51,8 +51,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, ic
       {label && <span className="label caption-10 fw-semibold">{label}</span>}
       <div className="input-container">
         <input {...rest} required ref={inputRef} className={`form-control ${rest.className && rest.className}`} />
-        {(iconLeft) && <i className={`icon i-left ${iconLeft}`} onClick={showEye} />}
-        {(iconRight) && <i className={`icon i-right ${iconRight}`} onClick={showEye} />}
+        {iconLeft && <i className={`icon i-left ${iconLeft}`} onClick={showEye} />}
+        {iconRight && <i className={`icon i-right ${iconRight}`} onClick={showEye} />}
       </div>
     </label>
   );

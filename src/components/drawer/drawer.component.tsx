@@ -25,7 +25,7 @@ export const Drawer = ({ items }: { items: RouteItems[] }): React.JSX.Element =>
             <img src="/images/logo.svg" alt="logo" className="logo" />
             <img src="/images/logo-text.svg" className="logo-text" alt="logo" />
           </div>
-          <div className="navigation" >
+          <div className="navigation">
             <SimpleBar style={{ maxHeight: '100%' }}>
               <Menu items={items} isOpen={open} isSubMenu={false} isHidden={false} />
             </SimpleBar>
@@ -43,35 +43,30 @@ interface MenuProps {
   items: RouteItems[];
   isOpen: boolean;
   isSubMenu?: boolean;
-  isHidden: boolean
+  isHidden: boolean;
 }
 
-export const Menu =
-  ({ items, isOpen, isSubMenu, isHidden = false }: MenuProps): React.JSX.Element => {
-    const [hide, setHide] = useState<number[]>([]);
-    const handleClick = useCallback(
-      (route: RouteItems, key: number) => {
-        hide.includes(key) ? setHide(hide.filter((itemKey) => itemKey !== key)) : setHide([...hide, key]);
-      },
-      [hide],
-    );
-    const { translate } = useTranslate();
+export const Menu = ({ items, isOpen, isSubMenu, isHidden = false }: MenuProps): React.JSX.Element => {
+  const [hide, setHide] = useState<number[]>([]);
+  const handleClick = useCallback(
+    (route: RouteItems, key: number) => {
+      hide.includes(key) ? setHide(hide.filter((itemKey) => itemKey !== key)) : setHide([...hide, key]);
+    },
+    [hide],
+  );
+  const { translate } = useTranslate();
 
-    return (
-      <nav className={`menu ${isSubMenu ? 'mb-0 sub-level' : 'mb-2 top-level'} ${isOpen ? 'open' : 'close'} ${isHidden ? 'hide': 'show'}`}>
-        {items.map((route, key) => (
-          <React.Fragment key={route.title}>
-            <button
-              className={`btn btn-ghost btn-light ${route.icon} ${isOpen ? 'opened-menu-item' : 'closed-menu-item'} ${isSubMenu ? 'btn-sm' : 'btn-md'}`}
-              title={translate(route.title)}
-              onClick={handleClick.bind(this, route, key)}
-            >
-              <span className={`${!isOpen && 'hide-span-item'}`}>{translate(route.title)}</span>
-              {route.children && isOpen && <span className={` ${!hide.includes(key) ? 'ti-plus' : 'ti-minus'}  plus btn-sm`} />}
-            </button>
-            {route.children && <Menu items={route.children} isOpen={isOpen} isSubMenu={true} isHidden={!hide.includes(key)} />}
-          </React.Fragment>
-        ))}
-      </nav>
-    );
-  };
+  return (
+    <nav className={`menu ${isSubMenu ? 'mb-0 sub-level' : 'mb-2 top-level'} ${isOpen ? 'open' : 'close'} ${isHidden ? 'hide' : 'show'}`}>
+      {items.map((route, key) => (
+        <React.Fragment key={route.title}>
+          <button className={`btn btn-ghost btn-light ${route.icon} ${isOpen ? 'opened-menu-item' : 'closed-menu-item'} ${isSubMenu ? 'btn-sm' : 'btn-md'}`} title={translate(route.title)} onClick={handleClick.bind(this, route, key)}>
+            <span className={`${!isOpen && 'hide-span-item'}`}>{translate(route.title)}</span>
+            {route.children && isOpen && <span className={` ${!hide.includes(key) ? 'ti-plus' : 'ti-minus'}  plus btn-sm`} />}
+          </button>
+          {route.children && <Menu items={route.children} isOpen={isOpen} isSubMenu={true} isHidden={!hide.includes(key)} />}
+        </React.Fragment>
+      ))}
+    </nav>
+  );
+};

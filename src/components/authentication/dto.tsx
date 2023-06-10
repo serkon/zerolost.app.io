@@ -76,7 +76,7 @@ export interface HttpResponse<T> {
   success: boolean;
   exception: boolean;
   currentPage: number;
-  totalPages: number
+  totalPages: number;
 }
 
 export interface HttpRequest<T> {

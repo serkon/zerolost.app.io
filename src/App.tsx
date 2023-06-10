@@ -13,7 +13,7 @@ const App = (): React.JSX.Element => {
 
   useEffect(() => {
     document.title = translate('TITLE');
-  },[]);
+  }, []);
 
   return (
     <>

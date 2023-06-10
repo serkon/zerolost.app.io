@@ -14,11 +14,11 @@ export class Authenticator {
   static isAuthenticated(): boolean {
     const user = window.localStorage.getItem('user');
 
-    if (window.sessionStorage.getItem('isAuthenticated')==='true' && !!user) {
+    if (window.sessionStorage.getItem('isAuthenticated') === 'true' && !!user) {
       store.dispatch(set_user(JSON.parse(user)));
     }
 
-    return window.sessionStorage.getItem('isAuthenticated')==='true';
+    return window.sessionStorage.getItem('isAuthenticated') === 'true';
   }
 
   static async signIn({ username, password }: { username: string; password: string }, successCallback?: () => void, errorCallback?: () => void): Promise<void> {
@@ -62,7 +62,7 @@ export class Authenticator {
   }
 
   static async signOut(successCallback?: () => void, errorCallback?: () => void): Promise<void> {
-    const removeUserCredentials = ():void => {
+    const removeUserCredentials = (): void => {
       window.localStorage.removeItem(AuthorizationHeader.AccessToken);
       window.localStorage.removeItem(AuthorizationHeader.RefreshToken);
       window.localStorage.removeItem('user');
