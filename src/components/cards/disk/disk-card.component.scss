@@ -1,9 +1,13 @@
-.pool-card {
+.disk-card {
   border: 1px solid rgba(var(--brand-500-rgb), 0.1);
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(52, 52, 52, 4%), 0 0 24px rgba(52, 52, 52, 4%);
   cursor: pointer;
   transition: all 0.4s ease-in-out;
+
+  .title {
+    margin-bottom: 4px;
+  }
 
   .divider {
     margin-right: 12px;
@@ -21,4 +25,15 @@
     color: white;
     transition: all 0.4s ease-in-out;
   }
+}
+
+.disk-card-list {
+  display: grid;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(var(--secondary-500-rgb), 0.1);
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  // grid-template-columns: minmax(0, 400px) repeat(3, 1fr);
+  // grid-template-columns: min-content auto;
+  // grid-auto-rows: 114px;
 }

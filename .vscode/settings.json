@@ -33,7 +33,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "workbench.editor.showIcons": true,
   "[typescriptreact]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",

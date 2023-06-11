@@ -1,17 +1,17 @@
 import './overview.component.scss';
 
 import { Menu, Text, TextInput } from '@mantine/core';
-import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconPlus, IconSearch, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
+import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
-import { DiskList } from 'src/components/cards/disk-card.component';
-import { PoolCard } from 'src/components/cards/pool-card.component';
+import { DiskList } from 'src/components/cards/disk/disk-card.component';
+import { LuneList } from 'src/components/cards/lune/lune-card.component';
+import { PoolList } from 'src/components/cards/pool/pool-card.component';
 import { Storage, StorageCard } from 'src/components/cards/storage-card.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
-import Pools from './pool.sample.json';
 import Storages from './storage.sample.json';
 
 export const ScreenStorageOverview = (): React.ReactElement => {
@@ -115,28 +115,9 @@ export const ScreenStorageOverview = (): React.ReactElement => {
       <div className={`screen-detail-container d-flex flex-column gap-4 pb-5`} onScroll={handleScroll}>
         <Header className={`scrollable-element ${scrolled ? 'scrolled' : ''}`} />
         <p className="body-16 px-4 secondary-400 m-0">{translate('STORAGE_DESCRIPTION')}</p>
-        <div className="filter-area px-4 d-flex align-items-center">
-          <h5 className="fw-extra-bold secondary-600 flex-grow-1">
-            <span>{translate('AVAILABLE_POOLS')}</span>
-          </h5>
-          {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
-          <TextInput type="text" placeholder={translate('SEARCH_IN_POOL')} name="filter" size="sm" icon={<IconSearch size={16} />} className="me-2 filter-shadow" />
-          <div className="d-flex">
-            <button className="btn btn-brand btn-ghost btn-sm">
-              <IconTrash size={16} />
-            </button>
-            <button className="btn btn-brand btn-ghost btn-sm">
-              <IconPlus size={16} />
-            </button>
-          </div>
-        </div>
-        <div className="card-list mx-4">
-          {Pools.map((pool: any) => (
-            <PoolCard value={pool} key={pool.id} />
-          ))}
-          <More />
-        </div>
+        <PoolList />
         <DiskList />
+        <LuneList />
       </div>
     </>
   );

@@ -1,0 +1,61 @@
+.lune-card {
+  border: 1px solid rgba(var(--brand-500-rgb), 0.1);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(52, 52, 52, 4%), 0 0 24px rgba(52, 52, 52, 4%);
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+
+  .circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--brand-700);
+    color: white;
+  }
+
+  .card-value-item {
+    gap: 2px;
+
+    .title {
+      margin-bottom: 2px;
+    }
+  }
+
+  .divider {
+    margin-right: 12px;
+    padding-right: 12px;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-color: rgba(var(--secondary-500-rgb), 0.1);
+  }
+
+  &:hover {
+    background-color: rgba(var(--brand-500-rgb), 0.04);
+    transition: all 0.2s ease-in-out;
+  }
+
+  &.selected {
+    background-color: var(--brand-700);
+    color: white;
+    transition: all 0.4s ease-in-out;
+
+    .circle {
+      background-color: white;
+      color: var(--brand-700);
+    }
+
+    .divider {
+      border-color: rgba(var(--light-500-rgb), 0.3);;
+    }
+  }
+}
+
+.lune-card-list {
+  display: grid;
+  padding-bottom: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 12px;
+  // grid-template-columns: minmax(0, 400px) repeat(3, 1fr);
+  // grid-template-columns: min-content auto;
+  // grid-auto-rows: 114px;
+}

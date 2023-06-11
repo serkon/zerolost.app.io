@@ -15,12 +15,11 @@ interface Disk {
   diskType: 'Cache' | 'Data' | 'Log';
   status: 'ONLINE' | 'OFFLINE';
   createdDate: string;
-  createdBy: string;
-  lastModifiedBy: string;
   lastModifiedDate: string;
+  storageId: string;
+  poolId: string;
   chassisId: string;
   chassisName: string;
-  storageId: string;
 }
 
 export const DiskCard = ({ value }: { value: Disk }): React.JSX.Element => {
@@ -59,10 +58,10 @@ export const DiskList = (): React.ReactElement => {
     <>
       <div className="filter-area px-4 d-flex align-items-center">
         <h5 className="fw-extra-bold secondary-600 flex-grow-1">
-          <span>{translate('PHYSICAL_DISK')}</span>
+          <span>{translate('PHYSICAL_DISKS_ON_SELECTED_POOL')}</span>
         </h5>
         {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
-        <TextInput type="text" placeholder={translate('SEARCH_IN_POOL')} name="filter" size="sm" icon={<IconSearch size={16} />} className="me-2 filter-shadow" />
+        <TextInput type="text" placeholder={translate('SEARCH_IN_PHYSICAL_DISKS')} name="filter" size="sm" icon={<IconSearch size={16} />} className="me-2 filter-shadow" />
         <div className="d-flex">
           <button className="btn btn-brand btn-ghost btn-sm">
             <IconTrash size={16} />
@@ -72,7 +71,7 @@ export const DiskList = (): React.ReactElement => {
           </button>
         </div>
       </div>
-      <div className="card-list mx-4">
+      <div className="disk-card-list mx-4">
         {Disks.map((disk: any) => (
           <DiskCard value={disk} key={disk.id} />
         ))}

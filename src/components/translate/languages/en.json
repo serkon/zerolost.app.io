@@ -17,9 +17,28 @@
   "SEARCH": "Search",
   "DELETE_MY_ACCOUNT": "Delete my account",
   "SEARCH_IN_POOL": "Search in pool",
+  "SEARCH_IN_PHYSICAL_DISKS": "Search in physical disks",
+  "SEARCH_IN_LUNES": "Search in lunes",
   "AVAILABLE_POOLS": "Available pools",
   "LOGOUT": "Logout",
   "MORE_WITH_COUNT": "More +{count}",
-  "PHYSICAL_DISK": "Physical disk",
-  "STORAGE_DESCRIPTION": "Add Storage ile alınmıs olan ve veritabanına kayır edilmiş veriler burada gösterilecek .Bu sayfa belli aralıklarla refresh edilecek. Refresh edilme işlemi manual veya yukarda bir secenekle ; 30 sn , 60 sn ,90 sn ve manuel olarak secilebilir. İligili metrikler fetchedilecek ve gösterimle beraber veritabanına kayıt edilecek."
+  "PHYSICAL_DISKS_ON_SELECTED_POOL": "Physical disk on selected pool",
+  "LUNES_ON_SELECTED_POOL": "Lunes on selected pool",
+  "STORAGE_DESCRIPTION": "Add Storage ile alınmıs olan ve veritabanına kayır edilmiş veriler burada gösterilecek .Bu sayfa belli aralıklarla refresh edilecek. Refresh edilme işlemi manual veya yukarda bir secenekle ; 30 sn , 60 sn ,90 sn ve manuel olarak secilebilir. İligili metrikler fetchedilecek ve gösterimle beraber veritabanına kayıt edilecek.",
+  "POOL_DISK_TYPE_data": "Data",
+  "POOL_DISK_TYPE_log": "Log",
+  "POOL_DISK_TYPE_cache": "Cache",
+  "USAGE_SNAPSHOT": "Usage Snapshot",
+  "DISKS": {
+    "mirror3": "Triple mirrored",
+    "raidz1": "Single parity",
+    "raidz2": "Double parity",
+    "stripe": "Striped",
+    "mirror": "Mirrored",
+    "raidz3_max": "Triple parity"
+  },
+  "VOLUME_SIZE": "Volume Size",
+  "MOUNTED": "Mounted",
+  "COMPRESSION": "Compression",
+  "HOST": "Host"
 }

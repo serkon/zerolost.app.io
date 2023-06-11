@@ -1,0 +1,372 @@
+[
+  {
+    "id": "d3c4b6a1-7eef-4a7d-9ad8-99a03d8c8de1",
+    "name": "Primary Pool",
+    "storageId": "b0010ebe-84b6-4ef2-9f88-26b4c6a83c45",
+    "status": "ONLINE",
+    "lastModifiedDate": "2023-06-10T14:30:00Z",
+    "createdDate": "2023-06-09T09:15:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-001",
+        "profile": "mirror",
+        "size": "2 TB",
+        "used": "1 TB",
+        "count": 2,
+        "percentage": 75
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-001",
+        "profile": "raidz1",
+        "size": "4 TB",
+        "used": "2 TB",
+        "count": 3,
+        "percentage": 30
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-001",
+        "profile": "stripe",
+        "size": "1 TB",
+        "used": "500 GB",
+        "count": 1,
+        "percentage": 60
+      }
+    ]
+  },
+  {
+    "id": "9a3b6c6e-4b9f-45d1-8f18-6e86c7d4a2d2",
+    "name": "Secondary Pool",
+    "storageId": "a00ff63d-b7d2-4bc6-ae47-39f18967c5a2",
+    "status": "OFFLINE",
+    "lastModifiedDate": "2023-06-08T09:45:00Z",
+    "createdDate": "2023-06-07T13:20:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-002",
+        "profile": "mirror3",
+        "size": "3 TB",
+        "used": "1.5 TB",
+        "count": 4,
+        "percentage": 45
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-002",
+        "profile": "raidz2",
+        "size": "6 TB",
+        "used": "3 TB",
+        "count": 6,
+        "percentage": 80
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-002",
+        "profile": "raidz3_max",
+        "size": "2 TB",
+        "used": "1 TB",
+        "count": 2,
+        "percentage": 55
+      }
+    ]
+  },
+  {
+    "id": "f5a8d0b2-1c72-4e0f-b603-889fc4d64184",
+    "name": "Quinary Pool",
+    "storageId": "e58a6be9-0f8d-45b2-a2f3-4f5c87c79e53",
+    "status": "ONLINE",
+    "lastModifiedDate": "2023-06-06T08:20:00Z",
+    "createdDate": "2023-06-05T11:55:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-003",
+        "profile": "raidz1",
+        "size": "8 TB",
+        "used": "4 TB",
+        "count": 5,
+        "percentage": 65
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-003",
+        "profile": "mirror",
+        "size": "2 TB",
+        "used": "1 TB",
+        "count": 2,
+        "percentage": 20
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-003",
+        "profile": "stripe",
+        "size": "1 TB",
+        "used": "500 GB",
+        "count": 1,
+        "percentage": 90
+      }
+    ]
+  },
+  {
+    "id": "b9e2a7d3-f86c-428b-9d20-75fd13a9e715",
+    "name": "Senary Pool",
+    "storageId": "c7e567f3-2c21-4c29-93e4-52b5f677a29f",
+    "status": "OFFLINE",
+    "lastModifiedDate": "2023-06-04T15:10:00Z",
+    "createdDate": "2023-06-03T19:45:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-004",
+        "profile": "stripe",
+        "size": "1 TB",
+        "used": "500 GB",
+        "count": 2,
+        "percentage": 70
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-004",
+        "profile": "mirror3",
+        "size": "3 TB",
+        "used": "1.5 TB",
+        "count": 3,
+        "percentage": 40
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-004",
+        "profile": "raidz2",
+        "size": "6 TB",
+        "used": "3 TB",
+        "count": 1,
+        "percentage": 55
+      }
+    ]
+  },
+  {
+    "id": "e2a9f7c5-5b76-4193-8342-8193d3e2bf87",
+    "name": "Septenary Pool",
+    "storageId": "d4c5b6a1-9e8d-4c7b-af19-6a8b3d2c1e9d",
+    "status": "ONLINE",
+    "lastModifiedDate": "2023-06-02T11:30:00Z",
+    "createdDate": "2023-06-01T16:05:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-005",
+        "profile": "mirror",
+        "size": "2 TB",
+        "used": "1 TB",
+        "count": 4,
+        "percentage": 60
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-005",
+        "profile": "raidz1",
+        "size": "4 TB",
+        "used": "2 TB",
+        "count": 2,
+        "percentage": 35
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-005",
+        "profile": "raidz3_max",
+        "size": "2 TB",
+        "used": "1 TB",
+        "count": 1,
+        "percentage": 75
+      }
+    ]
+  },
+  {
+    "id": "a5b4c6d8-2e4f-6g8h-9i10-j1k2l3m4n5o6",
+    "name": "Tertiary Pool",
+    "storageId": "b5c6d7e8-3f4g-5h6i-7j8k-9l0m1n2o3p4",
+    "status": "OFFLINE",
+    "lastModifiedDate": "2023-05-31T18:55:00Z",
+    "createdDate": "2023-05-30T22:30:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-006",
+        "profile": "raidz2",
+        "size": "6 TB",
+        "used": "3 TB",
+        "count": 3,
+        "percentage": 80
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-006",
+        "profile": "mirror3",
+        "size": "3 TB",
+        "used": "1.5 TB",
+        "count": 4,
+        "percentage": 25
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-006",
+        "profile": "stripe",
+        "size": "1 TB",
+        "used": "500 GB",
+        "count": 1,
+        "percentage": 50
+      }
+    ]
+  },
+  {
+    "id": "m1n2o3p4-q5r6-s7t8-u9v0-w1x2y3z4a5b",
+    "name": "Quaternary Pool",
+    "storageId": "n5o6p7q8-r9s0-t1u2-v3w4-x5y6z7a8b9c",
+    "status": "ONLINE",
+    "lastModifiedDate": "2023-05-29T13:40:00Z",
+    "createdDate": "2023-05-28T18:15:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-007",
+        "profile": "mirror",
+        "size": "2 TB",
+        "used": "1 TB",
+        "count": 2,
+        "percentage": 90
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-007",
+        "profile": "raidz1",
+        "size": "4 TB",
+        "used": "2 TB",
+        "count": 3,
+        "percentage": 50
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-007",
+        "profile": "stripe",
+        "size": "1 TB",
+        "used": "500 GB",
+        "count": 1,
+        "percentage": 40
+      }
+    ]
+  },
+  {
+    "id": "c5b4a3e2-1d0c-3b4a-5e6f-7d8c9b0a1e2f",
+    "name": "Quinary Pool",
+    "storageId": "h9g8f7e6-d5c4-b3a2-1f0e-2d3c4b5a6b7",
+    "status": "OFFLINE",
+    "lastModifiedDate": "2023-05-27T09:25:00Z",
+    "createdDate": "2023-05-26T13:00:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-008",
+        "profile": "mirror3",
+        "size": "3 TB",
+        "used": "1.5 TB",
+        "count": 4,
+        "percentage": 70
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-008",
+        "profile": "raidz2",
+        "size": "6 TB",
+        "used": "3 TB",
+        "count": 6,
+        "percentage": 55
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-008",
+        "profile": "raidz3_max",
+        "size": "2 TB",
+        "used": "1 TB",
+        "count": 2,
+        "percentage": 35
+      }
+    ]
+  },
+  {
+    "id": "q2w3e4r5-t6y7-u8i9-o0p1-a2s3d4f5g6h",
+    "name": "Senary Pool",
+    "storageId": "j3k4l5m6-n7b8-v9c0-x1z2a3s4d5f",
+    "status": "ONLINE",
+    "lastModifiedDate": "2023-05-25T08:50:00Z",
+    "createdDate": "2023-05-24T12:25:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-009",
+        "profile": "mirror",
+        "size": "2 TB",
+        "used": "1 TB",
+        "count": 4,
+        "percentage": 80
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-009",
+        "profile": "raidz1",
+        "size": "4 TB",
+        "used": "2 TB",
+        "count": 5,
+        "percentage": 40
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-009",
+        "profile": "stripe",
+        "size": "1 TB",
+        "used": "500 GB",
+        "count": 1,
+        "percentage": 65
+      }
+    ]
+  },
+  {
+    "id": "f4g5h6j7-k8l9-m0n1-b2v3-c4x5y6z7a8s",
+    "name": "Septenary Pool",
+    "storageId": "d9e8f7g6-h5j4-k3l2-n1m0-b9v8c7x6y5",
+    "status": "OFFLINE",
+    "lastModifiedDate": "2023-05-23T16:15:00Z",
+    "createdDate": "2023-05-22T19:50:00Z",
+    "disks": [
+      {
+        "type": "data",
+        "chassisName": "chassis-010",
+        "profile": "stripe",
+        "size": "1 TB",
+        "used": "500 GB",
+        "count": 2,
+        "percentage": 50
+      },
+      {
+        "type": "log",
+        "chassisName": "chassis-010",
+        "profile": "mirror3",
+        "size": "3 TB",
+        "used": "1.5 TB",
+        "count": 3,
+        "percentage": 70
+      },
+      {
+        "type": "cache",
+        "chassisName": "chassis-010",
+        "profile": "raidz2",
+        "size": "6 TB",
+        "used": "3 TB",
+        "count": 1,
+        "percentage": 35
+      }
+    ]
+  }
+]
