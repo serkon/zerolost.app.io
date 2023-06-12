@@ -8,18 +8,15 @@ import SimpleBar from 'simplebar-react';
 import { DiskList } from 'src/components/cards/disk/disk-card.component';
 import { LuneList } from 'src/components/cards/lune/lune-card.component';
 import { PoolList } from 'src/components/cards/pool/pool-card.component';
-import { Storage, StorageCard } from 'src/components/cards/storage-card.component';
+import { StorageList } from 'src/components/cards/storage/storage-card.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
-
-import Storages from './storage.sample.json';
 
 export const ScreenStorageOverview = (): React.ReactElement => {
   const { translate } = useTranslate();
   const { parametreAdi } = useParams();
   const [query, setQuery] = React.useState<string>('');
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
-  const [storages, setStorages] = React.useState<Storage[]>();
   const [scrolled, setScrolled] = useState(false);
   const handleScroll = (e: any): void => {
     if (e.target.scrollTop > 0) {
@@ -30,9 +27,8 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    setStorages(Storages);
     console.log('parametre', parametreAdi);
-  }, []);
+  }, [parametreAdi]);
 
   return (
     <>
@@ -98,11 +94,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
         <section className="item-list">
           <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
             <ul className="storages">
-              {storages?.map((storage: Storage) => (
-                <li key={storage.ip} className="item">
-                  <StorageCard value={storage} />
-                </li>
-              ))}
+              <StorageList />
             </ul>
             <div className="actions d-flex">
               <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }}>

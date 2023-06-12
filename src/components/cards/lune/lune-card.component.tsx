@@ -8,10 +8,24 @@ import { More } from 'src/screens/storage/overview/overview.component';
 
 import Lunes from './lune.sample.json';
 
+export interface Lune {
+  lastModifiedDate: string;
+  createdDate: string;
+  id: string;
+  name: string;
+  size: string;
+  ratio: string;
+  poolId: string;
+  status: 'ONLINE' | 'OFFLINE';
+  guid: string;
+  compression: string;
+  mount: string;
+  host: string;
+}
+
 export const LuneCard = ({ value }: { value: Lune }): React.JSX.Element => {
   const { translate } = useTranslate();
   const [select, setSelect] = useState<string[]>([]);
-  const [diskCount, setDiskCount] = useState(0);
   const onClickHandler = useCallback(
     (value: Lune): void => {
       select.includes(value.id) ? setSelect(select.filter((id) => id !== value.id)) : setSelect([...select, value.id]);
@@ -21,29 +35,36 @@ export const LuneCard = ({ value }: { value: Lune }): React.JSX.Element => {
 
   return (
     <div className={`lune-card d-flex flex-column gap-3 p-3 ${select.includes(value.id) ? 'selected' : 'secondary-400'}`} onClick={onClickHandler.bind(null, value)}>
-      <header className="d-flex flex-column gap-1">
+      <header className="d-flex flex-column">
         <h4 className="caption-16 fw-semibold d-flex gap-2 align-items-center">
           <span className="text-truncate lh-sm">{value?.name}</span>
           <span className={`${value.status === 'ONLINE' ? 'online' : 'offline'}`} />
         </h4>
-        <aside className="d-flex gap-1 caption-10">
-          <span className="fw-bold">{value.size}</span>
+        <div className="sub d-flex align-items-center gap-2 caption-10">
+          <aside className="d-flex gap-1 caption-10">
+            <span className="fw-bold">{translate('SIZE')}</span>
+            <span className="fw-light">{value.size}</span>
+          </aside>
           <span className="fw-bold">•</span>
-          <span className="fw-regular">{translate('VOLUME_SIZE')}</span>
-        </aside>
+          <aside className="d-flex gap-1 caption-10">
+            <span className="fw-bold">{translate('COMPRESS')}</span>
+            <span className="fw-light">{value.compression}</span>
+          </aside>
+          <span className="fw-bold">•</span>
+          <aside className="d-flex gap-1 caption-10">
+            <span className="fw-bold">{translate('RATIO')}</span>
+            <span className="fw-light">{value.ratio}</span>
+          </aside>
+        </div>
       </header>
       <section className="body d-flex">
         <aside className={`card-value-item d-flex flex-column gap-1 divider`}>
-          <span className="title caption-12 fw-semibold flex-grow-1 text-nowrap">{translate('COMPRESSION')}</span>
-          <span className="caption-10 fw-regular d-flex text-nowrap">{value.compression}</span>
-        </aside>
-        <aside className={`card-value-item d-flex flex-column gap-1 divider`}>
           <span className="title caption-12 fw-semibold flex-grow-1 text-nowrap">{translate('MOUNTED')}</span>
-          <span className="caption-10 fw-regular d-flex text-nowrap">{value.mount}</span>
+          <span className="caption-10 fw-regular d-flex text-nowrap truncate">{value.mount}</span>
         </aside>
         <aside className={`card-value-item d-flex flex-column gap-1`}>
           <span className="title caption-12 fw-semibold flex-grow-1 text-nowrap">{translate('HOST')}</span>
-          <span className="caption-10 fw-regular d-flex text-nowrap">{value.host}</span>
+          <span className="caption-10 fw-regular d-flex text-nowrap truncate">{value.host}</span>
         </aside>
       </section>
     </div>
@@ -79,17 +100,3 @@ export const LuneList = (): React.ReactElement => {
     </>
   );
 };
-
-export interface Lune {
-  lastModifiedDate: string;
-  createdDate: string;
-  id: string;
-  name: string;
-  size: string;
-  poolId: string;
-  status: 'ONLINE' | 'OFFLINE';
-  guid: string;
-  compression: string;
-  mount: string;
-  host: string;
-}

@@ -8,9 +8,10 @@
     "poolId": "d7b2d216-bb82-4ad9-a2fb-4e179b491564",
     "status": "ONLINE",
     "guid": "eabc1234-5678-90ab-cdef-0123456789ab",
-    "compression": "lz4",
-    "mount": "/mnt/lune1",
-    "host": "Host-1"
+    "compression": "off",
+    "mount": "/serkan/frontend/lune1",
+    "host": "serverist-dc-0001",
+    "ratio": "x2.4"
   },
   {
     "lastModifiedDate": "2023-06-12T14:30:00Z",
@@ -21,9 +22,10 @@
     "poolId": "aef3964f-352e-40e6-9407-84260e782e48",
     "status": "OFFLINE",
     "guid": "fdef5678-90ab-cdef-0123-456789abcdef",
-    "compression": "gzip",
-    "mount": "/mnt/lune2",
-    "host": "Host-2"
+    "compression": "lzjb",
+    "mount": "/serkan/frontend/lune2",
+    "host": "serverist-dc-0002",
+    "ratio": "80%"
   },
   {
     "lastModifiedDate": "2023-06-13T14:30:00Z",
@@ -34,9 +36,10 @@
     "poolId": "f7f9f72b-6a72-4f12-b4d3-211a1bbf618f",
     "status": "ONLINE",
     "guid": "1a2b3c4d-5e6f-7g8h-9i10-j1k2l3m4n5o",
-    "compression": "zstd",
-    "mount": "/mnt/lune3",
-    "host": "Host-3"
+    "compression": "gzip-2",
+    "mount": "/serkan/frontend/lune3",
+    "host": "serverist-dc-0003",
+    "ratio": "x3.5"
   },
   {
     "lastModifiedDate": "2023-06-14T14:30:00Z",
@@ -47,9 +50,10 @@
     "poolId": "e297bed4-0de2-46b3-a151-6c7a56a1242f",
     "status": "OFFLINE",
     "guid": "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7",
-    "compression": "lz4",
-    "mount": "/mnt/lune4",
-    "host": "Host-4"
+    "compression": "gzip",
+    "mount": "/serkan/frontend/lune4",
+    "host": "serverist-dc-0004",
+    "ratio": "63%"
   },
   {
     "lastModifiedDate": "2023-06-15T14:30:00Z",
@@ -60,9 +64,10 @@
     "poolId": "d5c4b3a2-1e0f-3g4h-5i6j-7k8l9m0n1o2",
     "status": "ONLINE",
     "guid": "8c9d0e1f-2g3h-4i5j-6k7l-8m9n0o1p2q3",
-    "compression": "gzip",
-    "mount": "/mnt/lune5",
-    "host": "Host-5"
+    "compression": "gzip-2",
+    "mount": "/serkan/frontend/lune5",
+    "host": "serverist-dc-0005",
+    "ratio": "80%"
   },
   {
     "lastModifiedDate": "2023-06-16T14:30:00Z",
@@ -73,9 +78,10 @@
     "poolId": "d1e2f3g4h5i6j7k8l9m0n1o2p3q4r",
     "status": "OFFLINE",
     "guid": "6q5r4s3t-2u1v-0w9x-8y7z-a1b2c3d4e5f",
-    "compression": "zstd",
-    "mount": "/mnt/lune6",
-    "host": "Host-6"
+    "compression": "gzip",
+    "mount": "/serkan/frontend/lune6",
+    "host": "serverist-dc-0006",
+    "ratio": "x2.4"
   },
   {
     "lastModifiedDate": "2023-06-17T14:30:00Z",
@@ -86,9 +92,10 @@
     "poolId": "2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e",
     "status": "ONLINE",
     "guid": "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5p",
-    "compression": "lz4",
-    "mount": "/mnt/lune7",
-    "host": "Host-7"
+    "compression": "lzjb",
+    "mount": "/serkan/frontend/lune7",
+    "host": "serverist-dc-0007",
+    "ratio": "63%"
   },
   {
     "lastModifiedDate": "2023-06-18T14:30:00Z",
@@ -100,8 +107,9 @@
     "status": "OFFLINE",
     "guid": "7h8i9j0k-1l2m-3n4o-5p6q-7r8s9t0u1v",
     "compression": "gzip",
-    "mount": "/mnt/lune8",
-    "host": "Host-8"
+    "mount": "/serkan/frontend/lune8",
+    "host": "serverist-dc-0008",
+    "ratio": "80%"
   },
   {
     "lastModifiedDate": "2023-06-19T14:30:00Z",
@@ -112,21 +120,23 @@
     "poolId": "3w4x5y6z-7a8b-9c0d-e1f2-g3h4i5j6k7l",
     "status": "ONLINE",
     "guid": "2m3n4o5p-6q7r-8s9t-0u1v-2w3x4y5z6a",
-    "compression": "zstd",
-    "mount": "/mnt/lune9",
-    "host": "Host-9"
+    "compression": "gzip-2",
+    "mount": "/serkan/frontend/lune9",
+    "host": "serverist-dc-0009",
+    "ratio": "x3.5"
   },
   {
     "lastModifiedDate": "2023-06-20T14:30:00Z",
     "createdDate": "2023-06-19T09:15:00Z",
-    "id": "d5e4f3g2-h1i0-j9k8-l7m6-n5o4p3q2r1",
+    "id": "d5e4f3g2-h1i0-j9k8-l7m6-n5o4p3q2r2",
     "name": "Lune-10",
     "size": "1TB",
     "poolId": "7s8t9u0v-1w2x-3y4z-5a6b-7c8d9e0f1g2",
     "status": "OFFLINE",
     "guid": "2h3i4j5k-6l7m-8n9o-0p1q-2r3s4t5u6v",
-    "compression": "lz4",
-    "mount": "/mnt/lune10",
-    "host": "Host-10"
+    "compression": "gzip",
+    "mount": "/serkan/frontend/lune10",
+    "host": "serverist-dc-0010",
+    "ratio": "63%"
   }
 ]

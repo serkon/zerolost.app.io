@@ -40,5 +40,8 @@
   "VOLUME_SIZE": "Volume Size",
   "MOUNTED": "Mounted",
   "COMPRESSION": "Compression",
-  "HOST": "Host"
+  "COMPRESS": "Compress",
+  "SIZE": "Size",
+  "HOST": "Host",
+  "RATIO": "Ratio"
 }
