@@ -57,7 +57,8 @@ api.interceptors.response.use(
           signOut();
           api.defaults.headers.common[AuthorizationHeader.RefreshToken] = false;
 
-          return Promise.reject(new Error('No refresh token'));
+          // return Promise.reject(new Error('No refresh token'));
+          return Promise.resolve(false);
         }
       } catch (_error: any) {
         signOut();
@@ -79,6 +80,7 @@ api.interceptors.response.use(
 
 const signOut = (): void => {
   // window.location.href = '/login';
+  // Authenticator.signOut(() => (window.location.href = '/login'));
   Authenticator.signOut();
   api.defaults.headers.common[AuthorizationHeader.RefreshToken] = false;
 };

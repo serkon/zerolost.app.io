@@ -1,7 +1,11 @@
 import './storage-card.component.scss';
 
-import React, { useEffect } from 'react';
+import { AxiosResponse } from 'axios';
+import React, { useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppConfig } from 'src/app.config';
+import { api } from 'src/components/authentication/authenticator.interceptor';
+import { HttpResponse } from 'src/components/authentication/dto';
 
 import Storages from './storage.sample.json';
 
@@ -27,8 +31,45 @@ export interface Storage {
   };
 }
 
-export const StorageCard = ({ value }: { value: Storage }): React.ReactElement => (
-  <div className={`storage-card d-flex flex-column gap-4 ${value.ip === '192.168.0.1' && 'selected'}`}>
+export const StorageList = (): React.ReactElement => {
+  const navigate = useNavigate();
+  const [storages, setStorages] = React.useState<Storage[]>();
+  const [selectedStorage, setSelectedStorage] = React.useState<Storage | null>(null);
+  const params = new URLSearchParams({ page: '0', size: '1' });
+  const getStorageList = (): Promise<AxiosResponse<HttpResponse<Storage[]>>> => api.post('/storage/search', {}, { params });
+
+  useEffect(() => {
+    getStorageList().then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
+      console.log('Storages: ', items.data.data);
+      // const Storages = items.data.data;
+      if (!selectedStorage && Storages.length > 0) {
+        setSelectedStorage(Storages[0]);
+      }
+      setStorages(Storages);
+    });
+  }, []);
+
+  const onSelectStorage = useCallback(
+    (storage: Storage) => {
+      setSelectedStorage(storage);
+      navigate('/storage/' + storage.id);
+    },
+    [selectedStorage],
+  );
+
+  return (
+    <ul className="storages">
+      {storages?.map((storage: Storage) => (
+        <li className="storage-li-item" key={storage.ip} onClick={onSelectStorage.bind(null, storage)}>
+          <StorageCard value={storage} selected={selectedStorage?.id === storage.id} />
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export const StorageCard = ({ value, selected }: { value: Storage; selected: boolean }): React.ReactElement => (
+  <div className={`storage-card d-flex flex-column gap-4 ${selected && 'selected'}`}>
     <header className="d-flex flex-column gap-1">
       <h4 className="h4 fw-extra-bold secondary-600 d-flex align-items-center gap-2">
         {value.name}
@@ -75,21 +116,3 @@ export const StorageCard = ({ value }: { value: Storage }): React.ReactElement =
     </footer>
   </div>
 );
-
-export const StorageList = (): React.ReactElement => {
-  const [storages, setStorages] = React.useState<Storage[]>();
-
-  useEffect(() => {
-    setStorages(Storages);
-  }, []);
-
-  return (
-    <ul className="storages">
-      {storages?.map((storage: Storage) => (
-        <li key={storage.ip} className="item">
-          <StorageCard value={storage} />
-        </li>
-      ))}
-    </ul>
-  );
-};

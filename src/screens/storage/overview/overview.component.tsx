@@ -3,11 +3,8 @@ import './overview.component.scss';
 import { Menu, Text, TextInput } from '@mantine/core';
 import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
-import { DiskList } from 'src/components/cards/disk/disk-card.component';
-import { LuneList } from 'src/components/cards/lune/lune-card.component';
-import { PoolList } from 'src/components/cards/pool/pool-card.component';
 import { StorageList } from 'src/components/cards/storage/storage-card.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
@@ -93,9 +90,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
         </section>
         <section className="item-list">
           <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
-            <ul className="storages">
-              <StorageList />
-            </ul>
+            <StorageList />
             <div className="actions d-flex">
               <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }}>
                 + Add New Storage
@@ -107,9 +102,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
       <div className={`screen-detail-container d-flex flex-column gap-4 pb-5`} onScroll={handleScroll}>
         <Header className={`scrollable-element ${scrolled ? 'scrolled' : ''}`} />
         <p className="body-16 px-4 secondary-400 m-0">{translate('STORAGE_DESCRIPTION')}</p>
-        <PoolList />
-        <DiskList />
-        <LuneList />
+        <Outlet />
       </div>
     </>
   );

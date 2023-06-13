@@ -15,6 +15,7 @@ interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 export const Header = ({ className, ...rest }: HeaderProps): React.JSX.Element => {
   const { translateState, translateLanguage, translate } = useTranslate();
   const userState = useSelector<RootState>((state): UserState => state.userStore) as UserState;
+  // const userState = { user: { firstName: 'adasd', lastName: 'asdasd', email: 'adasd' } };
 
   // eslint-disable-next-line
   const [_lang, setLang] = useState(translateState.language);
