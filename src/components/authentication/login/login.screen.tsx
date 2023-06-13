@@ -1,7 +1,7 @@
 import './login.screen.scss';
 
 import { Divider, TextInput } from '@mantine/core';
-import type { Location } from 'history';
+import type { Location } from '@remix-run/router';
 import React, { ChangeEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Authenticator } from 'src/components/authentication/authenticator.component';
@@ -12,7 +12,7 @@ import Logo from './images/login-logo.svg';
 export const LoginScreen = (): JSX.Element => {
   const navigate = useNavigate();
   const location: Location = useLocation();
-  const from = (location.state as any)?.from?.pathname || '/';
+  const from = location.state.from.pathname || '/';
   const [state, setState] = React.useState<{ error: string } | null>(null);
   const [loading, setLoading] = React.useState(false);
   const { translateState, translateLanguage, translate } = useTranslate();

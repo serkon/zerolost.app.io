@@ -1,7 +1,7 @@
 import './storage-card.component.scss';
 
 import { AxiosResponse } from 'axios';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppConfig } from 'src/app.config';
 import { api } from 'src/components/authentication/authenticator.interceptor';
@@ -49,13 +49,13 @@ export const StorageList = (): React.ReactElement => {
     });
   }, []);
 
-  const onSelectStorage = useCallback(
-    (storage: Storage) => {
-      setSelectedStorage(storage);
-      navigate('/storage/' + storage.id);
-    },
-    [selectedStorage],
-  );
+  useEffect(() => {
+    selectedStorage && navigate(selectedStorage.id);
+  }, [selectedStorage]);
+
+  const onSelectStorage = (storage: Storage): void => {
+    setSelectedStorage(storage);
+  };
 
   return (
     <ul className="storages">

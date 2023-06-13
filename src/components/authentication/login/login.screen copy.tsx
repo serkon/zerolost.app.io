@@ -1,8 +1,7 @@
 import './login.screen.scss';
 
-import type { Location } from 'history';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Authenticator } from 'src/components/authentication/authenticator.component';
 import { Input } from 'src/components/input/input.component';
 import { useTranslate } from 'src/components/translate/translate.component';
@@ -10,8 +9,6 @@ import { useTranslate } from 'src/components/translate/translate.component';
 export const LoginScreen = (): JSX.Element => {
   const { translate } = useTranslate();
   const navigate = useNavigate();
-  const location: Location = useLocation();
-  const from = (location.state as any)?.from?.pathname || '/';
   const [state, setState] = React.useState<{ error: string } | null>(null);
   const [loading, setLoading] = React.useState(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -24,7 +21,7 @@ export const LoginScreen = (): JSX.Element => {
     Authenticator.signIn(
       { username, password },
       () => {
-        navigate(from, { replace: true });
+        navigate('/');
         waiting(false);
       },
       () => {
@@ -40,7 +37,7 @@ export const LoginScreen = (): JSX.Element => {
   return (
     <div className="login-screen container">
       <img src="/images/logo.svg" alt="logo" className="logo" />
-      <p className="direction">You must log in to view the page at {from}</p>
+      <p className="direction">You must log in to view the page at</p>
       {state?.error && <p className="error">{state?.error}</p>}
       <form onSubmit={handleSubmit} className="login-form">
         <Input label="Username" type="password" placeholder={translate('Username')} defaultValue={'player1'} name="username" className="form-control-lg" />

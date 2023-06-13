@@ -83,8 +83,6 @@ export class Authenticator {
   }
 
   static Navigate = ({ children }: React.PropsWithChildren): JSX.Element => {
-    const location = useLocation();
-
     if (Authenticator.isAuthenticated() && window.sessionStorage.getItem('isAuthenticated') === 'true') {
       return <>{children}</>;
       /*
@@ -107,6 +105,7 @@ export class Authenticator {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
+    const location = useLocation();
 
     return <Navigate to="/login" state={{ from: location }} replace />;
   };
