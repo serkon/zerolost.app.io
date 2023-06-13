@@ -5,7 +5,7 @@ import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSett
 import React, { useCallback, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
-import { StorageList } from 'src/components/cards/storage/storage-card.component';
+import { StorageList } from 'src/components/cards/storage/storage-list.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
