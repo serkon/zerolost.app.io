@@ -1,8 +1,10 @@
 import { AxiosResponse } from 'axios';
 import React, { useEffect } from 'react';
+import { useStore } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
+import { set_app_header } from 'src/store/reducers/app.reducer';
 
 import Storages from './storage.sample.json';
 import { Storage, StorageCard } from './storage-card.component';
@@ -13,6 +15,7 @@ export const StorageList = (): React.ReactElement => {
   const [selectedStorage, setSelectedStorage] = React.useState<Storage | null>(null);
   const params = new URLSearchParams({ page: '0', size: '1' });
   const getStorageList = (): Promise<AxiosResponse<HttpResponse<Storage[]>>> => api.post('/storage/search', {}, { params });
+  const store = useStore();
 
   useEffect(() => {
     getStorageList().then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
@@ -24,7 +27,17 @@ export const StorageList = (): React.ReactElement => {
   }, []);
 
   useEffect(() => {
-    selectedStorage && navigate(selectedStorage.id);
+    if (selectedStorage) {
+      store.dispatch(
+        set_app_header({
+          title: selectedStorage.name,
+          label: 'Installed',
+          value: selectedStorage.ip,
+        }),
+      );
+      console.log(store.getState());
+      navigate(selectedStorage.id);
+    }
   }, [selectedStorage]);
 
   const onSelectStorage = (storage: Storage): void => {

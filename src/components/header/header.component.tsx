@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { AppConfig } from 'src/app.config';
 import { Authenticator } from 'src/components/authentication/authenticator.component';
 import { useTranslate } from 'src/components/translate/translate.component';
+import { AppState } from 'src/store/reducers/app.reducer';
 import { UserState } from 'src/store/reducers/user.reducer';
 import { RootState } from 'src/store/store';
 
@@ -15,6 +16,7 @@ interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 export const Header = ({ className, ...rest }: HeaderProps): React.JSX.Element => {
   const { translateState, translateLanguage, translate } = useTranslate();
   const userState = useSelector<RootState>((state): UserState => state.userStore) as UserState;
+  const appState = useSelector<RootState>((state): AppState => state.appStore) as AppState;
   // const userState = { user: { firstName: 'adasd', lastName: 'asdasd', email: 'adasd' } };
 
   // eslint-disable-next-line
@@ -37,12 +39,16 @@ export const Header = ({ className, ...rest }: HeaderProps): React.JSX.Element =
             },
           })}
         >
-          ZFS Storage # 7
+          {appState.header?.title}
         </Text>
         <aside className="caption-10 secondary-300 d-flex gap-2">
-          <span className="fw-bold">Installed</span>
-          <span className="fw-bold">•</span>
-          <span>{'2018-11-27 19:12:38'}</span>
+          <span className="fw-bold">{appState.header?.label}</span>
+          {appState.header?.value && (
+            <>
+              <span className="fw-bold">•</span>
+              <span>{appState.header?.value}</span>
+            </>
+          )}
         </aside>
       </section>
       <section className="actions d-flex align-items-center justify-content-end flex-grow-1">

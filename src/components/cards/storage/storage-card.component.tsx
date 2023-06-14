@@ -14,6 +14,8 @@ export interface Storage {
   username: string;
   password: string;
   status: string;
+  // @TODO: lastModifiedDate: string;
+  // @TODO: createdDate: string;
   disk: {
     size: string;
     used: string;

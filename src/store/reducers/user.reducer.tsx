@@ -2,12 +2,6 @@ import { Reducer } from 'redux';
 import { Role, User } from 'src/components/authentication/dto';
 import { Action } from 'src/store/store';
 
-export interface Group {
-  id: string;
-  name: string;
-  games: number[];
-}
-
 export enum USER_ACTION {
   SET_USER = 'SET_USER',
   SET_ROLE = 'SET_ROLE',
