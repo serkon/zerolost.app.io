@@ -93,7 +93,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
             <StorageList />
             <div className="actions d-flex">
               <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }}>
-                + Add New Storage
+                {translate('ADD_NEW_STORAGE')}
               </button>
             </div>
           </SimpleBar>

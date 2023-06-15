@@ -90,7 +90,12 @@ export const Header = ({ className, ...rest }: HeaderProps): React.JSX.Element =
             >
               {translate('SEARCH')}
             </Menu.Item>
-            <Menu.Item icon={<IconTrash size={14} />} onClick={(): Promise<void> => Authenticator.signOut(() => window.location.reload())}>
+            <Menu.Item
+              icon={<IconTrash size={14} />}
+              onClick={async (): Promise<void> => {
+                await Authenticator.signOut(() => window.location.reload());
+              }}
+            >
               {translate('LOGOUT')}
             </Menu.Item>
             {AppConfig.profile.dangerZone && (

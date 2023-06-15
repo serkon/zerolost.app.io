@@ -43,5 +43,7 @@
   "COMPRESS": "Compress",
   "SIZE": "Size",
   "HOST": "Host",
-  "RATIO": "Ratio"
+  "RATIO": "Ratio",
+  "ADD_NEW_STORAGE": "+ Add new storage",
+  "INSTALLED": "Installed"
 }

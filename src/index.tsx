@@ -17,6 +17,7 @@ import { store } from 'src/store/store';
  * Screens
  */
 import App from './App';
+import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import { AboutScreen } from './screens/about/about.screen';
 import { ScreenStorageOverview } from './screens/storage/overview/overview.component';
 import { ScreenStorageOverviewDetail } from './screens/storage/overview/overview-detail.component';
@@ -24,39 +25,41 @@ import { ScreenStorageOverviewDetail } from './screens/storage/overview/overview
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const strickMode = process.env.NODE_ENV === 'production';
 const Content = (): React.JSX.Element => (
-  <BrowserRouter>
-    <ScrollTo />
-    <Provider store={store}>
-      <Translate current="en">
-        <Routes>
-          <Route path="/" element={<App />}>
-            <Route path="" element={<Navigate to="storage" />} />
-            <Route
-              path="storage"
-              element={
-                <Authenticator.Navigate>
-                  <ScreenStorageOverview />
-                </Authenticator.Navigate>
-              }
-            >
-              <Route path=":parametreAdi" element={<ScreenStorageOverviewDetail />} />
+  <ErrorBoundary>
+    <BrowserRouter>
+      <ScrollTo />
+      <Provider store={store}>
+        <Translate current="en">
+          <Routes>
+            <Route path="/" element={<App />}>
+              <Route path="" element={<Navigate to="storage" />} />
+              <Route
+                path="storage"
+                element={
+                  <Authenticator.Navigate>
+                    <ScreenStorageOverview />
+                  </Authenticator.Navigate>
+                }
+              >
+                <Route path=":parametreAdi" element={<ScreenStorageOverviewDetail />} />
+              </Route>
+              <Route
+                path="about"
+                element={
+                  <Authenticator.Navigate>
+                    <AboutScreen />
+                  </Authenticator.Navigate>
+                }
+              />
             </Route>
-            <Route
-              path="about"
-              element={
-                <Authenticator.Navigate>
-                  <AboutScreen />
-                </Authenticator.Navigate>
-              }
-            />
-          </Route>
-          <Route path="login" element={<LoginScreen />} />
-          <Route path="*" element={<PageNotFound />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Translate>
-    </Provider>
-  </BrowserRouter>
+            <Route path="login" element={<LoginScreen />} />
+            <Route path="*" element={<PageNotFound />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Translate>
+      </Provider>
+    </BrowserRouter>
+  </ErrorBoundary>
 );
 
 root.render(

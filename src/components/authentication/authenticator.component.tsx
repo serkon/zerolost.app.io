@@ -14,11 +14,15 @@ export class Authenticator {
   static isAuthenticated(): boolean {
     const user = window.localStorage.getItem('user');
 
+    // @TODO validate token yapmam gerek
+
     if (window.sessionStorage.getItem('isAuthenticated') === 'true' && !!user) {
       store.dispatch(set_user(JSON.parse(user)));
+
+      return true;
     }
 
-    return window.sessionStorage.getItem('isAuthenticated') === 'true';
+    return false;
   }
 
   static async signIn({ username, password }: { username: string; password: string }, successCallback?: () => void, errorCallback?: () => void): Promise<void> {
@@ -37,7 +41,7 @@ export class Authenticator {
       await this.getUser();
       successCallback?.();
     } catch (e) {
-      await Authenticator.signOut();
+      await Authenticator.signOut(() => window.location.reload());
       errorCallback?.();
     }
   }
@@ -83,7 +87,7 @@ export class Authenticator {
   }
 
   static Navigate = ({ children }: React.PropsWithChildren): JSX.Element => {
-    if (Authenticator.isAuthenticated() && window.sessionStorage.getItem('isAuthenticated') === 'true') {
+    if (Authenticator.isAuthenticated()) {
       return <>{children}</>;
       /*
         <>

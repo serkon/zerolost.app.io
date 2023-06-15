@@ -31,7 +31,9 @@ api.interceptors.request.use(
 
     return request;
   },
-  (error) => Promise.reject(error),
+  (error) => {
+    Promise.reject(error);
+  },
 );
 
 api.interceptors.response.use(
@@ -78,9 +80,7 @@ api.interceptors.response.use(
   },
 );
 
-const signOut = (): void => {
-  // window.location.href = '/login';
-  // Authenticator.signOut(() => (window.location.href = '/login'));
-  Authenticator.signOut();
+const signOut = async (): Promise<void> => {
+  await Authenticator.signOut((): string => (window.location.href = '/login'));
   api.defaults.headers.common[AuthorizationHeader.RefreshToken] = false;
 };
