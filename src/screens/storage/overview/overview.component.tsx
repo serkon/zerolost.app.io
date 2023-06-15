@@ -16,11 +16,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const handleScroll = (e: any): void => {
-    if (e.target.scrollTop > 0) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
+    setScrolled(e.target.scrollTop > 0);
   };
 
   useEffect(() => {
