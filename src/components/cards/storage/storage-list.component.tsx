@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import React, { useEffect } from 'react';
 import { useStore } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
 import { useTranslate } from 'src/components/translate/translate.component';
@@ -14,18 +14,33 @@ export const StorageList = (): React.ReactElement => {
   const navigate = useNavigate();
   const store = useStore();
   const { translate } = useTranslate();
-  const [storages, setStorages] = React.useState<Storage[]>();
+  const [storages, setStorages] = React.useState<Storage[]>([]);
+  const { storageId } = useParams();
   const [selectedStorage, setSelectedStorage] = React.useState<Storage | null>(null);
   const params = new URLSearchParams({ page: '0', size: '1' });
   const getStorageList = (): Promise<AxiosResponse<HttpResponse<Storage[]>>> => api.post('/storage/search', {}, { params });
 
   useEffect(() => {
-    getStorageList().then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
-      // @TODO: const Storages = items.data.data;
-      console.log('Hataya neden olur data ya bak: ', items.data);
-      !selectedStorage && Storages.length > 0 && setSelectedStorage(Storages[0]);
-      setStorages(Storages);
-    });
+    getStorageList()
+      .then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
+        console.log('Hataya neden olur data ya bak: ', items.data);
+        // @TODO: const Storages = items.data.data;
+        if (Storages.length > 0) {
+          setStorages(Storages);
+
+          if (storageId) {
+            const found = Storages.find((storage) => storage.id === storageId);
+
+            found && setSelectedStorage(found);
+          } else {
+            setSelectedStorage(Storages[0]);
+            navigate(Storages[0].id);
+          }
+        }
+      })
+      .catch((error) => {
+        setStorages([]);
+      });
   }, []);
 
   useEffect(() => {
@@ -39,12 +54,12 @@ export const StorageList = (): React.ReactElement => {
         }),
       );
       console.log(store.getState());
-      navigate(selectedStorage.id);
     }
   }, [selectedStorage]);
 
   const onSelectStorage = (storage: Storage): void => {
     setSelectedStorage(storage);
+    navigate(storage.id);
   };
 
   return (

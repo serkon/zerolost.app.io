@@ -2,8 +2,8 @@ import './overview.component.scss';
 
 import { Menu, Text, TextInput } from '@mantine/core';
 import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import React, { useCallback, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import { StorageList } from 'src/components/cards/storage/storage-list.component';
 import { Header } from 'src/components/header/header.component';
@@ -11,17 +11,12 @@ import { useTranslate } from 'src/components/translate/translate.component';
 
 export const ScreenStorageOverview = (): React.ReactElement => {
   const { translate } = useTranslate();
-  const { parametreAdi } = useParams();
   const [query, setQuery] = React.useState<string>('');
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const handleScroll = (e: any): void => {
     setScrolled(e.target.scrollTop > 0);
   };
-
-  useEffect(() => {
-    console.log('parametre', parametreAdi);
-  }, [parametreAdi]);
 
   return (
     <>

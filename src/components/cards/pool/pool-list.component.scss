@@ -1,0 +1,22 @@
+.pool-card-list {
+  display: grid;
+  // grid-template-columns: minmax(0, 400px) repeat(3, 1fr);
+  // grid-template-columns: min-content auto;
+  // grid-auto-rows: 114px;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(var(--secondary-500-rgb), 0.1);
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  gap: 12px;
+
+  .pool-li-item {
+    list-style-type: none;
+    box-shadow: 0 2px 8px rgba(52, 52, 52, 4%), 0 0 24px rgba(52, 52, 52, 4%);
+    background-color: white;
+  }
+}
+
+.empty-state {
+  border-radius: 4px;
+}

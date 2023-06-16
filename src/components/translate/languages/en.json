@@ -45,5 +45,8 @@
   "HOST": "Host",
   "RATIO": "Ratio",
   "ADD_NEW_STORAGE": "+ Add new storage",
-  "INSTALLED": "Installed"
+  "INSTALLED": "Installed",
+  "NO_POOLS_FOUND": "No pools found",
+  "NO_POOLS_FOUND_DESCRIPTION": "Aliquam facilisis varius eros quis ultricies. Vivamus consectetur metus in consequat vulputate. Suspendisse ac ante nisl. Aenean arcu leo, dignissim sit amet metus eget, tristique luctus mauris. ",
+  "ADD_POOL": "Add Pool"
 }

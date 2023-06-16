@@ -19,8 +19,8 @@ import { store } from 'src/store/store';
 import App from './App';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import { AboutScreen } from './screens/about/about.screen';
+import { ScreenStorageOverviewDetail } from './screens/storage/overview/detail/overview-detail.component';
 import { ScreenStorageOverview } from './screens/storage/overview/overview.component';
-import { ScreenStorageOverviewDetail } from './screens/storage/overview/overview-detail.component';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const strickMode = process.env.NODE_ENV === 'production';
@@ -41,7 +41,7 @@ const Content = (): React.JSX.Element => (
                   </Authenticator.Navigate>
                 }
               >
-                <Route path=":parametreAdi" element={<ScreenStorageOverviewDetail />} />
+                <Route path=":storageId/:poolId?" element={<ScreenStorageOverviewDetail />} />
               </Route>
               <Route
                 path="about"
