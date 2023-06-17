@@ -14,7 +14,7 @@ export const ScreenStorageOverviewDetail = (): React.ReactElement => {
       <p className="body-16 px-4 secondary-400 m-0">{translate('STORAGE_DESCRIPTION')}</p>
       {storageId && (
         <>
-          <PoolList storage={storageId} />
+          <PoolList />
         </>
       )}
     </>

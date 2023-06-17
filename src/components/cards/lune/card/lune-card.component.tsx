@@ -1,12 +1,6 @@
 import './lune-card.component.scss';
 
-import { TextInput } from '@mantine/core';
-import { IconPlus, IconSearch, IconTrash } from '@tabler/icons-react';
-import { useCallback, useState } from 'react';
 import { useTranslate } from 'src/components/translate/translate.component';
-import { More } from 'src/screens/storage/overview/overview.component';
-
-import Lunes from './lune.sample.json';
 
 export interface Lune {
   lastModifiedDate: string;
@@ -23,18 +17,16 @@ export interface Lune {
   host: string;
 }
 
-export const LuneCard = ({ value }: { value: Lune }): React.JSX.Element => {
+export interface LuneCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: Lune;
+  selected: boolean;
+}
+
+export const LuneCard = ({ value, selected, ...rest }: LuneCardProps): React.JSX.Element => {
   const { translate } = useTranslate();
-  const [select, setSelect] = useState<string[]>([]);
-  const onClickHandler = useCallback(
-    (value: Lune): void => {
-      select.includes(value.id) ? setSelect(select.filter((id) => id !== value.id)) : setSelect([...select, value.id]);
-    },
-    [select],
-  );
 
   return (
-    <div className={`lune-card d-flex flex-column gap-3 p-3 ${select.includes(value.id) ? 'selected' : 'secondary-400'}`} onClick={onClickHandler.bind(null, value)}>
+    <div className={`lune-card d-flex flex-column gap-3 p-3 ${selected && 'selected'}`} {...rest}>
       <header className="d-flex flex-column">
         <h4 className="caption-16 fw-semibold d-flex gap-2 align-items-center">
           <span className="text-truncate lh-sm">{value?.name}</span>
@@ -68,35 +60,5 @@ export const LuneCard = ({ value }: { value: Lune }): React.JSX.Element => {
         </aside>
       </section>
     </div>
-  );
-};
-
-export const LuneList = (): React.ReactElement => {
-  const { translate } = useTranslate();
-
-  return (
-    <>
-      <div className="filter-area px-4 d-flex align-items-center">
-        <h5 className="fw-extra-bold secondary-600 flex-grow-1">
-          <span>{translate('LUNES_ON_SELECTED_POOL')}</span>
-        </h5>
-        {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
-        <TextInput type="text" placeholder={translate('SEARCH_IN_LUNES')} name="filter" size="sm" icon={<IconSearch size={16} />} className="me-2 filter-shadow" />
-        <div className="d-flex">
-          <button className="btn btn-brand btn-ghost btn-sm">
-            <IconTrash size={16} />
-          </button>
-          <button className="btn btn-brand btn-ghost btn-sm">
-            <IconPlus size={16} />
-          </button>
-        </div>
-      </div>
-      <div className="lune-card-list mx-4">
-        {Lunes.map((pool: any) => (
-          <LuneCard value={pool} key={pool.id} />
-        ))}
-        <More />
-      </div>
-    </>
   );
 };

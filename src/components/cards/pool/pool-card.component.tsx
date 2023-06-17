@@ -10,7 +10,6 @@ interface PoolCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const PoolCard = ({ value, selected, ...rest }: PoolCardProps): React.JSX.Element => {
   const { translate } = useTranslate();
-  const [select, setSelect] = useState<string[]>([]);
   const [diskCount, setDiskCount] = useState(0);
 
   useEffect(() => {

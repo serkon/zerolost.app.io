@@ -1,0 +1,9 @@
+.lune-card-list {
+  display: grid;
+  padding-bottom: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 12px;
+  // grid-template-columns: minmax(0, 400px) repeat(3, 1fr);
+  // grid-template-columns: min-content auto;
+  // grid-auto-rows: 114px;
+}
