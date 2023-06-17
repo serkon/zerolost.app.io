@@ -1,11 +1,11 @@
 import './overview.component.scss';
 
-import { Menu, Text, TextInput } from '@mantine/core';
+import { Button, Dialog, Group, Menu, Text, TextInput } from '@mantine/core';
 import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
 import React, { useCallback, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
-import { StorageList } from 'src/components/cards/storage/storage-list.component';
+import { StorageList } from 'src/components/cards/storage/list/storage-list.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
@@ -16,6 +16,15 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   const [scrolled, setScrolled] = useState(false);
   const handleScroll = (e: any): void => {
     setScrolled(e.target.scrollTop > 0);
+  };
+  const [add, setAdd] = useState<boolean>(false);
+  const toggle = (): void => {
+    console.log('toggle');
+    setAdd(!add);
+  };
+  const close = (): void => {
+    console.log('close');
+    setAdd(!add);
   };
 
   return (
@@ -94,6 +103,21 @@ export const ScreenStorageOverview = (): React.ReactElement => {
         <Header className={`scrollable-element ${scrolled ? 'scrolled' : ''}`} />
         <Outlet />
       </div>
+
+      <Group position="center">
+        <Button onClick={toggle}>Toggle dialog</Button>
+      </Group>
+
+      <Dialog opened={add} withCloseButton onClose={close} size="lg" radius="md">
+        <Text size="sm" mb="xs" weight={500}>
+          Subscribe to email newsletter
+        </Text>
+
+        <Group align="flex-end">
+          <TextInput placeholder="hello@gluesticker.com" sx={{ flex: 1 }} />
+          <Button onClick={close}>Subscribe1</Button>
+        </Group>
+      </Dialog>
     </>
   );
 };

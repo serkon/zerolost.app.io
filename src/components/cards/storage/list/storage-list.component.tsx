@@ -4,11 +4,11 @@ import { useStore } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
+import { Storage, StorageCard } from 'src/components/cards/storage/card/storage-card.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 import { set_app_header } from 'src/store/reducers/app.reducer';
 
 import Storages from './storage.sample.json';
-import { Storage, StorageCard } from './storage-card.component';
 
 export const StorageList = (): React.ReactElement => {
   const navigate = useNavigate();
@@ -17,13 +17,11 @@ export const StorageList = (): React.ReactElement => {
   const [storages, setStorages] = React.useState<Storage[]>([]);
   const { storageId } = useParams();
   const [selectedStorage, setSelectedStorage] = React.useState<Storage | null>(null);
-  const params = new URLSearchParams({ page: '0', size: '1' });
-  const getStorageList = (): Promise<AxiosResponse<HttpResponse<Storage[]>>> => api.post('/storage/search', {}, { params });
-
-  useEffect(() => {
-    getStorageList()
+  const params = new URLSearchParams({ page: '0', size: '50' });
+  const getStorageList = (): void => {
+    api
+      .post('/storage/search', {}, { params })
       .then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
-        console.log('Hataya neden olur data ya bak: ', items.data);
         // @TODO: const Storages = items.data.data;
         if (Storages.length > 0) {
           setStorages(Storages);
@@ -41,6 +39,10 @@ export const StorageList = (): React.ReactElement => {
       .catch((error) => {
         setStorages([]);
       });
+  };
+
+  useEffect(() => {
+    getStorageList();
   }, []);
 
   useEffect(() => {
@@ -53,7 +55,6 @@ export const StorageList = (): React.ReactElement => {
           value: selectedStorage.ip,
         }),
       );
-      console.log(store.getState());
     }
   }, [selectedStorage]);
 
