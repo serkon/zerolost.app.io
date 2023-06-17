@@ -4,18 +4,18 @@ import React from 'react';
 import { AppConfig } from 'src/app.config';
 
 export interface Storage {
+  createdDate: string;
+  lastModifiedDate: string;
   id: string;
   name: string;
-  ip: string;
+  ipAddress: string;
+  port: string;
   model: string; // Sun Storage VMware, Pure Storage,
-  type?: string; // ZFSSA, Secondary Storage
-  version: string;
-  port: number;
+  storageType: string; // ZFSSA, Secondary Storage
+  storageVersion: string;
   username: string;
   password: string;
-  status: string;
-  // @TODO: lastModifiedDate: string;
-  // @TODO: createdDate: string;
+  status: 'ONLINE' | 'OFFLINE';
   disk: {
     size: string;
     used: string;
@@ -35,9 +35,11 @@ export const StorageCard = ({ value, selected }: { value: Storage; selected: boo
         <span className={`mt-1 ${value.status === 'ONLINE' ? 'online' : 'offline'}`} />
       </h4>
       <aside className="d-flex caption-14 secondary-300 gap-1">
-        <span className="">{value.ip}</span>
+        <span className="">
+          {value.ipAddress}:{value.port}
+        </span>
         <span className="secondary-500">•</span>
-        <span className="fw-bold">{value.model}</span>
+        <span className="fw-bold">{value.storageType}</span>
       </aside>
     </header>
     <section className="body d-flex flex-column gap-2">

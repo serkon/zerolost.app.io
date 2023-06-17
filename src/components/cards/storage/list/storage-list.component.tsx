@@ -4,38 +4,46 @@ import { useStore } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
+import { StorageAdd } from 'src/components/cards/storage/add/add.components';
 import { Storage, StorageCard } from 'src/components/cards/storage/card/storage-card.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 import { set_app_header } from 'src/store/reducers/app.reducer';
 
-import Storages from './storage.sample.json';
-
-export interface StorageListRef {
-  sortingClick: () => void;
+export interface ListRef {
+  sortingClick: (state: boolean) => void;
+  addClick: () => void;
 }
 
 export interface StorageProps {}
 
-export const StorageList = forwardRef<StorageListRef, StorageProps>((props, ref): React.ReactElement => {
+export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React.ReactElement => {
   const navigate = useNavigate();
   const store = useStore();
   const { translate } = useTranslate();
   const [storages, setStorages] = React.useState<Storage[]>([]);
+  const [add, setAdd] = React.useState<boolean>(false);
   const { storageId } = useParams();
   const [selectedStorage, setSelectedStorage] = React.useState<Storage | null>(null);
-  const params = new URLSearchParams({ page: '0', size: '50' });
 
   useImperativeHandle(ref, () => ({
-    sortingClick: getStorageList,
+    sortingClick: (sorting) => getStorageList(sorting),
+    addClick: () => addStorage(),
   }));
 
-  const getStorageList = (): void => {
+  const addStorage = (): void => {
+    setAdd(!add);
+  };
+  const getStorageList = (sorting: boolean = false): void => {
+    console.log(sorting);
+    const params = new URLSearchParams({ page: '0', size: '50', sort: sorting ? 'name' : '' });
+
     api
       .post('/storage/search', {}, { params })
       .then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
-        // @TODO: const Storages = items.data.data;
+        const Storages = items.data.data;
+
         if (Storages.length > 0) {
-          setStorages(Storages);
+          setStorages(Storages as Storage[]);
 
           if (storageId) {
             const found = Storages.find((storage) => storage.id === storageId);
@@ -63,7 +71,7 @@ export const StorageList = forwardRef<StorageListRef, StorageProps>((props, ref)
         set_app_header({
           title: selectedStorage.name,
           label: translate('INSTALLED'),
-          value: selectedStorage.ip,
+          value: `${selectedStorage.ipAddress}:${selectedStorage.port}`,
         }),
       );
     }
@@ -75,12 +83,15 @@ export const StorageList = forwardRef<StorageListRef, StorageProps>((props, ref)
   };
 
   return (
-    <ul className="storages">
-      {storages?.map((storage: Storage) => (
-        <li className="storage-li-item" key={storage.ip} onClick={onSelectStorage.bind(null, storage)}>
-          <StorageCard value={storage} selected={selectedStorage?.id === storage.id} />
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="storages">
+        {storages?.map((storage: Storage) => (
+          <li className="storage-li-item" key={storage.ipAddress} onClick={onSelectStorage.bind(null, storage)}>
+            <StorageCard value={storage} selected={selectedStorage?.id === storage.id} />
+          </li>
+        ))}
+      </ul>
+      <StorageAdd opened={add} closed={(): void => setAdd(false)} />
+    </>
   );
 });
