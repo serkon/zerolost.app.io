@@ -2,10 +2,10 @@ import './overview.component.scss';
 
 import { Button, Dialog, Group, Menu, Text, TextInput } from '@mantine/core';
 import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
-import { StorageList } from 'src/components/cards/storage/list/storage-list.component';
+import { StorageList, StorageListRef } from 'src/components/cards/storage/list/storage-list.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
@@ -13,11 +13,19 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   const { translate } = useTranslate();
   const [query, setQuery] = React.useState<string>('');
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
+  const [add, setAdd] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
+  const [sorting, setSorting] = useState(false);
+  const storageListRef = useRef<StorageListRef>(null);
+  const handleSortingClick = (): void => {
+    if (storageListRef.current) {
+      storageListRef.current.sortingClick();
+      setSorting(!sorting);
+    }
+  };
   const handleScroll = (e: any): void => {
     setScrolled(e.target.scrollTop > 0);
   };
-  const [add, setAdd] = useState<boolean>(false);
   const toggle = (): void => {
     console.log('toggle');
     setAdd(!add);
@@ -63,7 +71,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
             </Menu.Dropdown>
           </Menu>
           <button className={`btn btn-brand btn-${!filterOpen ? 'ghost' : ''} btn-xs ti-filter`} onClick={(): void => setFilterOpen(!filterOpen)} />
-          <button className="btn btn-brand btn-ghost btn-xs ti-sort-descending" />
+          <button className={`btn btn-brand btn-ghost btn-xs ${sorting ? 'ti-sort-ascending' : 'ti-sort-descending'}`} onClick={handleSortingClick} />
           <button className="btn btn-brand btn-ghost btn-xs ti-plus" />
         </section>
         <section className={`search d-flex px-3 flex-column ${!filterOpen && 'd-none'}`}>
@@ -90,7 +98,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
         </section>
         <section className="item-list">
           <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
-            <StorageList />
+            <StorageList ref={storageListRef} />
             <div className="actions d-flex">
               <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }}>
                 {translate('ADD_NEW_STORAGE')}

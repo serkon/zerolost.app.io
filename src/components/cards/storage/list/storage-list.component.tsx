@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import React, { useEffect } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import { useStore } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from 'src/components/authentication/authenticator.interceptor';
@@ -10,7 +10,13 @@ import { set_app_header } from 'src/store/reducers/app.reducer';
 
 import Storages from './storage.sample.json';
 
-export const StorageList = (): React.ReactElement => {
+export interface StorageListRef {
+  sortingClick: () => void;
+}
+
+export interface StorageProps {}
+
+export const StorageList = forwardRef<StorageListRef, StorageProps>((props, ref): React.ReactElement => {
   const navigate = useNavigate();
   const store = useStore();
   const { translate } = useTranslate();
@@ -18,6 +24,11 @@ export const StorageList = (): React.ReactElement => {
   const { storageId } = useParams();
   const [selectedStorage, setSelectedStorage] = React.useState<Storage | null>(null);
   const params = new URLSearchParams({ page: '0', size: '50' });
+
+  useImperativeHandle(ref, () => ({
+    sortingClick: getStorageList,
+  }));
+
   const getStorageList = (): void => {
     api
       .post('/storage/search', {}, { params })
@@ -72,4 +83,4 @@ export const StorageList = (): React.ReactElement => {
       ))}
     </ul>
   );
-};
+});

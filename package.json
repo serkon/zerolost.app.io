@@ -70,7 +70,7 @@
     "@mantine/prism": "^6.0.13",
     "@mantine/spotlight": "^6.0.13",
     "@mantine/tiptap": "^6.0.13",
-    "@srknc/icons": "^0.0.16",
+    "@srknc/icons": "^0.0.17",
     "@tabler/icons-react": "^2.21.0",
     "@tabler/icons-webfont": "^2.20.0",
     "@tiptap/extension-link": "^2.0.3",
