@@ -10,11 +10,11 @@ import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
 import { DiskList } from 'src/components/cards/disk/list/disk-list.component';
 import { LuneList } from 'src/components/cards/lune/list/lune-list.component';
+import { Pool, PoolCard } from 'src/components/cards/pool/card/pool-card.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 import { More } from 'src/screens/storage/overview/overview.component';
 
 import Pools from './pool.sample.json';
-import { Pool, PoolCard } from './pool-card.component';
 
 export const PoolList = (): React.ReactElement => {
   const { translate } = useTranslate();
@@ -45,10 +45,6 @@ export const PoolList = (): React.ReactElement => {
         setPools([]);
       });
   }, [storageId]);
-
-  useEffect(() => {
-    console.log('asdasd', selectedPool);
-  }, [selectedPool]);
 
   const onClickHandler = (pool: Pool): void => {
     setSelectedPool(pool);

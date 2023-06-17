@@ -1,7 +1,7 @@
 import './overview-detail.component.scss';
 
 import { useParams } from 'react-router-dom';
-import { PoolList } from 'src/components/cards/pool/pool-list.component';
+import { PoolList } from 'src/components/cards/pool/list/pool-list.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
 export const ScreenStorageOverviewDetail = (): React.ReactElement => {
@@ -10,13 +10,8 @@ export const ScreenStorageOverviewDetail = (): React.ReactElement => {
 
   return (
     <>
-      ---{storageId}----
       <p className="body-16 px-4 secondary-400 m-0">{translate('STORAGE_DESCRIPTION')}</p>
-      {storageId && (
-        <>
-          <PoolList />
-        </>
-      )}
+      {storageId && <PoolList />}
     </>
   );
 };
