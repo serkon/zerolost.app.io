@@ -172,7 +172,7 @@ export const StorageAdd = ({ opened, closed, edit }: StorageAddProps): React.Rea
             {translate('CANCEL')}
           </button>
           {!formState.tested && (
-            <button className="btn btn-brand" onClick={handleTestSubmit}>
+            <button className={`btn btn-brand`} onClick={handleTestSubmit} disabled={formState.testing}>
               {formState.testing ? translate('TESTING...') : translate('TEST')}
             </button>
           )}
