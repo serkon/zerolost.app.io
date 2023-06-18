@@ -16,6 +16,7 @@ $btn-active-bg: 700;
   --#{$prefix}btn-color: #{$btn-color};
   --#{$prefix}btn-border-radius: #{$btn-border-radius};
   --#{$prefix}font-weight: #{$btn-font-weight};
+  --btn-disabled-color: #{$btn-color};
 
   color: var(--#{$prefix}btn-color);
   text-overflow: ellipsis;
@@ -78,6 +79,10 @@ $btn-active-bg: 700;
     &.btn-outline, &.btn-ghost {
       border-color: var(--#{$prefix}#{$name}-#{300});
       color: var(--#{$prefix}btn-bg);
+
+      &:disabled {
+        color: #{$light};
+      }
 
       &:hover {
         border-color: var(--#{$prefix}btn-hover-bg);

@@ -24,6 +24,30 @@ export function Theme({ children }: Props): React.JSX.Element {
           },
         }),
       },
+      Select: {
+        defaultProps: {
+          size: 'sm',
+        },
+        styles: (theme: MantineTheme, params: any, context: ContextStylesParams) => ({
+          input: {
+            ...(context.size === 'sm' && { height: '40px', minHeight: '40px', padding: '0 12px', fontSize: '14px !important', lineHeight: '20px' }),
+          },
+        }),
+      },
+      PasswordInput: {
+        defaultProps: {
+          size: 'lg',
+        },
+        styles: (theme: MantineTheme, params: any, context: ContextStylesParams) => ({
+          input: {
+            ...(context.size === 'xs' && { height: '24px', minHeight: '24px', padding: '0 4px', fontSize: '10px !important', lineHeight: '10px' }),
+            ...(context.size === 'sm' && { height: '32px', minHeight: '32px', padding: '0 6px', fontSize: '12px !important', lineHeight: '16px' }),
+            ...(context.size === 'md' && { height: '36px', minHeight: '36px', padding: '0 8px', fontSize: '12px !important', lineHeight: '18px' }),
+            ...(context.size === 'lg' && { height: '40px', minHeight: '40px', padding: '0 12px', fontSize: '14px !important', lineHeight: '20px' }),
+            ...(context.size === 'xl' && { height: '48px', minHeight: '48px', padding: '0 16px', fontSize: '16px !important', lineHeight: '22px' }),
+          },
+        }),
+      },
     },
     colors: {
       light: ['rgba(255, 255, 255, 10%)', 'rgba(255, 255, 255, 20%)', 'rgba(255, 255, 255, 30%)', 'rgba(255, 255, 255, 40%)', 'rgba(255, 255, 255, 100%)', 'rgba(255, 255, 255, 60%)', 'rgba(255, 255, 255, 70%)', 'rgba(255, 255, 255, 80%)', 'rgba(255, 255, 255, 90%)'],

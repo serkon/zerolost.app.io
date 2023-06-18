@@ -1,12 +1,14 @@
 import { AxiosResponse } from 'axios';
+import dayjs from 'dayjs';
 import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import { useStore } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
-import { StorageAdd } from 'src/components/cards/storage/add/add.components';
+import { StorageAdd } from 'src/components/cards/storage/add/storage-add.components';
 import { Storage, StorageCard } from 'src/components/cards/storage/card/storage-card.component';
 import { useTranslate } from 'src/components/translate/translate.component';
+import useTextTransform from 'src/hooks/case';
 import { set_app_header } from 'src/store/reducers/app.reducer';
 
 export interface ListRef {
@@ -17,11 +19,13 @@ export interface ListRef {
 export interface StorageProps {}
 
 export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React.ReactElement => {
+  const { translate } = useTranslate();
+  const { titleCase } = useTextTransform();
   const navigate = useNavigate();
   const store = useStore();
-  const { translate } = useTranslate();
   const [storages, setStorages] = React.useState<Storage[]>([]);
-  const [add, setAdd] = React.useState<boolean>(false);
+  const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [modalMode, setModalMode] = React.useState<'add' | 'edit'>('add');
   const { storageId } = useParams();
   const [selectedStorage, setSelectedStorage] = React.useState<Storage | null>(null);
 
@@ -31,11 +35,14 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
   }));
 
   const addStorage = (): void => {
-    setAdd(!add);
+    setModalOpen(!isModalOpen);
   };
   const getStorageList = (sorting: boolean = false): void => {
-    console.log(sorting);
-    const params = new URLSearchParams({ page: '0', size: '50', sort: sorting ? 'name' : '' });
+    /*
+    @TODO:
+    çoklu sort şu şekilde yapılıyormuş  -->   ?page=0&size=10&sort=name,desc&sort=port,asc
+    */
+    const params = { page: '0', size: '50', sort: ['name', `${sorting ? 'asc' : 'desc'}`].join(',') };
 
     api
       .post('/storage/search', {}, { params })
@@ -69,9 +76,9 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
       // TODO: add set header hook
       store.dispatch(
         set_app_header({
-          title: selectedStorage.name,
-          label: translate('INSTALLED'),
-          value: `${selectedStorage.ipAddress}:${selectedStorage.port}`,
+          title: titleCase(selectedStorage.name),
+          label: translate('CREATED'),
+          value: `${dayjs(selectedStorage.createdDate).format('MMMM D, YYYY h:mm A')}`,
         }),
       );
     }
@@ -91,7 +98,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
           </li>
         ))}
       </ul>
-      <StorageAdd opened={add} closed={(): void => setAdd(false)} />
+      <StorageAdd opened={isModalOpen} closed={(): void => setModalOpen(false)} edit={modalMode} />
     </>
   );
 });
