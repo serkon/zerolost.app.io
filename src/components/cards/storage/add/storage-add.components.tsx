@@ -81,8 +81,8 @@ export const StorageAdd = ({ opened, closed, edit }: StorageAddProps): React.Rea
       api
         .post('/storage/test-connection', form.values)
         .then((response) => {
-          setFormState({ ...initialFormStates, testing: false, tested: response.data.status === 200 });
-          response.data.status === 200 &&
+          setFormState({ ...initialFormStates, testing: false, tested: response.data.success === 200 });
+          response.data.success === 200 &&
             notifications.show({
               title: translate('SUCCESS'),
               message: translate('TEST_CONNECTION_SUCCESS'),
