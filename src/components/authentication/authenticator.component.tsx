@@ -14,7 +14,7 @@ export class Authenticator {
   static isAuthenticated(): boolean {
     const user = window.localStorage.getItem('user');
 
-    // @TODO validate token yapmam gerek
+    // TODO validate token yapmam gerek
 
     if (window.sessionStorage.getItem('isAuthenticated') === 'true' && !!user) {
       store.dispatch(set_user(JSON.parse(user)));

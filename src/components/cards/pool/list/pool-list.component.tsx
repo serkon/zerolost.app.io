@@ -28,7 +28,7 @@ export const PoolList = (): React.ReactElement => {
   useEffect(() => {
     getPoolList()
       .then((items: AxiosResponse<HttpResponse<Pool[]>>) => {
-        // @TODO: const Pools = items.data.data;
+        // TODO: const Pools = items.data.data;
         if (Pools.length > 0) {
           setPools(Pools as Pool[]);
           if (poolId) {

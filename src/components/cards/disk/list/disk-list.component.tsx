@@ -19,14 +19,14 @@ export const DiskList = (): React.ReactElement => {
   const [selectedDisk, setSelectedDisk] = useState<Disk | null>(null);
   const { poolId } = useParams();
   const params = new URLSearchParams({ page: '0', size: '8' });
-  // @TODO: '/disk/search'
+  // TODO: '/disk/search'
   const getDiskList = useCallback(() => api.post('/host/search', { poolId }, { params }), [poolId]);
 
   useEffect(() => {
     if (poolId) {
       getDiskList()
         .then((items: AxiosResponse<HttpResponse<Disk[]>>) => {
-          // @TODO: const Disks = items.data.data;
+          // TODO: const Disks = items.data.data;
           if (Disks.length > 0) {
             setDisks(Disks as Disk[]);
             if (!selectedDisk) {

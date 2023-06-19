@@ -31,7 +31,7 @@ export const LuneList = (): React.ReactElement => {
     if (poolId) {
       getLuneList()
         .then((items: AxiosResponse<HttpResponse<Lune[]>>) => {
-          // @TODO: const Lunes = items.data.data;
+          // TODO: const Lunes = items.data.data;
           if (Lunes.length > 0) {
             setLunes(Lunes as Lune[]);
             if (!selectedLune) {
