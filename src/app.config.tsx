@@ -10,7 +10,7 @@ export const AppConfig = {
         max: 12,
       },
       port: {
-        min: 1000,
+        min: 200,
       },
     },
   },

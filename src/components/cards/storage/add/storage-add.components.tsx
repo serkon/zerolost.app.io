@@ -25,6 +25,7 @@ interface FormData {
   port: string;
   username: string;
   password: string;
+  id?: string;
 }
 
 interface FormState {
@@ -44,6 +45,17 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
     port: '',
     username: '',
     password: '',
+    // id: 'c5df0827-b3d8-4a4d-9837-5a5cf56a144d',
+  };
+  const initialValues2: FormData = {
+    storageType: 'zfs',
+    storageVersion: '1.0.0',
+    name: 'STORAGE-1',
+    ipAddress: 'https://192.168.2.129',
+    port: '215',
+    username: 'root',
+    password: '18319000Ek',
+    // id: 'c5df0827-b3d8-4a4d-9837-5a5cf56a144d',
   };
   const initialFormStates: FormState = {
     testing: false,
@@ -56,7 +68,7 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
     storageVersion: Yup.string().required(translate('VALIDATION_STORAGE_VERSION_REQUIRED')),
     name: Yup.string().required(translate('VALIDATION_NAME_REQUIRED')),
     ipAddress: Yup.string()
-      .matches(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/, translate('VALIDATION_IP_ADDRESS_FORMAT'))
+      // .matches(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/, translate('VALIDATION_IP_ADDRESS_FORMAT'))
       .required(translate('VALIDATION_IP_ADDRESS_REQUIRED')),
     port: Yup.number()
       .transform((value) => (Number.isNaN(value) ? null : value))
@@ -77,15 +89,15 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
     saved: false,
   });
   const handleTestSubmit = async (): Promise<void> => {
-    const { hasErrors, errors } = form.validate();
+    const { hasErrors } = form.validate();
 
     setFormState({ ...initialFormStates, testing: true });
     if (!hasErrors) {
       api
         .post('/storage/test-connection', form.values)
         .then((response) => {
-          setFormState({ ...initialFormStates, testing: false, tested: response.data.success === 200 });
-          response.data.success === 200 &&
+          setFormState({ ...initialFormStates, testing: false, tested: response.data.success });
+          response.data.success &&
             notifications.show({
               title: translate('SUCCESS'),
               message: translate('TEST_CONNECTION_SUCCESS'),
@@ -102,19 +114,39 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
     } else {
       setFormState({ ...initialFormStates, testing: false });
     }
-    console.log('hasErrors', hasErrors, errors);
     // form.clearErrors();
   };
   const handleSaveSubmit = async (): Promise<void> => {
-    const { hasErrors, errors } = form.validate();
-
-    console.log('hasErrors', hasErrors, errors);
-    // form.clearErrors();
+    setFormState({ ...initialFormStates, saving: true });
+    console.log('submit: ', form.values);
+    edit === 'edit'
+      ? api.put('/storage', form.values)
+      : api
+        .post('/storage', form.values)
+        .then((response) => {
+          setFormState({ ...initialFormStates, testing: false, tested: response.data.success === 200 });
+          response.data.success === 200 &&
+              notifications.show({
+                title: translate('SUCCESS'),
+                message: translate('TEST_CONNECTION_SUCCESS'),
+                color: 'success.4',
+              });
+        })
+        .catch((error) => {
+          notifications.show({
+            title: translate('FAIL'),
+            message: translate('TEST_CONNECTION_FAIL'),
+            color: 'danger.3',
+          });
+        });
+    setFormState({ ...initialFormStates, saving: false });
   };
   const handleCancel = (): void => {
     const value = (storage && edit === 'edit' && { ...storage, storageType: lowerCase(storage?.storageType), password: '' }) || initialValues;
 
+    form.reset();
     form.setValues(value);
+    console.log('cancel: ', value, form.values);
     // form.reset();
   };
   const storageTypeOptions = [
