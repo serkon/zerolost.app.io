@@ -23,9 +23,9 @@ export const ScreenStorageOverview = (): React.ReactElement => {
       listRef.current.sortingClick(!sorting);
     }
   };
-  const handleAddClick = (): void => {
+  const handleAddClick = (type: 'add' | 'edit'): void => {
     if (listRef.current) {
-      listRef.current.addClick();
+      listRef.current.toolbarAction(type);
     }
   };
   const handleScroll = (e: any): void => {
@@ -77,7 +77,8 @@ export const ScreenStorageOverview = (): React.ReactElement => {
           </Menu>
           <button className={`btn btn-brand btn-${!filterOpen ? 'ghost' : ''} btn-xs ti-filter`} onClick={(): void => setFilterOpen(!filterOpen)} />
           <button className={`btn btn-brand btn-ghost btn-xs ${sorting ? 'ti-sort-ascending' : 'ti-sort-descending'}`} onClick={handleSortingClick} />
-          <button className="btn btn-brand btn-ghost btn-xs ti-plus" onClick={handleAddClick} />
+          <button className={`btn btn-brand btn-ghost btn-xs ti-edit`} onClick={handleAddClick.bind(null, 'edit')} />
+          <button className="btn btn-brand btn-ghost btn-xs ti-plus" onClick={handleAddClick.bind(null, 'add')} />
         </section>
         <section className={`search d-flex px-3 flex-column ${!filterOpen && 'd-none'}`}>
           <TextInput
@@ -105,7 +106,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
           <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
             <StorageList ref={listRef} />
             <div className="actions d-flex">
-              <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }} onClick={handleAddClick}>
+              <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }} onClick={handleAddClick.bind(null, 'add')}>
                 {translate('ADD_NEW_STORAGE')}
               </button>
             </div>

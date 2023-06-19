@@ -13,7 +13,7 @@ import { set_app_header } from 'src/store/reducers/app.reducer';
 
 export interface ListRef {
   sortingClick: (state: boolean) => void;
-  addClick: () => void;
+  toolbarAction: (type: 'add' | 'edit') => void;
 }
 
 export interface StorageProps {}
@@ -31,17 +31,15 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
 
   useImperativeHandle(ref, () => ({
     sortingClick: (sorting) => getStorageList(sorting),
-    addClick: () => addStorage(),
+    toolbarAction: (type: 'add' | 'edit') => storagesToolbarAction(type),
   }));
 
-  const addStorage = (): void => {
+  const storagesToolbarAction = (type: 'add' | 'edit'): void => {
     setModalOpen(!isModalOpen);
+    setModalMode(type);
   };
   const getStorageList = (sorting: boolean = false): void => {
-    /*
-    @TODO:
-    çoklu sort şu şekilde yapılıyormuş  -->   ?page=0&size=10&sort=name,desc&sort=port,asc
-    */
+    // TODO: çoklu sort şu şekilde yapılıyormuş  -->   ?page=0&size=10&sort=name,desc&sort=port,asc
     const params = { page: '0', size: '50', sort: ['name', `${sorting ? 'asc' : 'desc'}`].join(',') };
 
     api
@@ -50,6 +48,15 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
         const Storages = items.data.data;
 
         if (Storages.length > 0) {
+          // TODO: Gereksiz bir kod blogu eklemek zorunda kaldım. Backend https://ipAddress şeklinde data dönüyor. Bunu yalın IP'ye çeviriyorum. BE ipAddress'i düzgün dönmeli
+          Storages.forEach((storage) => {
+            if (storage.ipAddress) {
+              const [protocol, ipAddress] = storage.ipAddress.split('//');
+
+              storage.ipAddress = ipAddress;
+            }
+          });
+
           setStorages(Storages as Storage[]);
 
           if (storageId) {
@@ -93,12 +100,12 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
     <>
       <ul className="storages">
         {storages?.map((storage: Storage) => (
-          <li className="storage-li-item" key={storage.ipAddress} onClick={onSelectStorage.bind(null, storage)}>
+          <li className="storage-li-item" key={storage.ipAddress} onClick={onSelectStorage.bind(null, storage)} onDoubleClick={storagesToolbarAction.bind(null, 'edit')}>
             <StorageCard value={storage} selected={selectedStorage?.id === storage.id} />
           </li>
         ))}
       </ul>
-      <StorageAdd opened={isModalOpen} closed={(): void => setModalOpen(false)} edit={modalMode} />
+      <StorageAdd opened={isModalOpen} closed={(): void => setModalOpen(false)} edit={modalMode} storage={selectedStorage} />
     </>
   );
 });

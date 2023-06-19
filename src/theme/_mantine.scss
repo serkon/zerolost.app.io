@@ -15,14 +15,9 @@ Input
 }
 
 .mantine-PasswordInput-innerInput {
-  height: 100%;
   font-family: var(--font-family);
 
   @extend .form-control;
-
-  &[data-invalid] {
-    border: 1px solid var(--danger-500);
-  }
 }
 
 .mantine-InputWrapper-label {

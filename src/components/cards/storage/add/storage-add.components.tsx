@@ -5,13 +5,16 @@ import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
 import { AppConfig } from 'src/app.config';
 import { api } from 'src/components/authentication/authenticator.interceptor';
+import { Storage } from 'src/components/cards/storage/card/storage-card.component';
 import { useTranslate } from 'src/components/translate/translate.component';
+import useTextTransform from 'src/hooks/case';
 import * as Yup from 'yup';
 
 interface StorageAddProps {
   opened: boolean;
   closed: () => void;
   edit: 'edit' | 'add';
+  storage: Storage | null;
 }
 
 interface FormData {
@@ -30,17 +33,17 @@ interface FormState {
   saving: boolean;
   saved: boolean;
 }
-
-export const StorageAdd = ({ opened, closed, edit }: StorageAddProps): React.ReactElement => {
+export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): React.ReactElement => {
   const { translate } = useTranslate();
+  const { lowerCase } = useTextTransform();
   const initialValues: FormData = {
-    storageType: 'ss',
-    storageVersion: 'v1',
-    name: 'test-srknc',
-    ipAddress: '127.0.0.1',
-    port: '2002',
-    username: 'test',
-    password: 'test1234',
+    storageType: '',
+    storageVersion: '',
+    name: '',
+    ipAddress: '',
+    port: '',
+    username: '',
+    password: '',
   };
   const initialFormStates: FormState = {
     testing: false,
@@ -96,6 +99,8 @@ export const StorageAdd = ({ opened, closed, edit }: StorageAddProps): React.Rea
             color: 'danger.3',
           });
         });
+    } else {
+      setFormState({ ...initialFormStates, testing: false });
     }
     console.log('hasErrors', hasErrors, errors);
     // form.clearErrors();
@@ -106,6 +111,12 @@ export const StorageAdd = ({ opened, closed, edit }: StorageAddProps): React.Rea
     console.log('hasErrors', hasErrors, errors);
     // form.clearErrors();
   };
+  const handleCancel = (): void => {
+    const value = (storage && edit === 'edit' && { ...storage, storageType: lowerCase(storage?.storageType), password: '' }) || initialValues;
+
+    form.setValues(value);
+    // form.reset();
+  };
   const storageTypeOptions = [
     { value: 'zfs', label: translate('ZFS_STORAGE') },
     { value: 'ss', label: translate('SS_STORAGE') },
@@ -113,8 +124,11 @@ export const StorageAdd = ({ opened, closed, edit }: StorageAddProps): React.Rea
 
   useEffect(() => {
     setFormState({ ...initialFormStates });
-    console.log(initialFormStates);
   }, [form.values]);
+
+  useEffect(() => {
+    handleCancel();
+  }, [storage, opened]);
 
   return (
     <>
@@ -145,28 +159,28 @@ export const StorageAdd = ({ opened, closed, edit }: StorageAddProps): React.Rea
       >
         <p className="secondary-500 body-14 mb-4">{translate('ADD_STORAGE_MODAL_DESCRIPTION')}</p>
         <div className="d-flex flex-wrap gap-2 column-gap-4">
-          <Select withAsterisk sx={{ flexGrow: 1 }} type="text" label={translate('TYPE')} placeholder={translate('PLACEHOLDER_TYPE')} name="storageType" data={storageTypeOptions} {...form.getInputProps('storageType')} />
-          <TextInput withAsterisk sx={{ flexGrow: 1 }} type="text" label={translate('VERSION')} placeholder={translate('PLACEHOLDER_VERSION')} name="storageVersion" {...form.getInputProps('storageVersion')} />
-          <TextInput withAsterisk sx={{ flexGrow: 1 }} type="text" label={translate('NAME')} placeholder={translate('PLACEHOLDER_NAME')} name="name" {...form.getInputProps('name')} />
-          <TextInput withAsterisk sx={{ flexGrow: 1 }} type="text" label={translate('IP_ADDRESS')} placeholder={translate('PLACEHOLDER_IP_ADDRESS')} name="ipAddress" {...form.getInputProps('ipAddress')} />
-          <TextInput withAsterisk sx={{ flexGrow: 1 }} type="number" label={translate('PORT_NUMBER')} placeholder={translate('PLACEHOLDER_PORT_NUMBER')} name="port" {...form.getInputProps('port')} />
-          <TextInput withAsterisk sx={{ flexGrow: 1 }} type="text" label={translate('USERNAME')} placeholder={translate('PLACEHOLDER_USERNAME')} name="username" {...form.getInputProps('username')} />
+          <Select withAsterisk sx={{ flexBasis: '30%', flexGrow: 1 }} type="text" label={translate('TYPE')} placeholder={translate('PLACEHOLDER_TYPE')} name="storageType" data={storageTypeOptions} {...form.getInputProps('storageType')} />
+          <TextInput withAsterisk sx={{ flexBasis: '30%', flexGrow: 1 }} type="text" label={translate('VERSION')} placeholder={translate('PLACEHOLDER_VERSION')} name="storageVersion" {...form.getInputProps('storageVersion')} />
+          <TextInput withAsterisk sx={{ flexBasis: '30%', flexGrow: 1 }} type="text" label={translate('NAME')} placeholder={translate('PLACEHOLDER_NAME')} name="name" {...form.getInputProps('name')} />
+          <TextInput withAsterisk sx={{ flexBasis: '30%', flexGrow: 1 }} type="text" label={translate('IP_ADDRESS')} placeholder={translate('PLACEHOLDER_IP_ADDRESS')} name="ipAddress" {...form.getInputProps('ipAddress')} />
+          <TextInput withAsterisk sx={{ flexBasis: '30%', flexGrow: 1 }} type="text" label={translate('USERNAME')} placeholder={translate('PLACEHOLDER_USERNAME')} name="username" {...form.getInputProps('username')} />
           <PasswordInput
             withAsterisk
-            sx={{ flexGrow: 1 }}
+            sx={{ flexBasis: '30%', flexGrow: 1 }}
             label={translate('PASSWORD')}
             placeholder={translate('PLACEHOLDER_PASSWORD')}
             name="password"
             {...form.getInputProps('password')}
             visibilityToggleIcon={({ reveal, size }: any): React.ReactElement => (reveal ? <IconEye size={size} /> : <IconEyeOff size={size} />)}
           />
+          <TextInput withAsterisk sx={{ flexBasis: '30%', flexGrow: 1 }} type="number" label={translate('PORT_NUMBER')} placeholder={translate('PLACEHOLDER_PORT_NUMBER')} name="port" {...form.getInputProps('port')} />
         </div>
         <div className="modal-footer d-flex justify-content-end mt-4">
           <button
             className="btn btn-brand btn-ghost"
             onClick={(): void => {
               closed();
-              form.reset();
+              handleCancel();
             }}
           >
             {translate('CANCEL')}
