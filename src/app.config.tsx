@@ -12,6 +12,9 @@ export const AppConfig = {
       port: {
         min: 200,
       },
+      version: {
+        lessThan: 2,
+      },
     },
   },
   profile: {

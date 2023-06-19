@@ -65,7 +65,10 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
   };
   const yupSchema = Yup.object().shape({
     storageType: Yup.string().required(translate('VALIDATION_STORAGE_TYPE_REQUIRED')),
-    storageVersion: Yup.string().required(translate('VALIDATION_STORAGE_VERSION_REQUIRED')),
+    storageVersion: Yup.number()
+      .typeError(translate('VALIDATION_STORAGE_VERSION_INTEGER'))
+      .lessThan(2, translate('VALIDATION_STORAGE_VERSION_LESS', { value: AppConfig.storage.form.version.lessThan }))
+      .required(translate('VALIDATION_STORAGE_VERSION_REQUIRED')),
     name: Yup.string().required(translate('VALIDATION_NAME_REQUIRED')),
     ipAddress: Yup.string()
       // .matches(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/, translate('VALIDATION_IP_ADDRESS_FORMAT'))

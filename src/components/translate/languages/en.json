@@ -77,6 +77,8 @@
   "VALIDATION_EMAIL_REQUIRED": "Email is required",
   "VALIDATION_STORAGE_TYPE_REQUIRED": "Storage type is required",
   "VALIDATION_STORAGE_VERSION_REQUIRED": "Storage version is required",
+  "VALIDATION_STORAGE_VERSION_LESS": "Must be less than {value}",
+  "VALIDATION_STORAGE_VERSION_INTEGER": "Must be an integer",
   "VALIDATION_NAME_REQUIRED": "Name is required",
   "VALIDATION_IP_ADDRESS_FORMAT": "Enter valid IP Address",
   "VALIDATION_IP_ADDRESS_REQUIRED": "IP Address is required",
@@ -90,5 +92,7 @@
   "TEST_CONNECTION_FAIL": "Test connection fail",
   "SUCCESS": "Success",
   "FAIL": "Fail",
+  "": "",
+  "": "",
   "": ""
 }

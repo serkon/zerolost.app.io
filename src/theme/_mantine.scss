@@ -6,6 +6,10 @@ Input
   font-family: var(--font-family);
 
   @extend .form-control;
+
+  &[data-invalid] {
+    border: 1px solid var(--danger-200) !important;
+  }
 }
 
 .mantine-PasswordInput-input {
@@ -18,12 +22,21 @@ Input
   font-family: var(--font-family);
 
   @extend .form-control;
+
+  &[data-invalid] {
+    border: 1px solid var(--danger-200) !important;
+  }
 }
 
 .mantine-InputWrapper-label {
   color: var(--secondary-600);
   font-family: var(--font-family);
   font-weight: 700;
+
+  @extend .caption-10;
+}
+
+.mantine-InputWrapper-error {
 
   @extend .caption-10;
 }
