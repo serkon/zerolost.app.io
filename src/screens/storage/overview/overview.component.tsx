@@ -105,7 +105,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
           <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
             <StorageList ref={listRef} />
             <div className="actions d-flex">
-              <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }}>
+              <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }} onClick={handleAddClick}>
                 {translate('ADD_NEW_STORAGE')}
               </button>
             </div>
