@@ -13,7 +13,6 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   const { translate } = useTranslate();
   const [query, setQuery] = React.useState<string>('');
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
-  const [add, setAdd] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const [sorting, setSorting] = useState(false);
   const listRef = useRef<ListRef>(null);
@@ -31,21 +30,13 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   const handleScroll = (e: any): void => {
     setScrolled(e.target.scrollTop > 0);
   };
-  const toggle = (): void => {
-    console.log('toggle');
-    setAdd(!add);
-  };
-  const close = (): void => {
-    console.log('close');
-    setAdd(!add);
-  };
 
   return (
     <>
       <div className="list-items-container">
         <section className="list-items-header px-3">
-          <h2 className="h2 fw-extra-bold secondary-500">Storage</h2>
-          <p className="m-0 secondary-400 fw-light caption-14">No data will be lost, never you will be code</p>
+          <h2 className="h2 fw-extra-bold secondary-500">{translate('STORAGES')}</h2>
+          <p className="m-0 secondary-400 fw-light caption-14">{translate('STORAGES_SLOGAN')}</p>
         </section>
         <section className="filter px-3">
           <Menu shadow="md" width={200} position="bottom-start">
