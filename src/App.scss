@@ -6,3 +6,24 @@
   overflow: hidden;
   background-size: contain;
 }
+
+.dash {
+  background-image: repeating-linear-gradient(-60deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(30deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(120deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(210deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px);
+  background-repeat: no-repeat;
+  background-position: 0 0, 0 0, 100% 0, 0 100%;
+  background-size: 1px 100%, 100% 1px, 1px 100% , 100% 1px;
+}
+
+.online, .offline {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.online {
+  background-color: var(--success-400);
+}
+
+.offline {
+  background-color: var(--danger-400);
+}

@@ -57,7 +57,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
             }
           });
 
-          setStorages(Storages as Storage[]);
+          setStorages(Storages);
 
           if (storageId) {
             const found = Storages.find((storage) => storage.id === storageId);

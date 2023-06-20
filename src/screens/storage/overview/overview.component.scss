@@ -59,23 +59,21 @@
   background: rgba(102, 112, 122, 5%);
 }
 
-.dash {
-  background-image: repeating-linear-gradient(-60deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(30deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(120deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px), repeating-linear-gradient(210deg, rgba(102, 112, 122, 20%), rgba(102, 112, 122, 20%) 3px, transparent 3px, transparent 6px, rgba(102, 112, 122, 20%) 6px);
-  background-repeat: no-repeat;
-  background-position: 0 0, 0 0, 100% 0, 0 100%;
-  background-size: 1px 100%, 100% 1px, 1px 100% , 100% 1px;
-}
+.screen-detail-container {
+  overflow: auto;
 
-.online, .offline {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
+  .card-list {
+    display: grid;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(var(--secondary-500-rgb), 0.1);
+    grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+    gap: 12px;
+    // grid-template-columns: minmax(0, 400px) repeat(3, 1fr);
+    // grid-template-columns: min-content auto;
+    // grid-auto-rows: 114px;
+  }
 
-.online {
-  background-color: var(--success-400);
-}
-
-.offline {
-  background-color: var(--danger-400);
+  .filter-shadow {
+    box-shadow: 0 2px 8px rgba(52, 52, 52, 2%), 0 0 24px rgba(52, 52, 52, 2%);
+  }
 }

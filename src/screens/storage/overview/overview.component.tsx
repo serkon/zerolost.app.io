@@ -3,14 +3,16 @@ import './overview.component.scss';
 import { Menu, Text, TextInput } from '@mantine/core';
 import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
 import React, { useCallback, useRef, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
+import { PoolList } from 'src/components/cards/pool/list/pool-list.component';
 import { ListRef, StorageList } from 'src/components/cards/storage/list/storage-list.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
 export const ScreenStorageOverview = (): React.ReactElement => {
   const { translate } = useTranslate();
+  const { storageId } = useParams();
   const [query, setQuery] = React.useState<string>('');
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
@@ -106,7 +108,8 @@ export const ScreenStorageOverview = (): React.ReactElement => {
       </div>
       <div className={`screen-detail-container d-flex flex-column gap-4 pb-5`} onScroll={handleScroll}>
         <Header className={`scrollable-element ${scrolled ? 'scrolled' : ''}`} />
-        <Outlet />
+        <p className="body-16 px-4 secondary-400 m-0">{translate('STORAGE_DESCRIPTION')}</p>
+        {storageId && <PoolList />}
       </div>
     </>
   );
