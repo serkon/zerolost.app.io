@@ -93,7 +93,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
 
   const onSelectStorage = (storage: Storage): void => {
     setSelectedStorage(storage);
-    navigate(storage.id);
+    navigate('/storage/' + storage.id);
   };
 
   return (
