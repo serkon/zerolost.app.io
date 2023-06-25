@@ -34,3 +34,7 @@ input.form-control {
     @extend :focus-visible;
   }
 }
+
+.form-check-input {
+  margin-top: 0;
+}

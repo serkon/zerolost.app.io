@@ -7,7 +7,6 @@ import { AppConfig } from 'src/app.config';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { Storage } from 'src/components/cards/storage/card/storage-card.component';
 import { useTranslate } from 'src/components/translate/translate.component';
-import useTextTransform from 'src/hooks/case';
 import * as Yup from 'yup';
 
 interface StorageAddProps {
@@ -36,7 +35,6 @@ interface FormState {
 }
 export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): React.ReactElement => {
   const { translate } = useTranslate();
-  const { lowerCase } = useTextTransform();
   const initialValues: FormData = {
     storageType: '',
     storageVersion: '',
@@ -48,7 +46,7 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
     // id: 'c5df0827-b3d8-4a4d-9837-5a5cf56a144d',
   };
   const initialValues2: FormData = {
-    storageType: 'zfs',
+    storageType: 'ZFS',
     storageVersion: '1.0.0',
     name: 'STORAGE-1',
     ipAddress: 'https://192.168.2.129',
@@ -121,19 +119,20 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
   };
   const handleSaveSubmit = async (): Promise<void> => {
     setFormState({ ...initialFormStates, saving: true });
-    console.log('submit: ', form.values);
     edit === 'edit'
       ? api.put('/storage', form.values)
       : api
         .post('/storage', form.values)
         .then((response) => {
           setFormState({ ...initialFormStates, testing: false, tested: response.data.success === 200 });
-          response.data.success === 200 &&
-              notifications.show({
-                title: translate('SUCCESS'),
-                message: translate('TEST_CONNECTION_SUCCESS'),
-                color: 'success.4',
-              });
+          if (response.data.success === 200) {
+            notifications.show({
+              title: translate('SUCCESS'),
+              message: translate('TEST_CONNECTION_SUCCESS'),
+              color: 'success.4',
+            });
+            closed();
+          }
         })
         .catch((error) => {
           notifications.show({
@@ -141,20 +140,20 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
             message: translate('TEST_CONNECTION_FAIL'),
             color: 'danger.3',
           });
+          closed();
         });
     setFormState({ ...initialFormStates, saving: false });
   };
   const handleCancel = (): void => {
-    const value = (storage && edit === 'edit' && { ...storage, storageType: lowerCase(storage?.storageType), password: '' }) || initialValues;
+    const value = (storage && edit === 'edit' && { ...storage, storageType: storage?.storageType, password: '' }) || initialValues;
 
     form.reset();
     form.setValues(value);
-    console.log('cancel: ', value, form.values);
     // form.reset();
   };
   const storageTypeOptions = [
-    { value: 'zfs', label: translate('ZFS_STORAGE') },
-    { value: 'ss', label: translate('SS_STORAGE') },
+    { value: 'ZFS', label: translate('ZFS_STORAGE') },
+    { value: 'SS', label: translate('SS_STORAGE') },
   ];
 
   useEffect(() => {

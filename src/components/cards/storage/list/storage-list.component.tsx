@@ -65,7 +65,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
             found && setSelectedStorage(found);
           } else {
             setSelectedStorage(Storages[0]);
-            navigate(Storages[0].id);
+            navigate('/storage/' + Storages[0].id);
           }
         }
       })
@@ -100,7 +100,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
     <>
       <ul className="storages">
         {storages?.map((storage: Storage) => (
-          <li className="storage-li-item" key={storage.ipAddress} onClick={onSelectStorage.bind(null, storage)} onDoubleClick={storagesToolbarAction.bind(null, 'edit')}>
+          <li className="storage-li-item" key={storage.id} onClick={onSelectStorage.bind(null, storage)} onDoubleClick={storagesToolbarAction.bind(null, 'edit')}>
             <StorageCard value={storage} selected={selectedStorage?.id === storage.id} />
           </li>
         ))}

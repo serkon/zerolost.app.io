@@ -10,25 +10,27 @@ import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
 import { DiskList } from 'src/components/cards/disk/list/disk-list.component';
 import { LuneList } from 'src/components/cards/lune/list/lune-list.component';
+import { PoolAdd } from 'src/components/cards/pool/add/pool-add.components';
 import { Pool, PoolCard } from 'src/components/cards/pool/card/pool-card.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 import { More } from 'src/screens/storage/overview/overview.component';
-
-import Pools from './pool.sample.json';
 
 export const PoolList = (): React.ReactElement => {
   const { translate } = useTranslate();
   const navigate = useNavigate();
   const [pools, setPools] = useState<Pool[]>([]);
-  const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
+  const [isModalOpen, setModalOpen] = React.useState<boolean>(true);
+  const [modalMode, setModalMode] = React.useState<'add' | 'edit'>('add');
   const { storageId, poolId } = useParams();
-  const params = new URLSearchParams({ page: '0', size: '1' });
+  const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
+  const params = new URLSearchParams({ page: '0', size: '50' });
   const getPoolList = useCallback(() => api.post('/pool/search', { storageId }, { params }), [storageId]);
 
   useEffect(() => {
     getPoolList()
       .then((items: AxiosResponse<HttpResponse<Pool[]>>) => {
-        // TODO: const Pools = items.data.data;
+        const Pools = items.data.data;
+
         if (Pools.length > 0) {
           setPools(Pools as Pool[]);
           if (poolId) {
@@ -88,6 +90,7 @@ export const PoolList = (): React.ReactElement => {
           <button className="btn btn-brand btn-ghost btn-sm">{translate('ADD_POOL')}</button>
         </div>
       )}
+      <PoolAdd opened={isModalOpen} closed={(): void => setModalOpen(false)} edit={modalMode} pool={selectedPool} />
     </>
   );
 };

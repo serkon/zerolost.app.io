@@ -28,6 +28,7 @@ $zindex-modal-backdrop: 6;
   --bs-border-width: 1px;
   --bs-border-style: solid;
   --bs-border-radius: 4px;
+  --bs-border-color: var(--secondary-100);
 
   @include media-breakpoint-up(xxxl) {
     --#{$prefix}font-size: 2em;

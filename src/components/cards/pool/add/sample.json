@@ -1,0 +1,31 @@
+{
+  "status": 200,
+  "message": "",
+  "data": {
+    "chassis": [
+      {
+        "type": "system",
+        "name": "zfssa",
+        "dataDiskList": [
+          {
+            "diskSizeName": "1 GB",
+            "disks": [1, 2]
+          },
+          {
+            "diskSizeName": "2 GB",
+            "disks": [1, 2, 3]
+          },
+          {
+            "diskSizeName": "5 GB",
+            "disks": [1]
+          }
+        ],
+        "cacheDiskList": [],
+        "logDiskList": []
+      }
+    ]
+  },
+  "success": true,
+  "exception": false,
+  "pagination": null
+}

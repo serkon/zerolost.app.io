@@ -11,8 +11,6 @@ import { Disk, DiskCard } from 'src/components/cards/disk/card/disk-card.compone
 import { useTranslate } from 'src/components/translate/translate.component';
 import { More } from 'src/screens/storage/overview/overview.component';
 
-import Disks from './disk.sample.json';
-
 export const DiskList = (): React.ReactElement => {
   const { translate } = useTranslate();
   const [disks, setDisks] = useState<Disk[]>([]);
@@ -20,13 +18,14 @@ export const DiskList = (): React.ReactElement => {
   const { poolId } = useParams();
   const params = new URLSearchParams({ page: '0', size: '8' });
   // TODO: '/disk/search'
-  const getDiskList = useCallback(() => api.post('/host/search', { poolId }, { params }), [poolId]);
+  const getDiskList = useCallback(() => api.post('/disk/search', { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6' }, { params }), [poolId]);
 
   useEffect(() => {
     if (poolId) {
       getDiskList()
         .then((items: AxiosResponse<HttpResponse<Disk[]>>) => {
-          // TODO: const Disks = items.data.data;
+          const Disks = items.data.data;
+
           if (Disks.length > 0) {
             setDisks(Disks as Disk[]);
             if (!selectedDisk) {

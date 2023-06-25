@@ -2,6 +2,11 @@
 Input
 */
 
+.mantine-InputWrapper-root {
+  display: flex;
+  flex-direction: column;
+}
+
 .mantine-Input-input {
   font-family: var(--font-family);
 
@@ -32,6 +37,7 @@ Input
   color: var(--secondary-600);
   font-family: var(--font-family);
   font-weight: 700;
+  line-height: 2;
 
   @extend .caption-10;
 }
@@ -45,6 +51,7 @@ Select
 */
 
 .mantine-Select-dropdown {
+  z-index: 1000 !important;
   box-shadow: 0 8px 10px rgba(0, 0, 0, 15%);
 
   .mantine-Select-item {
@@ -73,6 +80,7 @@ Modal
 }
 
 .mantine-Modal-content {
+  overflow: visible;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 8%), 0 20px 32px rgba(0, 0, 0, 32%);
 }
 
