@@ -73,6 +73,7 @@
   "PLACEHOLDER_USERNAME": "Enter Username",
   "PLACEHOLDER_PASSWORD": "Enter Password",
   "PLACEHOLDER_PROFILE": "Select Profile",
+  "PLACEHOLDER_SELECT_DISK(S)": "Select Disk(s)",
   "CANCEL": "Cancel",
   "SAVE": "Save",
   "TEST": "Test",
