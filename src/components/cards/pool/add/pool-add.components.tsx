@@ -1,10 +1,15 @@
 import { Modal, Select, TextInput } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { api } from 'src/components/authentication/authenticator.interceptor';
 import { Pool, Profile } from 'src/components/cards/pool/card/pool-card.component';
 import { CheckboxDropdown, Option } from 'src/components/multiselect/multiselect.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 import useTextTransform from 'src/hooks/case';
+import { AppState } from 'src/store/reducers/app.reducer';
+import { RootState } from 'src/store/store';
 import * as Yup from 'yup';
 
 interface PoolAddProps {
@@ -37,24 +42,129 @@ interface ProfileOption {
 interface FormInterface {
   initial: FormItems;
   state: FormState;
-  chassis: Option[];
+  chassis: ResponseMapper;
   profile: ProfileOption[];
   yupSchema: Yup.ObjectSchema<FormItems>;
+}
+
+interface ResponseMapper {
+  dataDiskList: Option[];
+  cacheDiskList?: Option[];
+  logDiskList?: Option[];
 }
 
 export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.ReactElement => {
   const { translate } = useTranslate();
   const { upperCase } = useTextTransform();
-  const FormInitial = Form();
-  const form = useForm({ initialValues: FormInitial.initial, validate: yupResolver(FormInitial.yupSchema) });
-  const [formState, setFormState] = useState<FormState>(FormInitial.state);
+  const appState = useSelector<RootState>((state): AppState => state.appStore) as AppState;
+  const { storageId } = useParams();
+  const initial: FormInterface = {
+    state: {
+      saving: false,
+      saved: false,
+    },
+    initial: {
+      id: '',
+      name: '',
+      disks: [
+        {
+          type: 'data',
+          chassis: [],
+          profile: '',
+        },
+        {
+          type: 'cache',
+          chassis: [],
+          profile: '',
+        },
+        {
+          type: 'log',
+          chassis: [],
+          profile: '',
+        },
+      ],
+    },
+    chassis: {
+      dataDiskList: [
+        { value: '1', label: '1 GB', size: '1', group: 'Chassis 01' },
+        { value: '2', label: '1 GB', size: '1', group: 'Chassis 01' },
+        { value: '3', label: '1 GB', size: '1', group: 'Chassis 01' },
+        { value: '4', label: '2 GB', size: '2', group: 'Chassis 08' },
+        { value: '5', label: '3 GB', size: '3', group: 'Chassis 08' },
+        { value: '6', label: '5 GB', size: '5', group: 'Chassis 08' },
+        { value: '7', label: '5 GB', size: '5', group: 'Chassis 08' },
+        { value: '8', label: '1 GB', size: '1', group: 'Chassis 011' },
+        { value: '9', label: '3 GB', size: '3', group: 'Chassis 011' },
+        { value: '10', label: '3 GB', size: '3', group: 'Chassis 011' },
+      ],
+    },
+    profile: appState.profile.map((option) => ({ value: option.value, label: translate(option.label) })),
+    yupSchema: Yup.object().shape({
+      id: Yup.string(),
+      name: Yup.string().required(translate('VALIDATION_NAME_REQUIRED')),
+      disks: Yup.array()
+        .of(
+          Yup.object().shape({
+            type: Yup.string().oneOf(['data', 'log', 'cache']).required(translate('VALIDATION_DISK_TYPE_REQUIRED')),
+            chassis: Yup.array()
+              .test('chassis-test', translate('VALIDATION_CHASSIS_DISK_REQUIRED'), function(value) {
+                const { type } = this.parent;
+                const state = type === 'data' ? Yup.array().min(1, translate('VALIDATION_CHASSIS_DISK_REQUIRED')).required() : Yup.array().notRequired();
+
+                return state.isValidSync(value);
+              })
+              // .min(1, 'en az chassis seçilmeli')
+              .required('Chassis is required'),
+            // profile: Yup.string().required('Profile is required'),
+            profile: Yup.string().test('profile-test', translate('VALIDATION_PROFILE_REQUIRED'), function(value) {
+              const { type, chassis } = this.parent;
+              const state = type === 'data' ? Yup.string().required().notOneOf([''], 'Profile cannot be an empty string or null') : chassis.length > 0 ? Yup.string().required() : Yup.string().notRequired();
+
+              return state.isValidSync(value);
+            }),
+          }),
+        )
+        .required('At least one disk is required'),
+    }),
+  };
+  const form = useForm({ initialValues: initial.initial, validate: yupResolver(initial.yupSchema) });
+  const [state, setState] = useState<FormInterface>(initial);
+  const getChassis = (): void => {
+    api.get('/chassis/by-storage/' + storageId).then((response) => {
+      console.log(response.data.data);
+
+      const arr: ResponseMapper = ['dataDiskList', 'cacheDiskList', 'logDiskList'].reduce(
+        (acc, cur) => ({
+          ...acc,
+          [cur]: response.data.chassis.flatMap((chassis: any, chassisIndex: number) =>
+            chassis[cur].flatMap((item: any, itemIndex: number) =>
+              item.disks.map((diskCount: number[], diskCountIndex: number) => ({
+                label: item.diskSizeName,
+                size: item.diskSizeName,
+                group: chassis.name,
+                id: `${chassisIndex}-${chassis.name}-Disk${itemIndex + 1}-${diskCountIndex + 1}`,
+              })),
+            ),
+          ),
+        }),
+        { dataDiskList: [], cacheDiskList: [], logDiskList: [] },
+      );
+
+      console.log(arr);
+
+      setState({
+        ...state,
+        chassis: arr,
+      });
+    });
+  };
   const handleSaveSubmit = async (): Promise<void> => {
     const { hasErrors, errors } = form.validate();
 
     console.log('hasErrors', hasErrors, errors);
 
     if (hasErrors) return;
-    setFormState({ ...FormInitial.state, saving: true, saved: false });
+    setState({ ...state, ...{ state: { saving: true, saved: false } } });
     // edit === 'edit' ? api.put('/storage', form.values) : api.post('/storage', form.values);
     // .then((response) => {
     //   setFormState({ ...FormInitial.state, saving: false, saved: response.data.success === 200 });
@@ -75,7 +185,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
     // });
   };
   const handleCancel = (): void => {
-    const value: FormItems = (pool && edit === 'edit' && { ...FormInitial.initial, ...{ id: pool.id, name: pool.name } }) || FormInitial.initial;
+    const value: FormItems = (pool && edit === 'edit' && { ...state.initial, ...{ id: pool.id, name: pool.name } }) || state.initial;
 
     form.reset();
     form.setValues(value);
@@ -83,7 +193,12 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
   };
 
   useEffect(() => {
-    setFormState({ ...FormInitial.state });
+    getChassis();
+  }, []);
+
+  useEffect(() => {
+    setState({ ...initial });
+    console.log('adasd');
   }, [form.values]);
 
   useEffect(() => {
@@ -110,12 +225,12 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
         {JSON.stringify(form.values)}
         <TextInput sx={{ flexBasis: '30%', flexGrow: 1 }} label={translate('NAME')} placeholder={translate('PLACEHOLDER_NAME')} name="name" {...form.getInputProps('name')} className="mb-4" />
         <div className="d-flex flex-grow-1 gap-3 flex-column">
-          {FormInitial.initial.disks.map((disk, index) => (
+          {initial.initial.disks.map((disk, index) => (
             <React.Fragment key={index}>
               {/* <label className="secondary-600 caption-14 mt-4 mb-2 fw-semibold">{translate(upperCase(disk.type + '_TYPE'))}</label> */}
               <div className="d-flex flex-wrap gap-2 column-gap-4">
-                <CheckboxDropdown options={Form().chassis} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
-                <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={Form().profile} {...form.getInputProps(`disks.${index}.profile`)} />
+                <CheckboxDropdown options={initial.chassis.dataDiskList} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
+                <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={initial.profile} {...form.getInputProps(`disks.${index}.profile`)} />
               </div>
             </React.Fragment>
           ))}
@@ -131,99 +246,10 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
             {translate('CANCEL')}
           </button>
           <button className="btn btn-brand" onClick={handleSaveSubmit}>
-            {translate(formState.saving ? 'SAVING' : 'SAVE')}
+            {translate(state.state.saving ? 'SAVING' : 'SAVE')}
           </button>
         </div>
       </Modal>
     </>
   );
-};
-
-const Form = (): FormInterface => {
-  const { translate } = useTranslate();
-
-  return {
-    state: {
-      saving: false,
-      saved: false,
-    },
-    initial: {
-      id: '',
-      name: '',
-      disks: [
-        {
-          type: 'data',
-          chassis: [],
-          profile: '',
-        },
-        {
-          type: 'cache',
-          chassis: [],
-          profile: '',
-        },
-        {
-          type: 'log',
-          chassis: [],
-          profile: '',
-        },
-      ],
-    },
-    chassis: [
-      { value: '1', label: '1 GB', size: '1', group: 'Chassis 01' },
-      { value: '2', label: '1 GB', size: '1', group: 'Chassis 01' },
-      { value: '3', label: '1 GB', size: '1', group: 'Chassis 01' },
-      { value: '4', label: '2 GB', size: '2', group: 'Chassis 08' },
-      { value: '5', label: '3 GB', size: '3', group: 'Chassis 08' },
-      { value: '6', label: '5 GB', size: '5', group: 'Chassis 08' },
-      { value: '7', label: '5 GB', size: '5', group: 'Chassis 08' },
-      { value: '8', label: '1 GB', size: '1', group: 'Chassis 011' },
-      { value: '9', label: '3 GB', size: '3', group: 'Chassis 011' },
-      { value: '10', label: '3 GB', size: '3', group: 'Chassis 011' },
-    ],
-    profile: [
-      { value: '', label: translate('PLACEHOLDER_PROFILE') },
-      { value: 'mirror', label: translate('MIRROR_STORAGE') },
-      { value: 'mirror3', label: translate('MIRROR3_STORAGE') },
-      { value: 'raidz1', label: translate('RAIDZ1_STORAGE') },
-      { value: 'raidz2', label: translate('RAIDZ2_STORAGE') },
-      { value: 'raidz3_max', label: translate('RAIDZ3_MAX_STORAGE') },
-      { value: 'stripe', label: translate('STRIPE_STORAGE') },
-    ],
-    yupSchema: Yup.object().shape({
-      id: Yup.string(),
-      name: Yup.string().required('Name is required'),
-      disks: Yup.array()
-        .of(
-          Yup.object().shape({
-            type: Yup.string().oneOf(['data', 'log', 'cache']).required('Disk type is required'),
-            chassis: Yup.array()
-
-              // .of(
-              //   Yup.object().shape({
-              //     value: Yup.string().required('Value is required'),
-              //     label: Yup.string().required('Label is required'),
-              //     size: Yup.string().required('Size is required'),
-              //     group: Yup.string().required('Group is required'),
-              //   }),
-              // )
-              .test('chassis-test', 'chassis seçilmeli', function(value) {
-                const { type } = this.parent;
-                const state = type === 'data' ? Yup.array().min(1, 'chassis seçilmeli').required() : Yup.array().notRequired();
-
-                return state.isValidSync(value);
-              })
-              // .min(1, 'en az chassis seçilmeli')
-              .required('Chassis is required'),
-            // profile: Yup.string().required('Profile is required'),
-            profile: Yup.string().test('profile-test', 'Profile is required for data disks', function(value) {
-              const { type, chassis } = this.parent;
-              const state = type === 'data' ? Yup.string().required().notOneOf([''], 'Profile cannot be an empty string or null') : chassis.length > 0 ? Yup.string().required() : Yup.string().notRequired();
-
-              return state.isValidSync(value);
-            }),
-          }),
-        )
-        .required('At least one disk is required'),
-    }),
-  };
 };

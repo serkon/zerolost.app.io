@@ -45,16 +45,6 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
     password: '',
     // id: 'c5df0827-b3d8-4a4d-9837-5a5cf56a144d',
   };
-  const initialValues2: FormData = {
-    storageType: 'ZFS',
-    storageVersion: '1.0.0',
-    name: 'STORAGE-1',
-    ipAddress: 'https://192.168.2.129',
-    port: '215',
-    username: 'root',
-    password: '18319000Ek',
-    // id: 'c5df0827-b3d8-4a4d-9837-5a5cf56a144d',
-  };
   const initialFormStates: FormState = {
     testing: false,
     tested: false,

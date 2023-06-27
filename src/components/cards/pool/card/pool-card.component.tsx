@@ -3,6 +3,27 @@ import './pool-card.component.scss';
 import { useEffect, useState } from 'react';
 import { useTranslate } from 'src/components/translate/translate.component';
 
+export interface Pool {
+  id: string;
+  name: string;
+  storageId: string;
+  status: string; // ONLINE | OFFLINE
+  lastModifiedDate: string;
+  createdDate: string;
+  usageSnapshot: string;
+  disks: PoolDisk[];
+}
+
+export type Profile = 'mirror' | 'mirror3' | 'raidz1' | 'raidz2' | 'raidz3_max' | 'stripe';
+export interface PoolDisk {
+  type: 'data' | 'log' | 'cache';
+  profile: Profile;
+  size: string;
+  used: string;
+  percentage: number;
+  count: number;
+}
+
 interface PoolCardProps extends React.HTMLAttributes<HTMLDivElement> {
   value: Pool;
   selected: boolean;
@@ -44,24 +65,3 @@ export const PoolCard = ({ value, selected, ...rest }: PoolCardProps): React.JSX
     </div>
   );
 };
-
-export interface Pool {
-  id: string;
-  name: string;
-  storageId: string;
-  status: string; // ONLINE | OFFLINE
-  lastModifiedDate: string;
-  createdDate: string;
-  usageSnapshot: string;
-  disks: PoolDisk[];
-}
-
-export type Profile = 'mirror' | 'mirror3' | 'raidz1' | 'raidz2' | 'raidz3_max' | 'stripe';
-export interface PoolDisk {
-  type: 'data' | 'log' | 'cache';
-  profile: Profile;
-  size: string;
-  used: string;
-  percentage: number;
-  count: number;
-}

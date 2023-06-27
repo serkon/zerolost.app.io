@@ -6,7 +6,7 @@ import { useTranslate } from 'src/components/translate/translate.component';
 export interface Option {
   value: string;
   label: string;
-  group: string;
+  group?: string;
   checked?: boolean;
   [key: string]: any;
 }
