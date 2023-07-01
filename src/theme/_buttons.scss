@@ -72,8 +72,10 @@ $btn-active-bg: 700;
     color: #{$light};
 
     &:disabled {
-      border-color: var(--#{$prefix}btn-border);
-      background-color: var(--#{$prefix}btn-border);
+      &:not(.btn-ghost, .btn-outline) {
+        border-color: var(--#{$prefix}btn-border);
+        background-color: var(--#{$prefix}btn-border);
+      }
     }
 
     &.btn-outline, &.btn-ghost {
@@ -81,7 +83,7 @@ $btn-active-bg: 700;
       color: var(--#{$prefix}btn-bg);
 
       &:disabled {
-        color: #{$light};
+        // color: #{$light};
       }
 
       &:hover {
