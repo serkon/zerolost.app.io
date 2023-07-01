@@ -40,7 +40,7 @@ interface ProfileOption {
 }
 
 interface FormInterface {
-  initial: FormItems;
+  formData: FormItems;
   state: FormState;
   chassis: ResponseMapper;
   profile: ProfileOption[];
@@ -49,8 +49,8 @@ interface FormInterface {
 
 interface ResponseMapper {
   dataDiskList: Option[];
-  cacheDiskList?: Option[];
-  logDiskList?: Option[];
+  cacheDiskList: Option[];
+  logDiskList: Option[];
 }
 
 export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.ReactElement => {
@@ -63,7 +63,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
       saving: false,
       saved: false,
     },
-    initial: {
+    formData: {
       id: '',
       name: '',
       disks: [
@@ -85,18 +85,9 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
       ],
     },
     chassis: {
-      dataDiskList: [
-        { value: '1', label: '1 GB', size: '1', group: 'Chassis 01' },
-        { value: '2', label: '1 GB', size: '1', group: 'Chassis 01' },
-        { value: '3', label: '1 GB', size: '1', group: 'Chassis 01' },
-        { value: '4', label: '2 GB', size: '2', group: 'Chassis 08' },
-        { value: '5', label: '3 GB', size: '3', group: 'Chassis 08' },
-        { value: '6', label: '5 GB', size: '5', group: 'Chassis 08' },
-        { value: '7', label: '5 GB', size: '5', group: 'Chassis 08' },
-        { value: '8', label: '1 GB', size: '1', group: 'Chassis 011' },
-        { value: '9', label: '3 GB', size: '3', group: 'Chassis 011' },
-        { value: '10', label: '3 GB', size: '3', group: 'Chassis 011' },
-      ],
+      dataDiskList: [],
+      cacheDiskList: [],
+      logDiskList: [],
     },
     profile: appState.profile.map((option) => ({ value: option.value, label: translate(option.label) })),
     yupSchema: Yup.object().shape({
@@ -127,7 +118,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
         .required('At least one disk is required'),
     }),
   };
-  const form = useForm({ initialValues: initial.initial, validate: yupResolver(initial.yupSchema) });
+  const form = useForm({ initialValues: initial.formData, validate: yupResolver(initial.yupSchema) });
   const [state, setState] = useState<FormInterface>(initial);
   const getChassis = (): void => {
     api.get('/chassis/by-storage/' + storageId).then((response) => {
@@ -185,7 +176,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
     // });
   };
   const handleCancel = (): void => {
-    const value: FormItems = (pool && edit === 'edit' && { ...state.initial, ...{ id: pool.id, name: pool.name } }) || state.initial;
+    const value: FormItems = (pool && edit === 'edit' && { ...state.formData, ...{ id: pool.id, name: pool.name } }) || state.formData;
 
     form.reset();
     form.setValues(value);
@@ -225,11 +216,13 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
         {JSON.stringify(form.values)}
         <TextInput sx={{ flexBasis: '30%', flexGrow: 1 }} label={translate('NAME')} placeholder={translate('PLACEHOLDER_NAME')} name="name" {...form.getInputProps('name')} className="mb-4" />
         <div className="d-flex flex-grow-1 gap-3 flex-column">
-          {initial.initial.disks.map((disk, index) => (
+          {initial.formData.disks.map((disk, index) => (
             <React.Fragment key={index}>
               {/* <label className="secondary-600 caption-14 mt-4 mb-2 fw-semibold">{translate(upperCase(disk.type + '_TYPE'))}</label> */}
               <div className="d-flex flex-wrap gap-2 column-gap-4">
-                <CheckboxDropdown options={initial.chassis.dataDiskList} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
+                {initial.chassis[`${disk.type}DiskList`] && (
+                  <CheckboxDropdown options={initial.chassis[`${disk.type}DiskList`]} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
+                )}
                 <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={initial.profile} {...form.getInputProps(`disks.${index}.profile`)} />
               </div>
             </React.Fragment>

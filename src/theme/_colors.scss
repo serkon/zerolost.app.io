@@ -112,24 +112,17 @@ $theme: (
       --#{$prefix}#{$color}-#{$key}: #{$value};
       --#{$prefix}#{$color}-#{$key}-rgb: #{to-rgb($value)};
 
+      .#{$prefix}#{$color}-#{$key} {
+        color: #{$value};
+      }
+
+      .#{$prefix}bg-#{$color}-#{$key} {
+        background-color: #{$value};
+      }
+
       // .#{$name}-#{$key} {
       //   background-color: #{$value};
       // }
-    }
-  }
-}
-
-// set color classes
-
-@each $color, $item in $theme {
-
-  @each $key, $value in $item {
-    .#{$prefix}#{$color}-#{$key} {
-      color: #{$value};
-    }
-
-    .#{$prefix}bg-#{$color}-#{$key} {
-      background-color: #{$value};
     }
   }
 }

@@ -41,7 +41,7 @@ api.interceptors.response.use(
   async (error) => {
     const res = error.response;
 
-    if (res.status === 401 && !error.config.headers[AuthorizationHeader.RefreshToken]) {
+    if (res && res.status === 401 && !error.config.headers[AuthorizationHeader.RefreshToken]) {
       api.defaults.headers.common[AuthorizationHeader.RefreshToken] = true;
       try {
         const refreshToken = window.localStorage.getItem(AuthorizationHeader.RefreshToken);
@@ -73,7 +73,7 @@ api.interceptors.response.use(
 
       return api(error.config);
     }
-    console.error('Looks like there was a problem. Status Code: ' + res.status);
+    res && console.error('Looks like there was a problem. Status Code: ' + res.status);
     api.defaults.headers.common[AuthorizationHeader.RefreshToken] = false;
 
     return Promise.reject(error);
