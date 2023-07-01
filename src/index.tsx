@@ -37,14 +37,7 @@ const Content = (): React.JSX.Element => (
             <Routes>
               <Route path="/" element={<App />}>
                 <Route path="" element={<Navigate to="storage" />} />
-                <Route
-                  path="storage/:storageId?/:poolId?"
-                  element={
-                    <Authenticator.Navigate>
-                      <ScreenStorageOverview />
-                    </Authenticator.Navigate>
-                  }
-                />
+                <Route path="storage/:storageId?/:poolId?" element={<ScreenStorageOverview />} />
                 <Route
                   path="about"
                   element={

@@ -1,7 +1,7 @@
 import './pool-list.component.scss';
 
 import { TextInput } from '@mantine/core';
-import { IconPlus, IconSearch, IconTrash } from '@tabler/icons-react';
+import { IconEdit, IconPlus, IconSearch, IconTrash } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import React from 'react';
@@ -15,16 +15,22 @@ import { Pool, PoolCard } from 'src/components/cards/pool/card/pool-card.compone
 import { useTranslate } from 'src/components/translate/translate.component';
 import { More } from 'src/screens/storage/overview/overview.component';
 
+interface State {
+  mode: 'add' | 'edit' | 'delete' | null;
+  selectedPool: Pool | null;
+  pools: Pool[];
+}
+
 export const PoolList = (): React.ReactElement => {
   const { translate } = useTranslate();
   const navigate = useNavigate();
-  const [pools, setPools] = useState<Pool[]>([]);
-  const [isModalOpen, setModalOpen] = React.useState<boolean>(true);
-  const [modalMode, setModalMode] = React.useState<'add' | 'edit'>('add');
+  const [state, setState] = useState<State>({ mode: null, selectedPool: null, pools: [] });
   const { storageId, poolId } = useParams();
-  const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
   const params = new URLSearchParams({ page: '0', size: '50' });
   const getPoolList = useCallback(() => api.post('/pool/search', { storageId }, { params }), [storageId]);
+  const toolbarAction = (type: 'add' | 'edit' | 'delete'): void => {
+    setState({ ...state, mode: type });
+  };
 
   useEffect(() => {
     getPoolList()
@@ -32,24 +38,24 @@ export const PoolList = (): React.ReactElement => {
         const Pools = items.data.data;
 
         if (Pools.length > 0) {
-          setPools(Pools as Pool[]);
+          setState({ ...state, pools: Pools });
           if (poolId) {
             const found = Pools.find((pool) => pool.id === poolId);
 
-            found && setSelectedPool(found as Pool);
+            found && setState({ ...state, selectedPool: found });
           } else {
-            setSelectedPool(Pools[0] as Pool);
+            setState({ ...state, selectedPool: Pools[0] });
             navigate(`/storage/${storageId}/${Pools[0].id}`);
           }
         }
       })
       .catch((error) => {
-        setPools([]);
+        setState({ ...state, pools: [] });
       });
   }, [storageId]);
 
   const onClickHandler = (pool: Pool): void => {
-    setSelectedPool(pool);
+    setState({ ...state, selectedPool: pool });
     navigate(`/storage/${storageId}/${pool.id}`);
   };
 
@@ -65,17 +71,20 @@ export const PoolList = (): React.ReactElement => {
           <button className="btn btn-brand btn-ghost btn-sm">
             <IconTrash size={16} />
           </button>
-          <button className="btn btn-brand btn-ghost btn-sm">
+          <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'add')}>
             <IconPlus size={16} />
+          </button>
+          <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'edit')} disabled={!state.selectedPool}>
+            <IconEdit size={16} />
           </button>
         </div>
       </div>
-      {pools.length > 0 ? (
+      {state.pools.length > 0 ? (
         <>
           <ul className="pool-card-list pool-list flex-wrap mx-4 secondary-500">
-            {pools.map((pool: any) => (
+            {state.pools.map((pool: any) => (
               <li className="pool-li-item" onClick={onClickHandler.bind(null, pool)} key={pool.id}>
-                <PoolCard value={pool} selected={selectedPool?.id === pool.id} />
+                <PoolCard value={pool} selected={state.selectedPool?.id === pool.id} />
               </li>
             ))}
             <More />
@@ -90,7 +99,7 @@ export const PoolList = (): React.ReactElement => {
           <button className="btn btn-brand btn-ghost btn-sm">{translate('ADD_POOL')}</button>
         </div>
       )}
-      <PoolAdd opened={isModalOpen} closed={(): void => setModalOpen(false)} edit={modalMode} pool={selectedPool} />
+      {(state.mode === 'add' || state.mode === 'edit') && <PoolAdd opened={!!state.mode} closed={(): void => setState({ ...state, mode: null })} edit={state.mode} pool={state.selectedPool} />}
     </>
   );
 };

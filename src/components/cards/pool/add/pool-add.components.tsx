@@ -220,10 +220,12 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
             <React.Fragment key={index}>
               {/* <label className="secondary-600 caption-14 mt-4 mb-2 fw-semibold">{translate(upperCase(disk.type + '_TYPE'))}</label> */}
               <div className="d-flex flex-wrap gap-2 column-gap-4">
-                {initial.chassis[`${disk.type}DiskList`] && (
-                  <CheckboxDropdown options={initial.chassis[`${disk.type}DiskList`]} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
+                {initial.chassis[`${disk.type}DiskList`].length > 0 && (
+                  <>
+                    <CheckboxDropdown options={initial.chassis[`${disk.type}DiskList`]} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
+                    <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={initial.profile} {...form.getInputProps(`disks.${index}.profile`)} />
+                  </>
                 )}
-                <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={initial.profile} {...form.getInputProps(`disks.${index}.profile`)} />
               </div>
             </React.Fragment>
           ))}
