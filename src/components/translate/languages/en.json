@@ -115,7 +115,11 @@
   "DISK": "Disk",
   "PROFILE": "Profile",
   "EDIT_POOL": "Edit Pool",
+  "DELETE_POOL": "Delete Pool",
+  "DELETE_POOL_MODAL_DESCRIPTION": "Are you sure you want to delete the <b>{pool}</b> pool? This action cannot be undone and will permanently remove all data associated with the storage pool.",
   "ADD_POOL_MODAL_DESCRIPTION": "Set searchable prop to enable search in select and nothingFound prop to provide label that will be shown when no options were found",
-  "": "",
+  "API_POOL_DELETE_SUCCESS": "Pool deleted successfully",
+  "API_POOL_DELETE_FAIL": "Failed to delete pool",
+  "API_POOL_LIST_GET_FAIL": "Failed to get pool list",
   "": ""
 }

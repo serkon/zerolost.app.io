@@ -1,5 +1,6 @@
 import { Modal, Select, TextInput } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -56,8 +57,8 @@ interface ResponseMapper {
 export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.ReactElement => {
   const { translate } = useTranslate();
   const { upperCase } = useTextTransform();
-  const appState = useSelector<RootState>((state): AppState => state.appStore) as AppState;
   const { storageId } = useParams();
+  const appState = useSelector<RootState>((state): AppState => state.appStore) as AppState;
   const initial: FormInterface = {
     state: {
       saving: false,
@@ -121,59 +122,58 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
   const form = useForm({ initialValues: initial.formData, validate: yupResolver(initial.yupSchema) });
   const [state, setState] = useState<FormInterface>(initial);
   const getChassis = (): void => {
-    api.get('/chassis/by-storage/' + storageId).then((response) => {
-      console.log(response.data.data);
+    api
+      .get('/chassis/storage/' + storageId)
+      .then((response) => {
+        if (response.data.data) {
+          const arr: ResponseMapper = ['dataDiskList', 'cacheDiskList', 'logDiskList'].reduce(
+            (acc, cur) => ({
+              ...acc,
+              [cur]: response.data.chassis.flatMap((chassis: any, chassisIndex: number) =>
+                chassis[cur].flatMap((item: any, itemIndex: number) =>
+                  item.disks.map((diskCount: number[], diskCountIndex: number) => ({
+                    label: item.diskSizeName,
+                    size: item.diskSizeName,
+                    group: chassis.name,
+                    id: `${chassisIndex}-${chassis.name}-Disk${itemIndex + 1}-${diskCountIndex + 1}`,
+                  })),
+                ),
+              ),
+            }),
+            { dataDiskList: [], cacheDiskList: [], logDiskList: [] },
+          );
 
-      const arr: ResponseMapper = ['dataDiskList', 'cacheDiskList', 'logDiskList'].reduce(
-        (acc, cur) => ({
-          ...acc,
-          [cur]: response.data.chassis.flatMap((chassis: any, chassisIndex: number) =>
-            chassis[cur].flatMap((item: any, itemIndex: number) =>
-              item.disks.map((diskCount: number[], diskCountIndex: number) => ({
-                label: item.diskSizeName,
-                size: item.diskSizeName,
-                group: chassis.name,
-                id: `${chassisIndex}-${chassis.name}-Disk${itemIndex + 1}-${diskCountIndex + 1}`,
-              })),
-            ),
-          ),
-        }),
-        { dataDiskList: [], cacheDiskList: [], logDiskList: [] },
-      );
-
-      console.log(arr);
-
-      setState({
-        ...state,
-        chassis: arr,
+          setState({ ...state, chassis: arr });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    });
   };
   const handleSaveSubmit = async (): Promise<void> => {
     const { hasErrors, errors } = form.validate();
 
-    console.log('hasErrors', hasErrors, errors);
-
+    // console.log('hasErrors', hasErrors, errors);
     if (hasErrors) return;
     setState({ ...state, ...{ state: { saving: true, saved: false } } });
-    // edit === 'edit' ? api.put('/storage', form.values) : api.post('/storage', form.values);
-    // .then((response) => {
-    //   setFormState({ ...FormInitial.state, saving: false, saved: response.data.success === 200 });
-    //   response.data.success === 200 &&
-    //       notifications.show({
-    //         title: translate('SUCCESS'),
-    //         message: translate('TEST_CONNECTION_SUCCESS'),
-    //         color: 'success.4',
-    //       });
-    // })
-    // .catch((error) => {
-    //   setFormState({ ...FormInitial.state, saving: false, saved: false });
-    //   notifications.show({
-    //     title: translate('FAIL'),
-    //     message: translate('TEST_CONNECTION_FAIL'),
-    //     color: 'danger.3',
-    //   });
-    // });
+    (edit === 'edit' ? api.put('/storage', form.values) : api.post('/storage', form.values))
+      .then((response) => {
+        setState({ ...state, ...{ state: { saving: false, saved: response.data.success === 200 } } });
+        response.data.success === 200 &&
+          notifications.show({
+            title: translate('SUCCESS'),
+            message: translate('TEST_CONNECTION_SUCCESS'),
+            color: 'success.4',
+          });
+      })
+      .catch((error) => {
+        setState({ ...state, ...{ state: { saving: false, saved: false } } });
+        notifications.show({
+          title: translate('FAIL'),
+          message: translate('TEST_CONNECTION_FAIL'),
+          color: 'danger.3',
+        });
+      });
   };
   const handleCancel = (): void => {
     const value: FormItems = (pool && edit === 'edit' && { ...state.formData, ...{ id: pool.id, name: pool.name } }) || state.formData;
@@ -234,7 +234,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
           <button
             className="btn btn-brand btn-ghost"
             onClick={(): void => {
-              // closed();
+              closed();
               handleCancel();
             }}
           >

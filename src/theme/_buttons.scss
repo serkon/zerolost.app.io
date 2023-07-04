@@ -59,6 +59,7 @@ $btn-active-bg: 700;
     $light: if($name==light, var(--#{$prefix}#{secondary}-#{600}), var(--#{$prefix}btn-color)); // var(--#{$prefix}btn-color); //
 
     --#{$prefix}btn-bg: var(--#{$prefix}#{$name}-#{500}); // #{map.get($item, #{$btn-bg})};
+    --#{$prefix}btn-border-color: var(--#{$prefix}#{$name}-#{500});
     --#{$prefix}btn-border: var(--#{$prefix}#{$name}-#{500}); // #{map.get($item, #{$btn-border})};
     --#{$prefix}btn-hover-color: #{$btn-color};
     --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$name}-#{600}); // #{map.get($item, #{$btn-hover-bg})};

@@ -72,11 +72,16 @@ Select
 Modal
 */
 
-.mantine-Modal-title {
-  color: var(--secondary-600);
-  font-weight: 800;
+.mantine-Modal-header {
+  overflow: hidden;
+  border-radius: 0.25rem;
 
-  @extend .h3;
+  .mantine-Modal-title {
+    color: var(--secondary-600);
+    font-weight: 800;
+
+    @extend .h3;
+  }
 }
 
 .mantine-Modal-content {
