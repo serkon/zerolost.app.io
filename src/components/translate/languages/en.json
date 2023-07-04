@@ -121,5 +121,8 @@
   "API_POOL_DELETE_SUCCESS": "Pool deleted successfully",
   "API_POOL_DELETE_FAIL": "Failed to delete pool",
   "API_POOL_LIST_GET_FAIL": "Failed to get pool list",
+  "DELETE_STORAGE": "Delete Storage",
+  "DELETE_STORAGE_MODAL_DESCRIPTION": "Are you sure you want to delete the <b>{storage}</b> storage? This action cannot be undone and will permanently remove all data associated with the storage.",
+
   "": ""
 }

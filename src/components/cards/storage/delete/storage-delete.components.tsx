@@ -2,28 +2,28 @@ import { Modal } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import React, { useState } from 'react';
 import { api } from 'src/components/authentication/authenticator.interceptor';
-import { Pool } from 'src/components/cards/pool/card/pool-card.component';
+import { Storage } from 'src/components/cards/storage/card/storage-card.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
-interface PoolDeleteProps {
+interface StorageDeleteProps {
   opened: boolean;
   closed: () => void;
-  pool: Pool;
+  storage: Storage;
 }
 
-export const PoolDelete = ({ opened, closed, pool }: PoolDeleteProps): React.ReactElement => {
+export const StorageDelete = ({ opened, closed, storage }: StorageDeleteProps): React.ReactElement => {
   const { translate } = useTranslate();
   const [state, setState] = useState({ deleting: false, deleted: false });
   const handleSaveSubmit = async (): Promise<void> => {
     setState({ ...state, deleting: true, deleted: false });
     api
-      .delete(`/pool/${pool?.id}`)
+      .delete(`/storage/${storage?.id}`)
       .then((response) => {
         setState({ ...state, deleting: false, deleted: response.data.success === 200 });
         response.data.success === 200 &&
           notifications.show({
             title: translate('SUCCESS'),
-            message: translate('API_POOL_DELETE_SUCCESS'),
+            message: translate('API_STORAGE_DELETE_SUCCESS'),
             color: 'success.4',
           });
         closed();
@@ -32,7 +32,7 @@ export const PoolDelete = ({ opened, closed, pool }: PoolDeleteProps): React.Rea
         setState({ ...state, deleting: false, deleted: false });
         notifications.show({
           title: translate('FAIL'),
-          message: translate('API_POOL_DELETE_FAIL'),
+          message: translate('API_STORAGE_DELETE_FAIL'),
           color: 'danger.3',
         });
         closed();
@@ -48,14 +48,14 @@ export const PoolDelete = ({ opened, closed, pool }: PoolDeleteProps): React.Rea
         padding={'24px'}
         opened={opened}
         onClose={closed}
-        title={translate('DELETE_POOL')}
+        title={translate('DELETE_STORAGE')}
         overlayProps={{
           color: 'rgba(22, 41, 73, 0.75)',
           opacity: 0.55,
           blur: 1,
         }}
       >
-        <p className="secondary-500 body-14 mb-4" dangerouslySetInnerHTML={{ __html: translate('DELETE_POOL_MODAL_DESCRIPTION', { pool: pool?.name }) }} />
+        <p className="secondary-500 body-14 mb-4" dangerouslySetInnerHTML={{ __html: translate('DELETE_STORAGE_MODAL_DESCRIPTION', { storage: storage?.name }) }} />
         <div className="modal-footer d-flex mt-4">
           <button className="btn btn-brand btn-ghost" onClick={(): void => closed()}>
             {translate('CANCEL')}

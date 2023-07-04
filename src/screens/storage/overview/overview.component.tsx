@@ -1,12 +1,12 @@
 import './overview.component.scss';
 
 import { Menu, Text, TextInput } from '@mantine/core';
-import { IconArrowsLeftRight, IconMessageCircle, IconPhoto, IconSearch, IconSettings, IconTrash, IconX } from '@tabler/icons-react';
+import { IconArrowsLeftRight, IconEdit, IconFilter, IconMessageCircle, IconPhoto, IconPlus, IconSearch, IconSettings, IconSortAscending, IconSortDescending, IconTrash, IconX } from '@tabler/icons-react';
 import React, { useCallback, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import { PoolList } from 'src/components/cards/pool/list/pool-list.component';
-import { ListRef, StorageList } from 'src/components/cards/storage/list/storage-list.component';
+import { ListRef, StorageList, ToolbarActions } from 'src/components/cards/storage/list/storage-list.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
@@ -24,7 +24,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
       listRef.current.sortingClick(!sorting);
     }
   };
-  const handleAddClick = (type: 'add' | 'edit'): void => {
+  const handleAddClick = (type: ToolbarActions): void => {
     if (listRef.current) {
       listRef.current.toolbarAction(type);
     }
@@ -68,10 +68,21 @@ export const ScreenStorageOverview = (): React.ReactElement => {
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
-          <button className={`btn btn-brand btn-${!filterOpen ? 'ghost' : ''} btn-xs ti-filter`} onClick={(): void => setFilterOpen(!filterOpen)} />
-          <button className={`btn btn-brand btn-ghost btn-xs ${sorting ? 'ti-sort-ascending' : 'ti-sort-descending'}`} onClick={handleSortingClick} />
-          <button className={`btn btn-brand btn-ghost btn-xs ti-edit`} onClick={handleAddClick.bind(null, 'edit')} />
-          <button className="btn btn-brand btn-ghost btn-xs ti-plus" onClick={handleAddClick.bind(null, 'add')} />
+          <button className={`btn btn-brand ${!filterOpen && 'btn-ghost'} btn-xs`} onClick={(): void => setFilterOpen(!filterOpen)}>
+            <IconFilter size={16} />
+          </button>
+          <button className="btn btn-brand btn-ghost btn-xs" onClick={handleAddClick.bind(null, 'delete')}>
+            <IconTrash size={16} />
+          </button>
+          <button className={`btn btn-brand btn-ghost btn-xs`} onClick={handleSortingClick}>
+            {sorting ? <IconSortDescending size={16} /> : <IconSortAscending size={16} />}
+          </button>
+          <button className={`btn btn-brand btn-ghost btn-xs`} onClick={handleAddClick.bind(null, 'edit')}>
+            <IconEdit size={16} />
+          </button>
+          <button className="btn btn-brand btn-ghost btn-xs" onClick={handleAddClick.bind(null, 'add')}>
+            <IconPlus size={16} />
+          </button>
         </section>
         <section className={`search d-flex px-3 flex-column ${!filterOpen && 'd-none'}`}>
           <TextInput

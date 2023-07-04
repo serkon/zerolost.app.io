@@ -62,7 +62,7 @@ export const StorageCard = ({ value, selected }: { value: Storage; selected: boo
             <span className="caption-10 fw-medium">{storage.disk.size}</span>
           </span>
         </aside>
-        <aside className="d-flex gap-1">
+        <aside className={`d-flex gap-${storage.disk.percentage ? 1 : 0}`}>
           <span
             className={`disk-used ${storage.disk.percentage >= AppConfig.storage.thresholds.danger ? 'bg-danger-500' : storage.disk.percentage >= AppConfig.storage.thresholds.warning ? 'bg-warning-500' : 'bg-success-500'}`}
             style={{ flexBasis: storage.disk.percentage + '%' }}
