@@ -1,3 +1,4 @@
+import { LoadingOverlay } from '@mantine/core';
 import { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
@@ -26,6 +27,7 @@ export interface StorageState {
   mode: ToolbarActions;
   selectedStorage: Storage | null;
   storages: Storage[];
+  loading: boolean;
 }
 
 export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React.ReactElement => {
@@ -37,6 +39,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
     mode: null,
     selectedStorage: null,
     storages: [],
+    loading: false,
   });
   const { storageId } = useParams();
 
@@ -56,20 +59,14 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
     // TODO: çoklu sort şu şekilde yapılıyormuş  -->   ?page=0&size=10&sort=name,desc&sort=port,asc
     const params = { page: '0', size: '50', sort: ['name', `${sorting ? 'asc' : 'desc'}`].join(',') };
 
+    setState((prevState) => ({ ...prevState, loading: true }));
     api
       .post('/storage/search', {}, { params })
       .then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
         const Storages = items.data.data;
 
+        setState((prevState) => ({ ...prevState, loading: false }));
         if (Storages.length > 0) {
-          // TODO: Gereksiz bir kod blogu eklemek zorunda kaldım. Backend https://ipAddress şeklinde data dönüyor. Bunu yalın IP'ye çeviriyorum. BE ipAddress'i düzgün dönmeli
-          Storages.forEach((storage) => {
-            if (storage.ipAddress) {
-              const [protocol, ipAddress] = storage.ipAddress.split('//');
-
-              storage.ipAddress = ipAddress;
-            }
-          });
           setState((prevState) => ({ ...prevState, storages: Storages }));
           if (storageId) {
             const found = Storages.find((storage) => storage.id === storageId);
@@ -82,7 +79,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
         }
       })
       .catch((error) => {
-        setState((prevState) => ({ ...prevState, storages: [] }));
+        setState((prevState) => ({ ...prevState, loading: false, storages: [] }));
       });
   };
 
@@ -112,6 +109,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
 
   return (
     <>
+      <LoadingOverlay visible={state.loading} overlayBlur={2} />
       <ul className="storages">
         {state.storages?.map((storage: Storage) => (
           <li className="storage-li-item" key={storage.id} onClick={onSelectStorage.bind(null, storage)} onDoubleClick={storagesToolbarAction.bind(null, 'edit')}>

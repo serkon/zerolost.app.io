@@ -82,12 +82,12 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
   const handleTestSubmit = async (): Promise<void> => {
     const { hasErrors } = form.validate();
 
-    setFormState({ ...initialFormStates, testing: true });
+    setFormState((previousState) => ({ ...previousState, testing: true, tested: false }));
     if (!hasErrors) {
       api
         .post('/storage/test-connection', form.values)
         .then((response) => {
-          setFormState({ ...initialFormStates, testing: false, tested: response.data.success });
+          setFormState((previousState) => ({ ...previousState, testing: false, tested: response.data.success }));
           response.data.success &&
             notifications.show({
               title: translate('SUCCESS'),
@@ -96,6 +96,7 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
             });
         })
         .catch((error) => {
+          setFormState((previousState) => ({ ...previousState, testing: false, tested: false }));
           notifications.show({
             title: translate('FAIL'),
             message: translate('TEST_CONNECTION_FAIL'),
@@ -103,36 +104,34 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
           });
         });
     } else {
-      setFormState({ ...initialFormStates, testing: false });
+      setFormState((previousState) => ({ ...previousState, testing: false }));
     }
     // form.clearErrors();
   };
   const handleSaveSubmit = async (): Promise<void> => {
-    setFormState({ ...initialFormStates, saving: true });
-    edit === 'edit'
-      ? api.put('/storage', form.values)
-      : api
-        .post('/storage', form.values)
-        .then((response) => {
-          setFormState({ ...initialFormStates, testing: false, tested: response.data.success === 200 });
-          if (response.data.success === 200) {
-            notifications.show({
-              title: translate('SUCCESS'),
-              message: translate('TEST_CONNECTION_SUCCESS'),
-              color: 'success.4',
-            });
-            closed();
-          }
-        })
-        .catch((error) => {
+    setFormState((previousState) => ({ ...previousState, saving: true }));
+
+    api[edit === 'edit' ? 'put' : 'post']('/storage', form.values)
+      .then((response) => {
+        setFormState((previousState) => ({ ...previousState, saving: false, testing: false, tested: response.data.success }));
+        if (response.data.success) {
           notifications.show({
-            title: translate('FAIL'),
-            message: translate('TEST_CONNECTION_FAIL'),
-            color: 'danger.3',
+            title: translate('SUCCESS'),
+            message: translate(edit === 'edit' ? 'API_STORAGE_EDIT_SUCCESS' : 'API_STORAGE_ADD_SUCCESS'),
+            color: 'success.4',
           });
           closed();
+        }
+      })
+      .catch((error) => {
+        setFormState((previousState) => ({ ...previousState, saving: false, testing: false, tested: false }));
+        notifications.show({
+          title: translate('FAIL'),
+          message: translate(edit === 'edit' ? 'API_STORAGE_EDIT_FAIL' : 'API_STORAGE_ADD_FAIL'),
+          color: 'danger.3',
         });
-    setFormState({ ...initialFormStates, saving: false });
+        closed();
+      });
   };
   const handleCancel = (): void => {
     const value = (storage && edit === 'edit' && { ...storage, storageType: storage?.storageType, password: '' }) || initialValues;
@@ -216,7 +215,7 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
           )}
           {formState.tested && (
             <button className="btn btn-brand" onClick={handleSaveSubmit}>
-              {translate('SAVE')}
+              {formState.saving ? translate('SAVING...') : translate('SAVE')}
             </button>
           )}
         </div>

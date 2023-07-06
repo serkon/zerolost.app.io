@@ -1,6 +1,6 @@
 import './pool-list.component.scss';
 
-import { TextInput } from '@mantine/core';
+import { LoadingOverlay, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconEdit, IconPlus, IconSearch, IconTrash } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
@@ -23,40 +23,45 @@ interface State {
 }
 
 export const PoolList = (): React.ReactElement => {
+  const [loading, setLoading] = useState(false);
   const { translate } = useTranslate();
   const navigate = useNavigate();
   const [state, setState] = useState<State>({ mode: null, selectedPool: null, pools: [] });
   const { storageId, poolId } = useParams();
   const params = new URLSearchParams({ page: '0', size: '50' });
-  const getPoolList = useCallback(
-    () =>
-      api
-        .post('/pool/search', { storageId }, { params })
-        .then((items: AxiosResponse<HttpResponse<Pool[]>>) => {
-          const Pools = items.data.data;
+  const getPoolList = useCallback(() => {
+    setLoading(true);
 
-          if (Pools.length > 0) {
-            setState({ ...state, pools: Pools });
-            if (poolId) {
-              const found = Pools.find((pool) => pool.id === poolId);
+    return api
+      .post('/pool/search', { storageId }, { params })
+      .then((items: AxiosResponse<HttpResponse<Pool[]>>) => {
+        const Pools = items.data.data;
 
-              found && setState({ ...state, selectedPool: found });
-            } else {
-              setState({ ...state, selectedPool: Pools[0] });
-              navigate(`/storage/${storageId}/${Pools[0].id}`);
-            }
+        setLoading(false);
+        if (Pools.length > 0) {
+          setState((previousState) => ({ ...previousState, pools: Pools }));
+          if (poolId) {
+            const found = Pools.find((pool) => pool.id === poolId);
+
+            found && setState((previousState) => ({ ...previousState, selectedPool: found }));
+          } else {
+            setState((previousState) => ({ ...previousState, selectedPool: Pools[0] }));
+            navigate(`/storage/${storageId}/${Pools[0].id}`);
           }
-        })
-        .catch((error) => {
-          setState({ ...state, pools: [] });
-          notifications.show({
-            title: translate('FAIL'),
-            message: translate('API_POOL_LIST_GET_FAIL'),
-            color: 'danger.3',
-          });
-        }),
-    [storageId],
-  );
+        } else {
+          setState((previousState) => ({ ...previousState, pools: [] }));
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        setState({ ...state, pools: [] });
+        notifications.show({
+          title: translate('FAIL'),
+          message: translate('API_POOL_LIST_GET_FAIL'),
+          color: 'danger.3',
+        });
+      });
+  }, [storageId]);
   const toolbarAction = (type: 'add' | 'edit' | 'delete'): void => {
     setState({ ...state, mode: type });
   };
@@ -75,6 +80,7 @@ export const PoolList = (): React.ReactElement => {
 
   return (
     <>
+      <LoadingOverlay visible={loading} overlayBlur={2} />
       <div className="filter-area px-4 d-flex align-items-center">
         <h5 className="fw-extra-bold secondary-600 flex-grow-1">
           <span>{translate('AVAILABLE_POOLS')}</span>

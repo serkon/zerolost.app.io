@@ -1,7 +1,7 @@
 import './lune-list.component.scss';
 
 import { TextInput } from '@mantine/core';
-import { IconPlus, IconSearch, IconTrash } from '@tabler/icons-react';
+import { IconSearch } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -52,8 +52,9 @@ export const LuneList = (): React.ReactElement => {
           <span>{translate('LUNES_ON_SELECTED_POOL')}</span>
         </h5>
         {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
-        <TextInput type="text" placeholder={translate('SEARCH_IN_LUNES')} name="filter" size="sm" icon={<IconSearch size={16} />} className="me-2 filter-shadow" />
-        <div className="d-flex">
+        <TextInput type="text" placeholder={translate('SEARCH_IN_LUNES')} name="filter" size="sm" icon={<IconSearch size={16} />} className="filter-shadow" />
+        {/*
+          <div className="d-flex ms-2">
           <button className="btn btn-brand btn-ghost btn-sm">
             <IconTrash size={16} />
           </button>
@@ -61,6 +62,7 @@ export const LuneList = (): React.ReactElement => {
             <IconPlus size={16} />
           </button>
         </div>
+          */}
       </div>
       <div className="lune-card-list mx-4 secondary-500">
         {Lunes.map((lune: any) => (

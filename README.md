@@ -20,3 +20,14 @@ const initialValues2: FormData = {
   // id: 'c5df0827-b3d8-4a4d-9837-5a5cf56a144d',
 };
 ```
+
+### SCP
+
+service firewalld stop
+sudo systemctl start nginx
+sudo systemctl status nginx
+
+scp -pr \* root@192.168.1.12:/usr/share/nginx/html/.
+scp -pr root@192.168.1.12:/etc/nginx/nginx.conf ./
+scp -pr nginx.conf root@192.168.1.12:/etc/nginx/.
+18319000Ek\_

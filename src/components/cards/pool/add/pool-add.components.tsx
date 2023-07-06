@@ -1,4 +1,4 @@
-import { Modal, Select, TextInput } from '@mantine/core';
+import { LoadingOverlay, Modal, Select, TextInput } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import React, { useEffect, useState } from 'react';
@@ -41,8 +41,9 @@ interface ProfileOption {
 }
 
 interface FormInterface {
+  loading: boolean;
   formData: FormItems;
-  state: FormState;
+  status: FormState;
   chassis: ResponseMapper;
   profile: ProfileOption[];
   yupSchema: Yup.ObjectSchema<FormItems>;
@@ -60,7 +61,8 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
   const { storageId } = useParams();
   const appState = useSelector<RootState>((state): AppState => state.appStore) as AppState;
   const initial: FormInterface = {
-    state: {
+    loading: false,
+    status: {
       saving: false,
       saved: false,
     },
@@ -122,6 +124,8 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
   const form = useForm({ initialValues: initial.formData, validate: yupResolver(initial.yupSchema) });
   const [state, setState] = useState<FormInterface>(initial);
   const getChassis = (): void => {
+    setState((previousState) => ({ ...previousState, loading: true }));
+
     api
       .get('/chassis/storage/' + storageId)
       .then((response) => {
@@ -129,13 +133,13 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
           const arr: ResponseMapper = ['dataDiskList', 'cacheDiskList', 'logDiskList'].reduce(
             (acc, cur) => ({
               ...acc,
-              [cur]: response.data.chassis.flatMap((chassis: any, chassisIndex: number) =>
+              [cur]: response.data.data.chassis.flatMap((chassis: any, chassisIndex: number) =>
                 chassis[cur].flatMap((item: any, itemIndex: number) =>
                   item.disks.map((diskCount: number[], diskCountIndex: number) => ({
                     label: item.diskSizeName,
                     size: item.diskSizeName,
                     group: chassis.name,
-                    id: `${chassisIndex}-${chassis.name}-Disk${itemIndex + 1}-${diskCountIndex + 1}`,
+                    value: `${chassisIndex}-${chassis.name}-Disk${itemIndex + 1}-${diskCountIndex + 1}`,
                   })),
                 ),
               ),
@@ -143,11 +147,12 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
             { dataDiskList: [], cacheDiskList: [], logDiskList: [] },
           );
 
-          setState({ ...state, chassis: arr });
+          setState((previousState) => ({ ...previousState, loading: false, chassis: arr }));
         }
       })
       .catch((error) => {
         console.log(error);
+        setState((previousState) => ({ ...previousState, loading: false }));
       });
   };
   const handleSaveSubmit = async (): Promise<void> => {
@@ -155,10 +160,10 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
 
     // console.log('hasErrors', hasErrors, errors);
     if (hasErrors) return;
-    setState({ ...state, ...{ state: { saving: true, saved: false } } });
-    (edit === 'edit' ? api.put('/storage', form.values) : api.post('/storage', form.values))
+    setState((previousState) => ({ ...previousState, ...{ status: { saving: true, saved: false } } }));
+    (edit === 'edit' ? api.put('/pool', form.values) : api.post('/pool', form.values))
       .then((response) => {
-        setState({ ...state, ...{ state: { saving: false, saved: response.data.success === 200 } } });
+        setState((previousState) => ({ ...previousState, ...{ status: { saving: false, saved: response.data.success === 200 } } }));
         response.data.success === 200 &&
           notifications.show({
             title: translate('SUCCESS'),
@@ -167,7 +172,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
           });
       })
       .catch((error) => {
-        setState({ ...state, ...{ state: { saving: false, saved: false } } });
+        setState((previousState) => ({ ...previousState, ...{ status: { saving: false, saved: false } } }));
         notifications.show({
           title: translate('FAIL'),
           message: translate('TEST_CONNECTION_FAIL'),
@@ -188,8 +193,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
   }, []);
 
   useEffect(() => {
-    setState({ ...initial });
-    console.log('adasd');
+    setState((previousState) => ({ ...previousState, status: initial.status }));
   }, [form.values]);
 
   useEffect(() => {
@@ -212,18 +216,18 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
           blur: 1,
         }}
       >
+        <LoadingOverlay visible={state.loading} overlayBlur={2} />
         <p className="secondary-500 body-14 mb-4">{translate('ADD_POOL_MODAL_DESCRIPTION')}</p>
-        {JSON.stringify(form.values)}
         <TextInput sx={{ flexBasis: '30%', flexGrow: 1 }} label={translate('NAME')} placeholder={translate('PLACEHOLDER_NAME')} name="name" {...form.getInputProps('name')} className="mb-4" />
         <div className="d-flex flex-grow-1 gap-3 flex-column">
           {initial.formData.disks.map((disk, index) => (
             <React.Fragment key={index}>
               {/* <label className="secondary-600 caption-14 mt-4 mb-2 fw-semibold">{translate(upperCase(disk.type + '_TYPE'))}</label> */}
               <div className="d-flex flex-wrap gap-2 column-gap-4">
-                {initial.chassis[`${disk.type}DiskList`].length > 0 && (
+                {state.chassis[`${disk.type}DiskList`].length > 0 && (
                   <>
-                    <CheckboxDropdown options={initial.chassis[`${disk.type}DiskList`]} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
-                    <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={initial.profile} {...form.getInputProps(`disks.${index}.profile`)} />
+                    <CheckboxDropdown options={state.chassis[`${disk.type}DiskList`]} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
+                    <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={state.profile} {...form.getInputProps(`disks.${index}.profile`)} />
                   </>
                 )}
               </div>
@@ -241,7 +245,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
             {translate('CANCEL')}
           </button>
           <button className="btn btn-brand" onClick={handleSaveSubmit}>
-            {translate(state.state.saving ? 'SAVING' : 'SAVE')}
+            {translate(state.status.saving ? 'SAVING' : 'SAVE')}
           </button>
         </div>
       </Modal>

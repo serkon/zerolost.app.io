@@ -23,6 +23,6 @@ export const AppConfig = {
     delete: true,
   },
   notification: {
-    timeout: 2000,
+    timeout: 4000,
   },
 };

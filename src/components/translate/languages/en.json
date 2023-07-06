@@ -76,6 +76,7 @@
   "PLACEHOLDER_SELECT_DISK(S)": "Select Disk(s)",
   "CANCEL": "Cancel",
   "SAVE": "Save",
+  "SAVING...": "Saving...",
   "TEST": "Test",
   "TESTING...": "Testing...",
   "VALIDATION_EMAIL_FORMAT": "Enter valid email",
@@ -123,6 +124,7 @@
   "API_POOL_LIST_GET_FAIL": "Failed to get pool list",
   "DELETE_STORAGE": "Delete Storage",
   "DELETE_STORAGE_MODAL_DESCRIPTION": "Are you sure you want to delete the <b>{storage}</b> storage? This action cannot be undone and will permanently remove all data associated with the storage.",
-
+  "API_STORAGE_EDIT_SUCCESS": "Storage edited successfully",
+  "API_STORAGE_EDIT_FAIL": "Failed to edit storage",
   "": ""
 }
