@@ -11,7 +11,7 @@ import { Lune, LuneCard } from 'src/components/cards/lune/card/lune-card.compone
 import { useTranslate } from 'src/components/translate/translate.component';
 import { More } from 'src/screens/storage/overview/overview.component';
 
-import Lunes from './lune.sample.json';
+// import Lunes from './lune.sample.json';
 
 export const LuneList = (): React.ReactElement => {
   const { translate } = useTranslate();
@@ -31,11 +31,12 @@ export const LuneList = (): React.ReactElement => {
     if (poolId) {
       getLuneList()
         .then((items: AxiosResponse<HttpResponse<Lune[]>>) => {
-          // TODO: const Lunes = items.data.data;
+          const Lunes = items.data.data;
+
           if (Lunes.length > 0) {
-            setLunes(Lunes as Lune[]);
+            setLunes(Lunes);
             if (!selectedLune) {
-              setSelectedLune(Lunes[0] as Lune);
+              setSelectedLune(Lunes[0]);
             }
           }
         })
@@ -65,7 +66,7 @@ export const LuneList = (): React.ReactElement => {
           */}
       </div>
       <div className="lune-card-list mx-4 secondary-500">
-        {Lunes.map((lune: any) => (
+        {lunes.map((lune: any) => (
           <LuneCard value={lune} key={lune.id} onClick={onClickHandler.bind(null, lune)} selected={selectedLune?.id === lune.id} />
         ))}
         <More />

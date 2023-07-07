@@ -35,17 +35,12 @@ interface FormState {
   saved: boolean;
 }
 
-interface ProfileOption {
-  value: string;
-  label: string;
-}
-
 interface FormInterface {
   loading: boolean;
   formData: FormItems;
   status: FormState;
   chassis: ResponseMapper;
-  profile: ProfileOption[];
+  profiles: ResponseMapper;
   yupSchema: Yup.ObjectSchema<FormItems>;
 }
 
@@ -59,7 +54,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
   const { translate } = useTranslate();
   const { upperCase } = useTextTransform();
   const { storageId } = useParams();
-  const appState = useSelector<RootState>((state): AppState => state.appStore) as AppState;
+  const appState = (useSelector<RootState>((state): AppState => state.appStore) as AppState).profile.map((option) => ({ value: option.value, label: translate(option.label) }));
   const initial: FormInterface = {
     loading: false,
     status: {
@@ -92,7 +87,11 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
       cacheDiskList: [],
       logDiskList: [],
     },
-    profile: appState.profile.map((option) => ({ value: option.value, label: translate(option.label) })),
+    profiles: {
+      dataDiskList: [...appState],
+      cacheDiskList: [...appState],
+      logDiskList: [...appState],
+    },
     yupSchema: Yup.object().shape({
       id: Yup.string(),
       name: Yup.string().required(translate('VALIDATION_NAME_REQUIRED')),
@@ -187,9 +186,25 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
     form.setValues(value);
     // form.reset();
   };
+  const handleProfileChange = (value: Option[], disk: string): void => {
+    api.get('/pool/profile/' + value.length).then((response) => {
+      const filteredProfile = [appState.find((item) => item.value === '')];
+
+      response.data.data.forEach((value: string) => {
+        const match = appState.find((item) => item.value === value);
+
+        if (match) {
+          filteredProfile.push(match);
+        }
+      });
+
+      setState((previousState) => ({ ...previousState, profiles: { ...previousState.profiles, [`${disk}DiskList` as keyof ResponseMapper]: filteredProfile } }));
+    });
+  };
 
   useEffect(() => {
     getChassis();
+    console.log(state);
   }, []);
 
   useEffect(() => {
@@ -226,8 +241,14 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
               <div className="d-flex flex-wrap gap-2 column-gap-4">
                 {state.chassis[`${disk.type}DiskList`].length > 0 && (
                   <>
-                    <CheckboxDropdown options={state.chassis[`${disk.type}DiskList`]} placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')} label={translate(`${upperCase(disk.type)}_TYPE`)} {...form.getInputProps(`disks.${index}.chassis`)} />
-                    <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={state.profile} {...form.getInputProps(`disks.${index}.profile`)} />
+                    <CheckboxDropdown
+                      options={state.chassis[`${disk.type}DiskList`]}
+                      placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')}
+                      label={translate(`${upperCase(disk.type)}_TYPE`)}
+                      {...form.getInputProps(`disks.${index}.chassis`)}
+                      onUpdate={(value): void => handleProfileChange(value, disk.type)}
+                    />
+                    <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={state.profiles[`${disk.type}DiskList`]} {...form.getInputProps(`disks.${index}.profile`)} />
                   </>
                 )}
               </div>

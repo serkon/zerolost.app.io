@@ -31,3 +31,7 @@ scp -pr \* root@192.168.1.12:/usr/share/nginx/html/.
 scp -pr root@192.168.1.12:/etc/nginx/nginx.conf ./
 scp -pr nginx.conf root@192.168.1.12:/etc/nginx/.
 18319000Ek\_
+
+### TODO:
+
+- profile için "https://api.opscycle.com/opscycle-api/api/pool/profile/123123" adresinden disk tiplerini seçelim

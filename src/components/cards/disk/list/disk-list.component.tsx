@@ -1,7 +1,7 @@
 import './disk-card.component.scss';
 
 import { TextInput } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { IconMinus, IconPlus, IconSearch, IconTrash } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -17,8 +17,7 @@ export const DiskList = (): React.ReactElement => {
   const [selectedDisk, setSelectedDisk] = useState<Disk | null>(null);
   const { poolId } = useParams();
   const params = new URLSearchParams({ page: '0', size: '8' });
-  // TODO: '/disk/search'
-  const getDiskList = useCallback(() => api.post('/disk/search', { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6' }, { params }), [poolId]);
+  const getDiskList = useCallback(() => api.post('/disk/search', { id: poolId }, { params }), [poolId]);
 
   useEffect(() => {
     if (poolId) {
@@ -27,9 +26,9 @@ export const DiskList = (): React.ReactElement => {
           const Disks = items.data.data;
 
           if (Disks.length > 0) {
-            setDisks(Disks as Disk[]);
+            setDisks(Disks);
             if (!selectedDisk) {
-              setSelectedDisk(Disks[0] as Disk);
+              setSelectedDisk(Disks[0]);
             }
           }
         })
@@ -54,16 +53,19 @@ export const DiskList = (): React.ReactElement => {
         </h5>
         {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
         <TextInput type="text" placeholder={translate('SEARCH_IN_PHYSICAL_DISKS')} name="filter" size="sm" icon={<IconSearch size={16} />} className="filter-shadow" />
-        {/*
-        <div className="d-flex ms-2">
-          <button className="btn btn-brand btn-ghost btn-sm">
-            <IconTrash size={16} />
-          </button>
-          <button className="btn btn-brand btn-ghost btn-sm">
-            <IconPlus size={16} />
-          </button>
-        </div>
-        */}
+        {
+          <div className="d-flex ms-2">
+            <button className="btn btn-brand btn-ghost btn-sm">
+              <IconMinus size={16} />
+            </button>
+            <button className="btn btn-brand btn-ghost btn-sm">
+              <IconPlus size={16} />
+            </button>
+            <button className="btn btn-brand btn-ghost btn-sm">
+              <IconTrash size={16} />
+            </button>
+          </div>
+        }
       </div>
       <div className="disk-card-list mx-4 secondary-500">
         {disks.map((disk: any) => (

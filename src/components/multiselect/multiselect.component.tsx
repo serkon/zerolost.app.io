@@ -15,12 +15,13 @@ interface CheckboxDropdownProps {
   options: Option[];
   value: Option[];
   onChange: (value: Option[]) => void;
+  onUpdate: (value: Option[]) => void;
   label?: string;
   placeholder?: string;
   error?: string;
 }
 
-export const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options, value, onChange, label, placeholder, error, ...rest }) => {
+export const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options, value, onChange, onUpdate: onDataChanged, label, placeholder, error, ...rest }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>('');
   const ref = useRef<HTMLDivElement>(null);
@@ -47,11 +48,16 @@ export const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({ options, val
 
   const handleCheck = (optionValue: Option): void => {
     const isSelected = value.find((item: Option) => item.value === optionValue.value);
+    const val = isSelected ? value.filter((item: Option) => item.value !== optionValue.value) : [...value, optionValue];
 
-    onChange(isSelected ? value.filter((item: Option) => item.value !== optionValue.value) : [...value, optionValue]);
+    onChange(val);
+    onDataChanged(val);
   };
   const handleCheckAll = (): void => {
-    onChange(value.length === filteredOptions.length ? [] : filteredOptions);
+    const val = value.length === filteredOptions.length ? [] : filteredOptions;
+
+    onChange(val);
+    onDataChanged(val);
   };
   const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(filter.toLowerCase()));
   const groups = Array.from(new Set(filteredOptions.map((item) => item.group)));
