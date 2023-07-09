@@ -21,11 +21,12 @@ interface PoolAddProps {
 }
 
 interface FormItems {
-  id?: string;
+  poolId?: string;
+  storageId: string;
   name: string;
   disks: {
     type: 'data' | 'cache' | 'log';
-    chassis: Option[];
+    chassises: Option[];
     profile?: Profile | string;
   }[];
 }
@@ -50,6 +51,16 @@ interface ResponseMapper {
   logDiskList: Option[];
 }
 
+interface Chassis extends Option {
+  name: string;
+  size: string;
+  count: number;
+}
+
+interface Groups {
+  [key: string]: Chassis;
+}
+
 export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.ReactElement => {
   const { translate } = useTranslate();
   const { upperCase } = useTextTransform();
@@ -62,22 +73,23 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
       saved: false,
     },
     formData: {
-      id: '',
+      poolId: '',
+      storageId: storageId ? storageId : '',
       name: '',
       disks: [
         {
           type: 'data',
-          chassis: [],
+          chassises: [],
           profile: '',
         },
         {
           type: 'cache',
-          chassis: [],
+          chassises: [],
           profile: '',
         },
         {
           type: 'log',
-          chassis: [],
+          chassises: [],
           profile: '',
         },
       ],
@@ -93,13 +105,14 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
       logDiskList: [...appState],
     },
     yupSchema: Yup.object().shape({
-      id: Yup.string(),
+      poolId: Yup.string(),
+      storageId: Yup.string().required(),
       name: Yup.string().required(translate('VALIDATION_NAME_REQUIRED')),
       disks: Yup.array()
         .of(
           Yup.object().shape({
             type: Yup.string().oneOf(['data', 'log', 'cache']).required(translate('VALIDATION_DISK_TYPE_REQUIRED')),
-            chassis: Yup.array()
+            chassises: Yup.array()
               .test('chassis-test', translate('VALIDATION_CHASSIS_DISK_REQUIRED'), function(value) {
                 const { type } = this.parent;
                 const state = type === 'data' ? Yup.array().min(1, translate('VALIDATION_CHASSIS_DISK_REQUIRED')).required() : Yup.array().notRequired();
@@ -110,8 +123,8 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
               .required('Chassis is required'),
             // profile: Yup.string().required('Profile is required'),
             profile: Yup.string().test('profile-test', translate('VALIDATION_PROFILE_REQUIRED'), function(value) {
-              const { type, chassis } = this.parent;
-              const state = type === 'data' ? Yup.string().required().notOneOf([''], 'Profile cannot be an empty string or null') : chassis.length > 0 ? Yup.string().required() : Yup.string().notRequired();
+              const { type, chassises } = this.parent;
+              const state = type === 'data' ? Yup.string().required().notOneOf([''], 'Profile cannot be an empty string or null') : chassises.length > 0 ? Yup.string().required() : Yup.string().notRequired();
 
               return state.isValidSync(value);
             }),
@@ -124,7 +137,6 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
   const [state, setState] = useState<FormInterface>(initial);
   const getChassis = (): void => {
     setState((previousState) => ({ ...previousState, loading: true }));
-
     api
       .get('/chassis/storage/' + storageId)
       .then((response) => {
@@ -157,30 +169,50 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
   const handleSaveSubmit = async (): Promise<void> => {
     const { hasErrors, errors } = form.validate();
 
-    // console.log('hasErrors', hasErrors, errors);
-    if (hasErrors) return;
-    setState((previousState) => ({ ...previousState, ...{ status: { saving: true, saved: false } } }));
-    (edit === 'edit' ? api.put('/pool', form.values) : api.post('/pool', form.values))
-      .then((response) => {
-        setState((previousState) => ({ ...previousState, ...{ status: { saving: false, saved: response.data.success === 200 } } }));
-        response.data.success === 200 &&
+    if (!hasErrors) {
+      console.log('form: ', form.values);
+
+      const newFormValue: FormItems = {
+        ...form.values,
+        disks: form.values.disks.map((disk) => ({
+          ...disk,
+          chassises: Object.values(
+            disk.chassises.reduce((groups: Groups, disk) => {
+              const key = `${disk.group}-${disk.size}`;
+
+              groups[key] = groups[key] || { name: disk.group, size: disk.size, count: 0 };
+              groups[key].count++;
+
+              return groups;
+            }, {}),
+          ),
+        })),
+      };
+
+      setState((previousState) => ({ ...previousState, ...{ status: { saving: true, saved: false } } }));
+      (edit === 'edit' ? api.put('/pool', newFormValue) : api.post('/pool', newFormValue))
+        .then((response) => {
+          setState((previousState) => ({ ...previousState, ...{ status: { saving: false, saved: response.data.success === 200 } } }));
+          response.data.success &&
+            notifications.show({
+              title: translate('SUCCESS'),
+              message: translate(edit === 'edit' ? 'API_POOL_EDIT_SUCCESS' : 'API_POOL_ADD_SUCCESS'),
+              color: 'success.4',
+            });
+          closed();
+        })
+        .catch((error) => {
+          setState((previousState) => ({ ...previousState, ...{ status: { saving: false, saved: false } } }));
           notifications.show({
-            title: translate('SUCCESS'),
-            message: translate('TEST_CONNECTION_SUCCESS'),
-            color: 'success.4',
+            title: translate('FAIL'),
+            message: translate(edit === 'edit' ? 'API_POOL_EDIT_FAIL' : 'API_POOL_ADD_FAIL'),
+            color: 'danger.3',
           });
-      })
-      .catch((error) => {
-        setState((previousState) => ({ ...previousState, ...{ status: { saving: false, saved: false } } }));
-        notifications.show({
-          title: translate('FAIL'),
-          message: translate('TEST_CONNECTION_FAIL'),
-          color: 'danger.3',
         });
-      });
+    }
   };
   const handleCancel = (): void => {
-    const value: FormItems = (pool && edit === 'edit' && { ...state.formData, ...{ id: pool.id, name: pool.name } }) || state.formData;
+    const value: FormItems = (pool && edit === 'edit' && { ...state.formData, ...{ poolId: pool.id, name: pool.name } }) || state.formData;
 
     form.reset();
     form.setValues(value);
@@ -204,7 +236,6 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
 
   useEffect(() => {
     getChassis();
-    console.log(state);
   }, []);
 
   useEffect(() => {
@@ -245,7 +276,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
                       options={state.chassis[`${disk.type}DiskList`]}
                       placeholder={translate('PLACEHOLDER_SELECT_DISK(S)')}
                       label={translate(`${upperCase(disk.type)}_TYPE`)}
-                      {...form.getInputProps(`disks.${index}.chassis`)}
+                      {...form.getInputProps(`disks.${index}.chassises`)}
                       onUpdate={(value): void => handleProfileChange(value, disk.type)}
                     />
                     <Select sx={{ flexGrow: 1 }} label={translate('PROFILE')} placeholder={translate('PLACEHOLDER_PROFILE')} name="profile" data={state.profiles[`${disk.type}DiskList`]} {...form.getInputProps(`disks.${index}.profile`)} />
