@@ -15,6 +15,7 @@ import { ScrollTo } from 'src/components/scroll/scroll.component';
 import { Translate } from 'src/components/translate/translate.component';
 import reportWebVitals from 'src/reportWebVitals';
 import { AboutScreen } from 'src/screens/about/about.screen';
+import { ScreenHostOverview } from 'src/screens/host/overview/overview.component';
 import { ScreenStorageOverview } from 'src/screens/storage/overview/overview.component';
 import { store } from 'src/store/store';
 
@@ -38,6 +39,7 @@ const Content = (): React.JSX.Element => (
               <Route path="/" element={<App />}>
                 <Route path="" element={<Navigate to="storage" />} />
                 <Route path="storage/:storageId?/:poolId?" element={<ScreenStorageOverview />} />
+                <Route path="host/:hostId?" element={<ScreenHostOverview />} />
                 <Route
                   path="about"
                   element={

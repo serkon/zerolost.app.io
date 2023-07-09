@@ -5,14 +5,15 @@ import { IconArrowsLeftRight, IconEdit, IconFilter, IconMessageCircle, IconPhoto
 import React, { useCallback, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
+import { HostList } from 'src/components/cards/host/list/host-list.component';
 import { PoolList } from 'src/components/cards/pool/list/pool-list.component';
-import { ListRef, StorageList, ToolbarActions } from 'src/components/cards/storage/list/storage-list.component';
+import { ListRef, ToolbarActions } from 'src/components/cards/storage/list/storage-list.component';
 import { Header } from 'src/components/header/header.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 
-export const ScreenStorageOverview = (): React.ReactElement => {
+export const ScreenHostOverview = (): React.ReactElement => {
   const { translate } = useTranslate();
-  const { storageId } = useParams();
+  const { hostId } = useParams();
   const [query, setQuery] = React.useState<string>('');
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
@@ -37,7 +38,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
     <>
       <div className="list-items-container">
         <section className="list-items-header px-3">
-          <h2 className="h2 fw-extra-bold secondary-500">{translate('STORAGES')}</h2>
+          <h2 className="h2 fw-extra-bold secondary-500">{translate('HOSTS')}</h2>
           <p className="m-0 secondary-400 fw-light caption-14">{translate('SLOGAN')}</p>
         </section>
         <section className="filter px-3">
@@ -108,7 +109,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
         </section>
         <section className="item-list">
           <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
-            <StorageList ref={listRef} />
+            <HostList ref={listRef} />
             <div className="actions d-flex">
               <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }} onClick={handleAddClick.bind(null, 'add')}>
                 {translate('ADD_NEW_STORAGE')}
@@ -120,7 +121,8 @@ export const ScreenStorageOverview = (): React.ReactElement => {
       <div className={`screen-detail-container d-flex flex-column gap-4 pb-5`} onScroll={handleScroll}>
         <Header className={`scrollable-element ${scrolled ? 'scrolled' : ''}`} />
         <p className="body-16 px-4 secondary-400 m-0">{translate('STORAGE_DESCRIPTION')}</p>
-        {storageId && <PoolList />}
+        {hostId}
+        {hostId && <PoolList />}
       </div>
     </>
   );

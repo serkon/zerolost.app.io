@@ -26,7 +26,7 @@
   "LUNES_ON_SELECTED_POOL": "Lunes on selected pool",
   "STORAGE": "Storage",
   "STORAGES": "Storages",
-  "STORAGES_SLOGAN": "No data will be lost, never you will be code",
+  "SLOGAN": "No data will be lost, never you will be code",
   "STORAGE_DESCRIPTION": "Add Storage ile alınmıs olan ve veritabanına kayır edilmiş veriler burada gösterilecek .Bu sayfa belli aralıklarla refresh edilecek. Refresh edilme işlemi manual veya yukarda bir secenekle ; 30 sn , 60 sn ,90 sn ve manuel olarak secilebilir. İligili metrikler fetchedilecek ve gösterimle beraber veritabanına kayıt edilecek.",
   "POOL_DISK_TYPE_data": "Data",
   "POOL_DISK_TYPE_log": "Log",
@@ -132,5 +132,6 @@
   "DELETE_STORAGE_MODAL_DESCRIPTION": "Are you sure you want to delete the <b>{storage}</b> storage? This action cannot be undone and will permanently remove all data associated with the storage.",
   "API_STORAGE_EDIT_SUCCESS": "Storage edited successfully",
   "API_STORAGE_EDIT_FAIL": "Failed to edit storage",
+  "HOSTS": "Hosts",
   "": ""
 }

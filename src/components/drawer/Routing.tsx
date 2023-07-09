@@ -11,34 +11,12 @@ export const RouteList = [
   {
     path: '/dashboard',
     title: 'Dashboard',
-    component: PageNotFound,
     icon: 'ti-dashboard',
   },
   {
     path: '/storage',
     title: 'Storage',
-    component: PageNotFound,
     icon: 'ti-folder',
-    children: [
-      {
-        path: '/overview',
-        title: 'Overview',
-        component: PageNotFound,
-        icon: 'ti-point',
-      },
-      {
-        path: '/getting-started',
-        title: 'Getting Started',
-        component: PageNotFound,
-        icon: 'ti-point',
-      },
-      {
-        path: '/installation',
-        title: 'Installation',
-        component: PageNotFound,
-        icon: 'ti-point',
-      },
-    ],
   },
   {
     path: '/host',

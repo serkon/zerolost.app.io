@@ -48,8 +48,10 @@ interface MenuProps {
 
 export const Menu = ({ items, isOpen, isSubMenu, isHidden = false }: MenuProps): React.JSX.Element => {
   const [hide, setHide] = useState<number[]>([]);
+  const navigate = useNavigate();
   const handleClick = useCallback(
     (route: RouteItems, key: number) => {
+      route.path && navigate(route.path);
       hide.includes(key) ? setHide(hide.filter((itemKey) => itemKey !== key)) : setHide([...hide, key]);
     },
     [hide],
