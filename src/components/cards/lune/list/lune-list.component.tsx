@@ -24,7 +24,7 @@ export const LuneList = (): React.ReactElement => {
     [selectedLune],
   );
   const { poolId } = useParams();
-  const params = new URLSearchParams({ page: '0', size: '8' });
+  const params = new URLSearchParams({ page: '0', size: '50' });
   const getLuneList = useCallback(() => api.post('/lun/search', { poolId }, { params }), [poolId]);
 
   useEffect(() => {

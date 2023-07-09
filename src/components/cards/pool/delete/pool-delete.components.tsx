@@ -32,7 +32,7 @@ export const PoolDelete = ({ opened, closed, pool }: PoolDeleteProps): React.Rea
         setState({ ...state, deleting: false, deleted: false });
         notifications.show({
           title: translate('FAIL'),
-          message: translate('API_POOL_DELETE_FAIL'),
+          message: error.response.data.message,
           color: 'danger.3',
         });
         closed();

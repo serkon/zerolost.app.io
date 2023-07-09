@@ -16,7 +16,7 @@ export const DiskList = (): React.ReactElement => {
   const [disks, setDisks] = useState<Disk[]>([]);
   const [selectedDisk, setSelectedDisk] = useState<Disk | null>(null);
   const { poolId } = useParams();
-  const params = new URLSearchParams({ page: '0', size: '8' });
+  const params = new URLSearchParams({ page: '0', size: '50' });
   const getDiskList = useCallback(() => api.post('/disk/search', { id: poolId }, { params }), [poolId]);
 
   useEffect(() => {
