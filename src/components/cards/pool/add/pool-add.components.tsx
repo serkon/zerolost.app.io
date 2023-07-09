@@ -297,7 +297,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
           >
             {translate('CANCEL')}
           </button>
-          <button className="btn btn-brand" onClick={handleSaveSubmit}>
+          <button className="btn btn-brand" onClick={handleSaveSubmit} disabled={state.status.saving}>
             {translate(state.status.saving ? 'SAVING' : 'SAVE')}
           </button>
         </div>
