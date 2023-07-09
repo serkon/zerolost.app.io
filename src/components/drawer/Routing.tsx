@@ -1,13 +1,14 @@
 import { PageNotFound } from 'src/components/http/not-found.page';
 
 export interface RouteItems {
-  path: string;
+  path?: string;
   title: string;
   icon: string;
   children?: RouteItems[];
+  component?: any;
 }
 
-export const RouteList = [
+export const RouteList: RouteItems[] = [
   {
     path: '/dashboard',
     title: 'Dashboard',
@@ -31,7 +32,6 @@ export const RouteList = [
     icon: 'ti-git-merge',
   },
   {
-    path: '/compliance',
     title: 'Compliance',
     component: PageNotFound,
     icon: 'ti-ship',
@@ -63,7 +63,6 @@ export const RouteList = [
     ],
   },
   {
-    path: '/protection',
     title: 'Protection',
     component: PageNotFound,
     icon: 'ti-shield-check',
@@ -89,7 +88,6 @@ export const RouteList = [
     ],
   },
   {
-    path: '/runbook',
     title: 'Runbook',
     component: PageNotFound,
     icon: 'ti-run',
@@ -127,7 +125,6 @@ export const RouteList = [
     icon: 'ti-cloud',
   },
   {
-    path: '/history',
     title: 'History',
     component: PageNotFound,
     icon: 'ti-history',
@@ -147,7 +144,6 @@ export const RouteList = [
     ],
   },
   {
-    path: '/management',
     title: 'Management',
     component: PageNotFound,
     icon: 'ti-settings',
