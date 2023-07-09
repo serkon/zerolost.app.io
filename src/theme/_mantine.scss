@@ -92,3 +92,18 @@ Modal
 .modal-footer {
   gap: 12px;
 }
+/**
+Notification
+*/
+
+.mantine-Notification-root {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 30%);
+
+  .mantine-Notification-title {
+    margin-bottom: 6px;
+    color: var(--secondary-500);
+    font-weight: 600;
+
+    @extend .h4;
+  }
+}

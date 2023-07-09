@@ -13,7 +13,7 @@ interface StorageDeleteProps {
 
 export const StorageDelete = ({ opened, closed, storage }: StorageDeleteProps): React.ReactElement => {
   const { translate } = useTranslate();
-  const [state, setState] = useState({ deleting: false, deleted: false });
+  const [state, setState] = useState({ deleting: false, deleted: false, name: '' });
   const handleSaveSubmit = async (): Promise<void> => {
     setState({ ...state, deleting: true, deleted: false });
     api
@@ -32,7 +32,8 @@ export const StorageDelete = ({ opened, closed, storage }: StorageDeleteProps): 
         setState({ ...state, deleting: false, deleted: false });
         notifications.show({
           title: translate('FAIL'),
-          message: translate('API_STORAGE_DELETE_FAIL'),
+          autoClose: false,
+          message: error.response.data.message,
           color: 'danger.3',
         });
         closed();
@@ -56,11 +57,19 @@ export const StorageDelete = ({ opened, closed, storage }: StorageDeleteProps): 
         }}
       >
         <p className="secondary-500 body-14 mb-4" dangerouslySetInnerHTML={{ __html: translate('DELETE_STORAGE_MODAL_DESCRIPTION', { storage: storage?.name }) }} />
+        <input
+          className="form-control form-control-sm"
+          placeholder={translate('TYPE_STORAGE_NAME')}
+          defaultValue=""
+          onChange={(e): void => {
+            setState((previousState) => ({ ...previousState, name: e.target.value }));
+          }}
+        />
         <div className="modal-footer d-flex mt-4">
           <button className="btn btn-brand btn-ghost" onClick={(): void => closed()}>
             {translate('CANCEL')}
           </button>
-          <button className="btn btn-danger" onClick={handleSaveSubmit}>
+          <button className="btn btn-danger" onClick={handleSaveSubmit} disabled={state.deleting || state.name !== storage.name}>
             {translate(state.deleting ? 'DELETING' : 'DELETE')}
           </button>
         </div>

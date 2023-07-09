@@ -127,7 +127,8 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
         setFormState((previousState) => ({ ...previousState, saving: false, testing: false, tested: false }));
         notifications.show({
           title: translate('FAIL'),
-          message: translate(edit === 'edit' ? 'API_STORAGE_EDIT_FAIL' : 'API_STORAGE_ADD_FAIL'),
+          autoClose: false,
+          message: error.response.data.message, // translate(edit === 'edit' ? 'API_STORAGE_EDIT_FAIL' : 'API_STORAGE_ADD_FAIL'),
           color: 'danger.3',
         });
         closed();
@@ -214,7 +215,7 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
             </button>
           )}
           {formState.tested && (
-            <button className="btn btn-brand" onClick={handleSaveSubmit}>
+            <button className="btn btn-brand" onClick={handleSaveSubmit} disabled={formState.saving}>
               {formState.saving ? translate('SAVING...') : translate('SAVE')}
             </button>
           )}

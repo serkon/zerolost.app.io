@@ -205,7 +205,8 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
           setState((previousState) => ({ ...previousState, ...{ status: { saving: false, saved: false } } }));
           notifications.show({
             title: translate('FAIL'),
-            message: translate(edit === 'edit' ? 'API_POOL_EDIT_FAIL' : 'API_POOL_ADD_FAIL'),
+            autoClose: false,
+            message: error.response.data.message, // translate(edit === 'edit' ? 'API_POOL_EDIT_FAIL' : 'API_POOL_ADD_FAIL'),
             color: 'danger.3',
           });
         });
