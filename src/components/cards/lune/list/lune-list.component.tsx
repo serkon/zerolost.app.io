@@ -36,12 +36,14 @@ export const LuneList = (): React.ReactElement => {
           if (Lunes.length > 0) {
             setLunes(Lunes);
             if (!selectedLune) {
-              setSelectedLune(Lunes[0]);
+              setSelectedLune(() => Lunes[0]);
             }
+          } else {
+            setLunes(() => []);
           }
         })
         .catch((error) => {
-          setLunes([]);
+          setLunes(() => []);
         });
     }
   }, [poolId]);

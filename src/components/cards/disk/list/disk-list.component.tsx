@@ -26,14 +26,16 @@ export const DiskList = (): React.ReactElement => {
           const Disks = items.data.data;
 
           if (Disks.length > 0) {
-            setDisks(Disks);
+            setDisks(() => Disks);
             if (!selectedDisk) {
-              setSelectedDisk(Disks[0]);
+              setSelectedDisk(() => Disks[0]);
             }
+          } else {
+            setDisks(() => []);
           }
         })
         .catch((error) => {
-          setDisks([]);
+          setDisks(() => []);
         });
     }
   }, [poolId]);
