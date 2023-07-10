@@ -3,7 +3,7 @@ import { IconArrowsLeftRight, IconEdit, IconFilter, IconMessageCircle, IconPhoto
 import { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
-import { useStore } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import { api } from 'src/components/authentication/authenticator.interceptor';
@@ -14,7 +14,8 @@ import { StorageDelete } from 'src/components/cards/storage/delete/storage-delet
 import { useTranslate } from 'src/components/translate/translate.component';
 import useTextTransform from 'src/hooks/case';
 import { set_app_header } from 'src/store/reducers/app.reducer';
-import { set_storages } from 'src/store/reducers/data.reducer';
+import { DataState, set_storages } from 'src/store/reducers/data.reducer';
+import { RootState } from 'src/store/store';
 
 export type ToolbarActions = 'add' | 'edit' | 'delete' | null;
 
@@ -28,9 +29,6 @@ export interface StorageProps {}
 
 export interface StorageState {
   mode: ToolbarActions;
-  selectedStorage: Storage | null;
-  storages: Storage[];
-  loading: boolean;
 }
 
 export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React.ReactElement => {
@@ -38,14 +36,12 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
   const { titleCase } = useTextTransform();
   const navigate = useNavigate();
   const store = useStore();
+  const dataState = useSelector<RootState>((state): DataState => state.dataStore) as DataState;
   const [query, setQuery] = React.useState<string>('');
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const [sorting, setSorting] = useState(false);
   const [state, setState] = useState<StorageState>({
     mode: null,
-    selectedStorage: null,
-    storages: [],
-    loading: false,
   });
   const { storageId } = useParams();
   const storagesToolbarAction = (type: ToolbarActions): void => {
@@ -58,32 +54,27 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
     // TODO: çoklu sort şu şekilde yapılıyormuş  -->   ?page=0&size=10&sort=name,desc&sort=port,asc
     const params = { page: '0', size: '50', sort: ['name', `${sorting ? 'asc' : 'desc'}`].join(',') };
 
-    setState((prevState) => ({ ...prevState, loading: true }));
+    store.dispatch(set_storages({ list: [], selected: null, loading: true }));
     api
       .post('/storage/search', {}, { params })
       .then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
         const Storages = items.data.data;
 
-        setState((prevState) => ({ ...prevState, loading: false }));
         if (Storages.length > 0) {
-          setState((prevState) => ({ ...prevState, storages: Storages }));
-          store.dispatch(set_storages(Storages));
           if (storageId) {
-            const found = Storages.find((storage) => storage.id === storageId);
+            const found = Storages.find((storage) => storage.id === storageId) || null;
 
-            found && setState((prevState) => ({ ...prevState, selectedStorage: found }));
+            store.dispatch(set_storages({ list: Storages, selected: found, loading: false }));
           } else {
-            setState((prevState) => ({ ...prevState, selectedStorage: Storages[0] }));
+            store.dispatch(set_storages({ list: Storages, selected: Storages[0], loading: false }));
             navigate('/storage/' + Storages[0].id);
           }
         } else {
-          store.dispatch(set_storages([]));
-          setState((previousState) => ({ ...previousState, selectedStorage: null, storages: [] }));
+          store.dispatch(set_storages({ list: [], selected: null, loading: false }));
         }
       })
       .catch((error) => {
-        store.dispatch(set_storages([]));
-        setState((prevState) => ({ ...prevState, loading: false, storages: [] }));
+        store.dispatch(set_storages({ list: [], selected: null, loading: false }));
       });
   };
 
@@ -100,26 +91,26 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
   }, [state.mode]);
 
   useEffect(() => {
-    if (state.selectedStorage) {
+    if (dataState.storage.selected) {
       // TODO: add set header hook
       store.dispatch(
         set_app_header({
-          title: titleCase(state.selectedStorage.name),
+          title: titleCase(dataState.storage.selected.name),
           label: translate('CREATED'),
-          value: `${dayjs(state.selectedStorage.createdDate).format('MMMM D, YYYY h:mm A')}`,
+          value: `${dayjs(dataState.storage.selected.createdDate).format('MMMM D, YYYY h:mm A')}`,
         }),
       );
     }
-  }, [state.selectedStorage]);
+  }, [dataState.storage.selected]);
 
   const onSelectStorage = (storage: Storage): void => {
-    setState({ ...state, selectedStorage: storage });
+    store.dispatch(set_storages({ list: dataState.storage.list, selected: storage, loading: false }));
     navigate('/storage/' + storage.id);
   };
 
   return (
     <>
-      {state.storages.length > 0 && (
+      {dataState.storage.list.length > 0 && (
         <>
           <div className="list-items-container">
             <section className="list-items-header px-3">
@@ -200,11 +191,11 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
             </section>
             <section className="item-list">
               <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
-                <LoadingOverlay visible={state.loading} overlayBlur={2} />
+                <LoadingOverlay visible={dataState.storage.loading} overlayBlur={2} />
                 <ul className="storages">
-                  {state.storages?.map((storage: Storage) => (
+                  {dataState.storage.list?.map((storage: Storage) => (
                     <li className="storage-li-item" key={storage.id} onClick={onSelectStorage.bind(null, storage)} onDoubleClick={storagesToolbarAction.bind(null, 'edit')}>
-                      <StorageCard value={storage} selected={state.selectedStorage?.id === storage.id} />
+                      <StorageCard value={storage} selected={dataState.storage.selected?.id === storage.id} />
                     </li>
                   ))}
                 </ul>
@@ -218,8 +209,8 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
           </div>
         </>
       )}
-      {(state.mode === 'add' || state.mode === 'edit') && <StorageAdd opened={!!state.mode} closed={(): void => onModalClosed()} edit={state.mode} storage={state.selectedStorage} />}
-      {!!state.selectedStorage && state.mode === 'delete' && <StorageDelete opened={!!state.mode} closed={onModalClosed} storage={state.selectedStorage} />}
+      {(state.mode === 'add' || state.mode === 'edit') && <StorageAdd opened={!!state.mode} closed={(): void => onModalClosed()} edit={state.mode} storage={dataState.storage.selected} />}
+      {!!dataState.storage.selected && state.mode === 'delete' && <StorageDelete opened={!!state.mode} closed={onModalClosed} storage={dataState.storage.selected} />}
     </>
   );
 });

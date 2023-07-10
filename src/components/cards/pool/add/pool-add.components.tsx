@@ -170,8 +170,6 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
     const { hasErrors, errors } = form.validate();
 
     if (!hasErrors) {
-      console.log('form: ', form.values);
-
       const newFormValue: FormItems = {
         ...form.values,
         disks: form.values.disks.map((disk) => ({

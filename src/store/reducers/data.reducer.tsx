@@ -7,24 +7,32 @@ export enum DATA_ACTION {
 }
 
 export interface DataState {
-  storages: Storage[];
+  storage: {
+    list: Storage[];
+    selected: Storage | null;
+    loading: boolean;
+  };
 }
 
 const init: DataState = {
-  storages: [],
+  storage: {
+    list: [],
+    selected: null,
+    loading: false,
+  },
 };
 
 export const DataReducer: Reducer<DataState, Action<DataState>> = (state: DataState = init, action: Action<any>): DataState => {
   switch (action.type) {
   case DATA_ACTION.SET_STORAGES: {
-    return { ...state, storages: action.payload };
+    return { ...state, storage: { ...state.storage, list: action.payload.list, loading: action.payload.loading, selected: action.payload.selected } };
   }
   default:
     return state;
   }
 };
 
-export const set_storages = (payload: Storage[]): Action<Storage[]> => ({
+export const set_storages = (payload: DataState['storage']): Action<DataState['storage']> => ({
   type: DATA_ACTION.SET_STORAGES,
   payload,
 });
