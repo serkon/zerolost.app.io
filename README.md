@@ -30,10 +30,21 @@ sudo systemctl status nginx
 scp -pr \* root@192.168.1.12:/usr/share/nginx/html/.
 scp -pr root@192.168.1.12:/etc/nginx/nginx.conf ./
 scp -pr nginx.conf root@192.168.1.12:/etc/nginx/.
-18319000Ek\_
+18319000Ek
 
 ### TODO:
 
-- profile için "https://api.opscycle.com/opscycle-api/api/pool/profile/123123" adresinden disk tiplerini seçelim
-
-"18319000Ek\_"
+- ssh root@192.168.1.11
+- sudo yum install nginx
+- scp -pr nginx.conf root@192.168.1.11:/etc/nginx/.
+- sudo systemctl stop nginx
+- sudo systemctl start nginx
+- sudo systemctl status nginx
+- sudo systemctl enable nginx
+- /usr/share/nginx/html
+- /etc/nginx/nginx.conf
+- sudo firewall-cmd --permanent --zone=public --add-service=http
+- sudo firewall-cmd --permanent --zone=public --add-service=https
+- sudo firewall-cmd --reload
+- scp -pr root@192.168.1.12:/etc/nginx/. root@192.168.1.11:/etc/nginx/.
+- scp -pr \. root@192.168.1.11:/usr/share/nginx/html/.
