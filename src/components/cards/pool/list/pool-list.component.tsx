@@ -26,7 +26,7 @@ interface State {
   storageId: string | undefined;
 }
 
-const initial: State = { mode: null, selectedPool: null, pools: [], paging: { page: 0, size: 0, totalPage: 0 }, storageId: undefined };
+const initial: State = { mode: null, selectedPool: null, pools: [], paging: { page: 0, size: 8, totalPage: 0 }, storageId: undefined };
 
 export const PoolList = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
@@ -46,15 +46,11 @@ export const PoolList = (): React.ReactElement => {
 
           setLoading(false);
           if (Pools.length > 0) {
-            setState((previousState) => {
-              console.log(previousState.paging.page);
-
-              return {
-                ...previousState,
-                pools: previousState.paging.page > 0 ? [...previousState.pools, ...Pools] : Pools,
-                paging: { ...previousState.paging, totalPage: items.data.pagination.totalPages },
-              };
-            });
+            setState((previousState) => ({
+              ...previousState,
+              pools: previousState.paging.page > 0 ? [...previousState.pools, ...Pools] : Pools,
+              paging: { ...previousState.paging, totalPage: items.data.pagination.totalPages },
+            }));
             if (poolId) {
               const found = Pools.find((pool) => pool.id === poolId);
 
@@ -97,7 +93,7 @@ export const PoolList = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    setState((previousState) => ({ ...previousState, storageId, paging: { page: 0, size: 8, totalPage: 0 } }));
+    setState((previousState) => ({ ...initial, storageId }));
   }, [storageId]);
 
   useEffect(() => {
