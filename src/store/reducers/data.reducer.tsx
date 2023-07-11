@@ -25,14 +25,22 @@ const init: DataState = {
 export const DataReducer: Reducer<DataState, Action<DataState>> = (state: DataState = init, action: Action<any>): DataState => {
   switch (action.type) {
   case DATA_ACTION.SET_STORAGES: {
-    return { ...state, storage: { ...state.storage, list: action.payload.list, loading: action.payload.loading, selected: action.payload.selected } };
+    return {
+      ...state,
+      storage: {
+        ...state.storage,
+        list: action.payload.list || state.storage.list,
+        loading: action.payload.loading === true,
+        selected: action.payload.selected || state.storage.selected,
+      },
+    };
   }
   default:
     return state;
   }
 };
 
-export const set_storages = (payload: DataState['storage']): Action<DataState['storage']> => ({
+export const set_storages = (payload: Partial<DataState['storage']>): Action<Partial<DataState['storage']>> => ({
   type: DATA_ACTION.SET_STORAGES,
   payload,
 });

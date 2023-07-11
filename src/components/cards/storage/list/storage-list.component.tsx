@@ -60,18 +60,10 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
       .then((items: AxiosResponse<HttpResponse<Storage[]>>) => {
         const Storages = items.data.data;
 
-        if (Storages.length > 0) {
-          if (storageId) {
-            const found = Storages.find((storage) => storage.id === storageId) || null;
-
-            store.dispatch(set_storages({ list: Storages, selected: found, loading: false }));
-          } else {
-            store.dispatch(set_storages({ list: Storages, selected: Storages[0], loading: false }));
-            navigate('/storage/' + Storages[0].id);
-          }
-        } else {
-          store.dispatch(set_storages({ list: [], selected: null, loading: false }));
-        }
+        store.dispatch(set_storages({ loading: false }));
+        // eslint-disable-next-line max-len
+        store.dispatch(set_storages(Storages.length > 0 ? { list: Storages, selected: storageId ? Storages.find((storage) => storage.id === storageId) || null : Storages[0] } : { list: [], selected: null }));
+        Storages.length > 0 && !storageId && navigate('/storage/' + Storages[0].id);
       })
       .catch((error) => {
         store.dispatch(set_storages({ list: [], selected: null, loading: false }));
