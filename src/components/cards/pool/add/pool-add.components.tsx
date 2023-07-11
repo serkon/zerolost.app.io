@@ -188,7 +188,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
       };
 
       setState((previousState) => ({ ...previousState, ...{ status: { saving: true, saved: false } } }));
-      (edit === 'edit' ? api.put('/pool', newFormValue) : api.post('/pool', newFormValue))
+      (edit === 'edit' ? api.put('/pool/add-disk', newFormValue) : api.post('/pool', newFormValue))
         .then((response) => {
           setState((previousState) => ({ ...previousState, ...{ status: { saving: false, saved: response.data.success === 200 } } }));
           response.data.success &&
@@ -254,7 +254,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
         padding={'24px'}
         opened={opened}
         onClose={closed}
-        title={translate(edit === 'edit' ? 'EDIT_POOL' : 'ADD_POOL')}
+        title={translate(edit === 'edit' ? 'ADD_DISK' : 'ADD_POOL')}
         overlayProps={{
           color: 'rgba(22, 41, 73, 0.75)',
           opacity: 0.55,
