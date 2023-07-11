@@ -24,6 +24,7 @@ import { store } from 'src/store/store';
  */
 import App from './App';
 import { AppConfig } from './app.config';
+import { StorageEmpty } from './components/cards/storage/empty/storage-empty.component';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const strickMode = process.env.NODE_ENV === 'production';
@@ -36,8 +37,16 @@ const Content = (): React.JSX.Element => (
         <Provider store={store}>
           <Translate current="en">
             <Routes>
-              <Route path="/" element={<App />}>
+              <Route
+                path="/"
+                element={
+                  <Authenticator.Navigate>
+                    <App />
+                  </Authenticator.Navigate>
+                }
+              >
                 <Route path="" element={<Navigate to="storage" />} />
+                <Route path="storage/empty" element={<StorageEmpty />} />
                 <Route path="storage/:storageId?/:poolId?" element={<ScreenStorageOverview />} />
                 <Route path="host/:hostId?" element={<ScreenHostOverview />} />
                 <Route

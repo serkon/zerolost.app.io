@@ -131,7 +131,6 @@ export const StorageAdd = ({ opened, closed, edit, storage }: StorageAddProps): 
           message: error.response.data.message, // translate(edit === 'edit' ? 'API_STORAGE_EDIT_FAIL' : 'API_STORAGE_ADD_FAIL'),
           color: 'danger.3',
         });
-        closed();
       });
   };
   const handleCancel = (): void => {

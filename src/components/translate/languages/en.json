@@ -47,7 +47,7 @@
   "SIZE": "Size",
   "HOST": "Host",
   "RATIO": "Ratio",
-  "ADD_NEW_STORAGE": "+ Add new storage",
+  "+_ADD_NEW_STORAGE": "+ Add new storage",
   "INSTALLED": "Installed",
   "CREATED": "Created",
   "NO_POOLS_FOUND": "No pools found",
@@ -133,5 +133,12 @@
   "API_STORAGE_EDIT_SUCCESS": "Storage edited successfully",
   "API_STORAGE_EDIT_FAIL": "Failed to edit storage",
   "HOSTS": "Hosts",
+  "NEW_STORAGE": "New Storage",
+  "NEW_HOST": "New Host",
+  "ADD_NEW_STORAGE": "Add New Storage",
+  "ADD_NEW_STORAGE_DESCRIPTION": "Embark on a fresh journey, customize your new instance from scratch",
+  "ADD_NEW_HOST": "Add New Host",
+  "ADD_NEW_HOST_DESCRIPTION": "Embark on a fresh journey, customize your new instance from scratch",
+  "ADD": "Add",
   "": ""
 }

@@ -22,7 +22,6 @@ export const Header = ({ className, ...rest }: HeaderProps): React.JSX.Element =
   // eslint-disable-next-line
   const [_lang, setLang] = useState(translateState.language);
   const onLanguageChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    console.log('e', event.target.value);
     setLang(event.target.value);
     translateLanguage(event.target.value);
   };

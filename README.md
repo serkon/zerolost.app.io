@@ -25,6 +25,7 @@ const initialValues2: FormData = {
 
 service firewalld stop
 sudo systemctl start nginx
+sudo systemctl stop nginx
 sudo systemctl status nginx
 
 scp -pr \* root@192.168.1.12:/usr/share/nginx/html/.

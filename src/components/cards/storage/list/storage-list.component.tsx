@@ -63,7 +63,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
         store.dispatch(set_storages({ loading: false }));
         // eslint-disable-next-line max-len
         store.dispatch(set_storages(Storages.length > 0 ? { list: Storages, selected: storageId ? Storages.find((storage) => storage.id === storageId) || null : Storages[0] } : { list: [], selected: null }));
-        Storages.length > 0 && !storageId && navigate('/storage/' + Storages[0].id);
+        !storageId && navigate(Storages.length > 0 ? '/storage/' + Storages[0].id : '/storage/empty');
       })
       .catch((error) => {
         store.dispatch(set_storages({ list: [], selected: null, loading: false }));
@@ -102,105 +102,101 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
 
   return (
     <>
-      {dataState.storage.list.length > 0 && (
-        <>
-          <div className="list-items-container">
-            <section className="list-items-header px-3">
-              <h2 className="h2 fw-extra-bold secondary-500">{translate('STORAGES')}</h2>
-              <p className="m-0 secondary-400 fw-light caption-14">{translate('SLOGAN')}</p>
-            </section>
-            <section className="filter px-3">
-              <Menu shadow="md" width={200} position="bottom-start">
-                <Menu.Target>
-                  <div className="caption-10 secondary-400 ti-chevron-down ti-right flex-grow-1 justify-content-start">Ordering by Name</div>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Label>Application</Menu.Label>
-                  <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
-                  <Menu.Item icon={<IconMessageCircle size={14} />}>Messages</Menu.Item>
-                  <Menu.Item icon={<IconPhoto size={14} />}>Gallery</Menu.Item>
-                  <Menu.Item
-                    icon={<IconSearch size={14} />}
-                    rightSection={
-                      <Text size="xs" color="dimmed">
-                        ⌘K
-                      </Text>
-                    }
-                  >
-                    Search
-                  </Menu.Item>
-                  <Menu.Divider />
-                  <Menu.Label>Danger zone</Menu.Label>
-                  <Menu.Item icon={<IconArrowsLeftRight size={14} />}>Transfer my data</Menu.Item>
-                  <Menu.Item color="red" icon={<IconTrash size={14} />}>
-                    Delete my account
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-              <button className={`btn btn-brand ${!filterOpen && 'btn-ghost'} btn-xs`} onClick={(): void => setFilterOpen(!filterOpen)}>
-                <IconFilter size={16} />
-              </button>
-              <button className="btn btn-brand btn-ghost btn-xs" onClick={storagesToolbarAction.bind(null, 'delete')}>
-                <IconTrash size={16} />
-              </button>
-              <button
-                className={`btn btn-brand btn-ghost btn-xs`}
-                onClick={(): void => {
-                  setSorting(() => !sorting);
-                  getStorageList();
-                }}
-              >
-                {sorting ? <IconSortDescending size={16} /> : <IconSortAscending size={16} />}
-              </button>
-              <button className={`btn btn-brand btn-ghost btn-xs`} onClick={storagesToolbarAction.bind(null, 'edit')}>
-                <IconEdit size={16} />
-              </button>
-              <button className="btn btn-brand btn-ghost btn-xs" onClick={storagesToolbarAction.bind(null, 'add')}>
-                <IconPlus size={16} />
-              </button>
-            </section>
-            <section className={`search d-flex px-3 flex-column ${!filterOpen && 'd-none'}`}>
-              <TextInput
-                size="sm"
-                icon={<IconSearch size={16} />}
-                placeholder={translate('SEARCH')}
-                value={query}
-                onChange={(e): void => setQuery(e.currentTarget.value)}
+      <div className="list-items-container">
+        <section className="list-items-header px-3">
+          <h2 className="h2 fw-extra-bold secondary-500">{translate('STORAGES')}</h2>
+          <p className="m-0 secondary-400 fw-light caption-14">{translate('SLOGAN')}</p>
+        </section>
+        <section className="filter px-3">
+          <Menu shadow="md" width={200} position="bottom-start">
+            <Menu.Target>
+              <div className="caption-10 secondary-400 ti-chevron-down ti-right flex-grow-1 justify-content-start">Ordering by Name</div>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Label>Application</Menu.Label>
+              <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
+              <Menu.Item icon={<IconMessageCircle size={14} />}>Messages</Menu.Item>
+              <Menu.Item icon={<IconPhoto size={14} />}>Gallery</Menu.Item>
+              <Menu.Item
+                icon={<IconSearch size={14} />}
                 rightSection={
-                  query ? (
-                    <IconX
-                      size={16}
-                      style={{
-                        display: 'block',
-                        opacity: 0.5,
-                        cursor: 'pointer',
-                      }}
-                      onClick={(): void => setQuery('')}
-                    />
-                  ) : null
+                  <Text size="xs" color="dimmed">
+                    ⌘K
+                  </Text>
                 }
-              />
-            </section>
-            <section className="item-list">
-              <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
-                <LoadingOverlay visible={dataState.storage.loading} overlayBlur={2} />
-                <ul className="storages">
-                  {dataState.storage.list?.map((storage: Storage) => (
-                    <li className="storage-li-item" key={storage.id} onClick={onSelectStorage.bind(null, storage)} onDoubleClick={storagesToolbarAction.bind(null, 'edit')}>
-                      <StorageCard value={storage} selected={dataState.storage.selected?.id === storage.id} />
-                    </li>
-                  ))}
-                </ul>
-                <div className="actions d-flex">
-                  <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }} onClick={storagesToolbarAction.bind(null, 'add')}>
-                    {translate('ADD_NEW_STORAGE')}
-                  </button>
-                </div>
-              </SimpleBar>
-            </section>
-          </div>
-        </>
-      )}
+              >
+                Search
+              </Menu.Item>
+              <Menu.Divider />
+              <Menu.Label>Danger zone</Menu.Label>
+              <Menu.Item icon={<IconArrowsLeftRight size={14} />}>Transfer my data</Menu.Item>
+              <Menu.Item color="red" icon={<IconTrash size={14} />}>
+                Delete my account
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+          <button className={`btn btn-brand ${!filterOpen && 'btn-ghost'} btn-xs`} onClick={(): void => setFilterOpen(!filterOpen)}>
+            <IconFilter size={16} />
+          </button>
+          <button className="btn btn-brand btn-ghost btn-xs" onClick={storagesToolbarAction.bind(null, 'delete')}>
+            <IconTrash size={16} />
+          </button>
+          <button
+            className={`btn btn-brand btn-ghost btn-xs`}
+            onClick={(): void => {
+              setSorting(() => !sorting);
+              getStorageList();
+            }}
+          >
+            {sorting ? <IconSortDescending size={16} /> : <IconSortAscending size={16} />}
+          </button>
+          <button className={`btn btn-brand btn-ghost btn-xs`} onClick={storagesToolbarAction.bind(null, 'edit')}>
+            <IconEdit size={16} />
+          </button>
+          <button className="btn btn-brand btn-ghost btn-xs" onClick={storagesToolbarAction.bind(null, 'add')}>
+            <IconPlus size={16} />
+          </button>
+        </section>
+        <section className={`search d-flex px-3 flex-column ${!filterOpen && 'd-none'}`}>
+          <TextInput
+            size="sm"
+            icon={<IconSearch size={16} />}
+            placeholder={translate('SEARCH')}
+            value={query}
+            onChange={(e): void => setQuery(e.currentTarget.value)}
+            rightSection={
+              query ? (
+                <IconX
+                  size={16}
+                  style={{
+                    display: 'block',
+                    opacity: 0.5,
+                    cursor: 'pointer',
+                  }}
+                  onClick={(): void => setQuery('')}
+                />
+              ) : null
+            }
+          />
+        </section>
+        <section className="item-list">
+          <SimpleBar style={{ minHeight: 0, display: 'flex' }}>
+            <LoadingOverlay visible={dataState.storage.loading} overlayBlur={2} />
+            <ul className="storages">
+              {dataState.storage.list?.map((storage: Storage) => (
+                <li className="storage-li-item" key={storage.id} onClick={onSelectStorage.bind(null, storage)} onDoubleClick={storagesToolbarAction.bind(null, 'edit')}>
+                  <StorageCard value={storage} selected={dataState.storage.selected?.id === storage.id} />
+                </li>
+              ))}
+            </ul>
+            <div className="actions d-flex">
+              <button className="btn btn-outline btn-large btn-brand m-3 flex-grow-1 fw-medium caption-12" style={{ padding: '12px' }} onClick={storagesToolbarAction.bind(null, 'add')}>
+                {translate('+_ADD_NEW_STORAGE')}
+              </button>
+            </div>
+          </SimpleBar>
+        </section>
+      </div>
       {(state.mode === 'add' || state.mode === 'edit') && <StorageAdd opened={!!state.mode} closed={(): void => onModalClosed()} edit={state.mode} storage={dataState.storage.selected} />}
       {!!dataState.storage.selected && state.mode === 'delete' && <StorageDelete opened={!!state.mode} closed={onModalClosed} storage={dataState.storage.selected} />}
     </>
