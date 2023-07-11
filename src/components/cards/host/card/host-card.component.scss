@@ -1,0 +1,41 @@
+.host-card {
+  padding: 16px;
+  border-bottom: 1px solid var(--brand-100);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  .disk-used, .disk-size {
+    height: 7px;
+    border-radius: 3.5px;
+  }
+
+  .disk-used {
+    // background-color: var(--success-500);
+  }
+
+  .disk-size {
+    background-color: rgba(var(--brand-500-rgb), 0.1);
+  }
+
+  &:hover {
+    background-color: rgba(var(--brand-500-rgb), 0.04);
+    transition: all 0.2s ease-in-out;
+
+    .disk-size {
+      background-color: rgba(var(--brand-500-rgb), 0.1);
+    }
+  }
+
+  &.selected {
+    background-color: rgba(var(--brand-700-rgb), 1);
+    transition: all 0.2s ease-in-out;
+
+    * {
+      color: white;
+    }
+
+    .disk-size {
+      background-color: rgba(var(--light-500-rgb), 0.9);
+    }
+  }
+}

@@ -24,6 +24,7 @@ import { store } from 'src/store/store';
  */
 import App from './App';
 import { AppConfig } from './app.config';
+import { HostEmpty } from './components/cards/host/empty/host-empty.component';
 import { StorageEmpty } from './components/cards/storage/empty/storage-empty.component';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -48,7 +49,8 @@ const Content = (): React.JSX.Element => (
                 <Route path="" element={<Navigate to="storage" />} />
                 <Route path="storage/empty" element={<StorageEmpty />} />
                 <Route path="storage/:storageId?/:poolId?" element={<ScreenStorageOverview />} />
-                <Route path="host/:hostId?" element={<ScreenHostOverview />} />
+                <Route path="host/empty" element={<HostEmpty />} />
+                <Route path="host/:hostId?/:poolId?" element={<ScreenHostOverview />} />
                 <Route
                   path="about"
                   element={

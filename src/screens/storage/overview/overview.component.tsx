@@ -24,7 +24,7 @@ export const ScreenStorageOverview = (): React.ReactElement => {
     <>
       <StorageList ref={listRef} />
       {dataState.storage.list && dataState.storage.list.length > 0 && (
-        <div className={`screen-detail-container d-flex flex-column gap-4 pb-5`} onScroll={handleScroll}>
+        <div className={`screen-detail-container d-flex flex-column gap-4 pb-5 w-100`} onScroll={handleScroll}>
           <Header className={`scrollable-element ${scrolled ? 'scrolled' : ''}`} />
           <p className="body-16 px-4 secondary-400 m-0">{translate('STORAGE_DESCRIPTION')}</p>
           {storageId && <PoolList />}
