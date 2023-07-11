@@ -16,6 +16,8 @@ import { PoolDelete } from 'src/components/cards/pool/delete/pool-delete.compone
 import { useTranslate } from 'src/components/translate/translate.component';
 import { More } from 'src/screens/storage/overview/overview.component';
 
+import poolImage from './pool.svg';
+
 interface State {
   mode: 'add' | 'edit' | 'delete' | null;
   selectedPool: Pool | null;
@@ -81,26 +83,26 @@ export const PoolList = (): React.ReactElement => {
   return (
     <>
       <LoadingOverlay visible={loading} overlayBlur={2} />
-      <div className="filter-area px-4 d-flex align-items-center">
-        <h5 className="fw-extra-bold secondary-600 flex-grow-1">
-          <span>{translate('AVAILABLE_POOLS')}</span>
-        </h5>
-        {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
-        <TextInput type="text" placeholder={translate('SEARCH_IN_POOL')} name="filter" size="sm" icon={<IconSearch size={16} />} className="me-2 filter-shadow" />
-        <div className="d-flex">
-          <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'delete')} disabled={!state.selectedPool}>
-            <IconTrash size={16} />
-          </button>
-          <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'edit')} disabled={!state.selectedPool}>
-            <IconEdit size={16} />
-          </button>
-          <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'add')}>
-            <IconPlus size={16} />
-          </button>
-        </div>
-      </div>
       {state.pools.length > 0 ? (
         <>
+          <div className="filter-area px-4 d-flex align-items-center">
+            <h5 className="fw-extra-bold secondary-600 flex-grow-1">
+              <span>{translate('AVAILABLE_POOLS')}</span>
+            </h5>
+            {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
+            <TextInput type="text" placeholder={translate('SEARCH_IN_POOL')} name="filter" size="sm" icon={<IconSearch size={16} />} className="me-2 filter-shadow" />
+            <div className="d-flex">
+              <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'delete')} disabled={!state.selectedPool}>
+                <IconTrash size={16} />
+              </button>
+              <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'edit')} disabled={!state.selectedPool}>
+                <IconEdit size={16} />
+              </button>
+              <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'add')}>
+                <IconPlus size={16} />
+              </button>
+            </div>
+          </div>
           <ul className="pool-card-list pool-list flex-wrap mx-4 secondary-500">
             {state.pools.map((pool: any) => (
               <li className="pool-li-item" onClick={onPoolClickHandler.bind(null, pool)} key={pool.id}>
@@ -113,11 +115,12 @@ export const PoolList = (): React.ReactElement => {
           <LuneList />
         </>
       ) : (
-        <div className="empty-state mx-4 p-4 dash d-flex flex-grow-1 align-items-center justify-content-center flex-column secondary-500">
-          <h4 className="fw-extra-bold mb-3">{translate('NO_POOLS_FOUND')}</h4>
-          <p className="fw-regular text-center">{translate('NO_POOLS_FOUND_DESCRIPTION')}</p>
-          <button className="btn btn-brand btn-ghost btn-sm" onClick={toolbarAction.bind(null, 'add')}>
-            {translate('ADD_POOL')}
+        <div className="empty-state dash d-flex m-auto align-items-center justify-content-center flex-column secondary-500">
+          <img src={poolImage} alt="logo" className="logo mb-2" />
+          <h3 className="fw-extra-bold mb-1">{translate('CREATE_NEW_POOL')}</h3>
+          <p className="fw-regular text-center mb-5">{translate('CREATE_POOL_DESCRIPTION')}</p>
+          <button className="btn btn-brand btn-lg" onClick={toolbarAction.bind(null, 'add')}>
+            {translate('CREATE')}
           </button>
         </div>
       )}

@@ -57,9 +57,9 @@ export const StorageEmpty = (): React.ReactElement => {
         <div className="w-100 d-flex flex-grow-1 align-items-center justify-content-center">
           <div className="empty-state p-5 d-flex flex-column align-items-center justify-content-center">
             <img src={server} alt="logo" className="logo mb-2" />
-            <h3 className="fw-bold secondary-500 mb-1">{translate('ADD_NEW_STORAGE')}</h3>
+            <h3 className="fw-extra-bold secondary-500 mb-1">{translate('ADD_NEW_STORAGE')}</h3>
             <p className="text-center secondary-500 mb-5">{translate('ADD_NEW_STORAGE_DESCRIPTION')}</p>
-            <button className="btn btn-primary btn-xl" onClick={onAddClick}>
+            <button className="btn btn-brand btn-xl" onClick={onAddClick}>
               {translate('Add')}
             </button>
           </div>
