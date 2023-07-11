@@ -73,7 +73,7 @@ export const DiskList = (): React.ReactElement => {
         {disks.map((disk: any) => (
           <DiskCard value={disk} key={disk.id} onClick={onClickHandler.bind(null, disk)} selected={selectedDisk?.id === disk.id} />
         ))}
-        <More />
+        <More onClick={getDiskList} />
       </div>
     </>
   );

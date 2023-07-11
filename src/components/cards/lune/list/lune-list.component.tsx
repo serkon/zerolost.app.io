@@ -71,7 +71,7 @@ export const LuneList = (): React.ReactElement => {
         {lunes.map((lune: any) => (
           <LuneCard value={lune} key={lune.id} onClick={onClickHandler.bind(null, lune)} selected={selectedLune?.id === lune.id} />
         ))}
-        <More />
+        <More onClick={getLuneList} />
       </div>
     </>
   );

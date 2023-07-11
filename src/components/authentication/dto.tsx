@@ -76,7 +76,7 @@ export interface HttpResponse<T> {
   success: boolean;
   exception: boolean;
   currentPage: number;
-  totalPages: number;
+  pagination: { pageSize: number; pageNumber: number; totalPages: number; totalElements: number };
 }
 
 export interface HttpRequest<T> {

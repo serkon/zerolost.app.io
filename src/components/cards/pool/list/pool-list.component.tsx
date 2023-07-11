@@ -22,48 +22,62 @@ interface State {
   mode: 'add' | 'edit' | 'delete' | null;
   selectedPool: Pool | null;
   pools: Pool[];
+  paging: { page: number; size: number; totalPage: number };
+  storageId: string | undefined;
 }
+
+const initial: State = { mode: null, selectedPool: null, pools: [], paging: { page: 0, size: 0, totalPage: 0 }, storageId: undefined };
 
 export const PoolList = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const { translate } = useTranslate();
   const navigate = useNavigate();
-  const [state, setState] = useState<State>({ mode: null, selectedPool: null, pools: [] });
+  const [state, setState] = useState<State>(initial);
   const { storageId, poolId } = useParams();
-  const params = new URLSearchParams({ page: '0', size: '50' });
   const getPoolList = useCallback(() => {
-    setLoading(true);
+    if (state.storageId !== undefined) {
+      setLoading(true);
+      const params = new URLSearchParams({ page: state.paging.page.toString(), size: state.paging.size.toString() });
 
-    return api
-      .post('/pool/search', { storageId }, { params })
-      .then((items: AxiosResponse<HttpResponse<Pool[]>>) => {
-        const Pools = items.data.data;
+      api
+        .post('/pool/search', { storageId }, { params })
+        .then((items: AxiosResponse<HttpResponse<Pool[]>>) => {
+          const Pools = items.data.data;
 
-        setLoading(false);
-        if (Pools.length > 0) {
-          setState((previousState) => ({ ...previousState, pools: Pools }));
-          if (poolId) {
-            const found = Pools.find((pool) => pool.id === poolId);
+          setLoading(false);
+          if (Pools.length > 0) {
+            setState((previousState) => {
+              console.log(previousState.paging.page);
 
-            found && setState((previousState) => ({ ...previousState, selectedPool: found }));
+              return {
+                ...previousState,
+                pools: previousState.paging.page > 0 ? [...previousState.pools, ...Pools] : Pools,
+                paging: { ...previousState.paging, totalPage: items.data.pagination.totalPages },
+              };
+            });
+            if (poolId) {
+              const found = Pools.find((pool) => pool.id === poolId);
+
+              found && setState((previousState) => ({ ...previousState, selectedPool: found }));
+            } else {
+              setState((previousState) => ({ ...previousState, selectedPool: Pools[0] }));
+              navigate(`/storage/${storageId}/${Pools[0].id}`);
+            }
           } else {
-            setState((previousState) => ({ ...previousState, selectedPool: Pools[0] }));
-            navigate(`/storage/${storageId}/${Pools[0].id}`);
+            setState((previousState) => ({ ...previousState, pools: [] }));
           }
-        } else {
-          setState((previousState) => ({ ...previousState, pools: [] }));
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        setState({ ...state, pools: [] });
-        notifications.show({
-          title: translate('FAIL'),
-          message: translate('API_POOL_LIST_GET_FAIL'),
-          color: 'danger.3',
+        })
+        .catch((error) => {
+          setLoading(false);
+          setState({ ...state, pools: [] });
+          notifications.show({
+            title: translate('FAIL'),
+            message: translate('API_POOL_LIST_GET_FAIL'),
+            color: 'danger.3',
+          });
         });
-      });
-  }, [storageId]);
+    }
+  }, [state.storageId, state.paging.page]);
   const toolbarAction = (type: 'add' | 'edit' | 'delete'): void => {
     setState({ ...state, mode: type });
   };
@@ -75,10 +89,20 @@ export const PoolList = (): React.ReactElement => {
     setState({ ...state, mode: null });
     getPoolList();
   };
+  const more = (): void => {
+    setState((previousState) => ({
+      ...previousState,
+      paging: { page: previousState.paging.page + 1, size: previousState.paging.size, totalPage: previousState.paging.totalPage },
+    }));
+  };
+
+  useEffect(() => {
+    setState((previousState) => ({ ...previousState, storageId, paging: { page: 0, size: 8, totalPage: 0 } }));
+  }, [storageId]);
 
   useEffect(() => {
     getPoolList();
-  }, [storageId]);
+  }, [state.paging.page, state.storageId]);
 
   return (
     <>
@@ -109,7 +133,7 @@ export const PoolList = (): React.ReactElement => {
                 <PoolCard value={pool} selected={state.selectedPool?.id === pool.id} />
               </li>
             ))}
-            <More />
+            {state.paging.page < state.paging.totalPage - 1 && <More onClick={more} />}
           </ul>
           <DiskList />
           <LuneList />

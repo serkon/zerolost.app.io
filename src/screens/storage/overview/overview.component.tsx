@@ -34,10 +34,10 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   );
 };
 
-export const More = (): React.ReactElement => {
+export const More = ({ onClick }: { onClick: () => void }): React.ReactElement => {
   const { translate } = useTranslate();
   const onClickHandler = useCallback((): void => {
-    console.log('sad');
+    onClick();
   }, []);
 
   return (
