@@ -1,4 +1,5 @@
 import { LoadingOverlay, Menu, Text, TextInput } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { IconArrowsLeftRight, IconEdit, IconFilter, IconMessageCircle, IconPhoto, IconPlus, IconSearch, IconSettings, IconSortAscending, IconSortDescending, IconTrash, IconX } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
@@ -67,6 +68,13 @@ export const HostList = forwardRef<ListRef, HostProps>((props, ref): React.React
       })
       .catch((error) => {
         store.dispatch(set_hosts({ list: [], selected: null, loading: false }));
+        !hostId && navigate('/host/empty');
+        notifications.show({
+          title: translate('FAIL'),
+          autoClose: false,
+          message: error.response.data.message || translate('API_HOST_LIST_FAIL'),
+          color: 'danger.3',
+        });
       });
   };
 
@@ -104,7 +112,7 @@ export const HostList = forwardRef<ListRef, HostProps>((props, ref): React.React
     <>
       <div className="list-items-container">
         <section className="list-items-header px-3">
-          <h2 className="h2 fw-extra-bold secondary-500">{translate('STORAGES')}</h2>
+          <h2 className="h2 fw-extra-bold secondary-500">{translate('HOSTS')}</h2>
           <p className="m-0 secondary-400 fw-light caption-14">{translate('SLOGAN')}</p>
         </section>
         <section className="filter px-3">

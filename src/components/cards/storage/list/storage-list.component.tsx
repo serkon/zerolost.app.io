@@ -1,4 +1,5 @@
 import { LoadingOverlay, Menu, Text, TextInput } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { IconArrowsLeftRight, IconEdit, IconFilter, IconMessageCircle, IconPhoto, IconPlus, IconSearch, IconSettings, IconSortAscending, IconSortDescending, IconTrash, IconX } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
@@ -67,6 +68,13 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
       })
       .catch((error) => {
         store.dispatch(set_storages({ list: [], selected: null, loading: false }));
+        !storageId && navigate('/host/empty');
+        notifications.show({
+          title: translate('FAIL'),
+          autoClose: false,
+          message: error.response.data.message || translate('API_HOST_LIST_FAIL'),
+          color: 'danger.3',
+        });
       });
   };
 

@@ -51,7 +51,7 @@ export const HostEmpty = (): React.ReactElement => {
     <>
       <div className={`screen-detail-container d-flex flex-column gap-4 pb-5 w-100`} onScroll={handleScroll}>
         <Header className={`scrollable-element ${scrolled ? 'scrolled' : ''}`} />
-        <p className="body-16 px-4 secondary-400 m-0">{translate('HOST_DESCRIPTION')}</p>
+        <p className="body-16 px-4 secondary-400 m-0">{translate('HOST_PAGE_DESCRIPTION')}</p>
         <div className="w-100 d-flex flex-grow-1 align-items-center justify-content-center">
           <div className="empty-state p-5 d-flex flex-column align-items-center justify-content-center">
             <img src={server} alt="logo" className="logo mb-2" />

@@ -99,7 +99,8 @@ export const HostAdd = ({ opened, closed, edit, host }: HostAddProps): React.Rea
           setFormState((previousState) => ({ ...previousState, testing: false, tested: false }));
           notifications.show({
             title: translate('FAIL'),
-            message: translate('TEST_CONNECTION_FAIL'),
+            autoClose: false,
+            message: error.response.data.message || translate('TEST_CONNECTION_FAIL'),
             color: 'danger.3',
           });
         });

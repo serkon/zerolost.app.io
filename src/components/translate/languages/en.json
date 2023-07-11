@@ -136,6 +136,7 @@
   "API_STORAGE_EDIT_SUCCESS": "Storage edited successfully",
   "API_STORAGE_EDIT_FAIL": "Failed to edit storage",
   "HOSTS": "Hosts",
+  "HOST_PAGE_DESCRIPTION": "Tüm host ların listelendigi alan , uygulama veri tabanında “last known status” ile getırılecek ve periyodil olarak refresh edilecek host tıklanabilmeli ve “host detail” ekranına geçiş yapılabilmeli Menu üzerinde “add host” olacak şekilde bir buton olmalı ve bu buton ile yeni bir storage eklenebilmeli.",
   "NEW_STORAGE": "New Storage",
   "NEW_HOST": "New Host",
   "ADD_NEW_STORAGE": "Add New Storage",
@@ -144,5 +145,6 @@
   "ADD_NEW_HOST_DESCRIPTION": "Embark on a fresh journey, customize your new instance from scratch",
   "ADD_DISK": "Add Disk",
   "ADD": "Add",
+  "API_HOST_LIST_FAIL": "Failed to get host list",
   "": ""
 }
