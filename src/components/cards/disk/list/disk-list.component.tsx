@@ -1,6 +1,6 @@
 import './disk-card.component.scss';
 
-import { TextInput } from '@mantine/core';
+import { LoadingOverlay, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconMinus, IconPlus, IconSearch, IconTrash } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
@@ -101,7 +101,8 @@ export const DiskList = (): React.ReactElement => {
           </div>
         }
       </div>
-      <div className="disk-card-list mx-4 secondary-500">
+      <div className="disk-card-list mx-4 secondary-500  position-relative">
+        <LoadingOverlay visible={loading} overlayBlur={2} />
         {disks.map((disk: any) => (
           <DiskCard value={disk} key={disk.id} onClick={onClickHandler.bind(null, disk)} selected={selectedDisk?.id === disk.id} />
         ))}
