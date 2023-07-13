@@ -1,10 +1,12 @@
 import './lune-list.component.scss';
 
 import { TextInput } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { IconSearch } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { AppConfig } from 'src/app.config';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
 import { Lune, LuneCard } from 'src/components/cards/lune/card/lune-card.component';
@@ -17,36 +19,67 @@ export const LuneList = (): React.ReactElement => {
   const { translate } = useTranslate();
   const [lunes, setLunes] = useState<Lune[]>([]);
   const [selectedLune, setSelectedLune] = useState<Lune | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [paging, setPaging] = useState<{ page: number; size: number; totalPage: number }>({ page: 0, size: AppConfig.paging.size, totalPage: 0 });
+  const { poolId } = useParams();
+  const getLuneList = useCallback(() => {
+    const params = new URLSearchParams({ page: paging.page.toString(), size: paging.size.toString() });
+
+    setLoading(true);
+    api
+      .post('/lun/search', { poolId }, { params })
+      .then((items: AxiosResponse<HttpResponse<Lune[]>>) => {
+        const Lunes = items.data.data;
+
+        setLoading(false);
+        setPaging((previousState) => ({
+          ...previousState,
+          totalPage: items.data.pagination.totalPages,
+        }));
+        if (Lunes.length > 0) {
+          setLunes((previousState) => (paging.page > 0 ? [...previousState, ...Lunes] : Lunes));
+          if (!selectedLune) {
+            setSelectedLune(() => Lunes[0]);
+          }
+        } else {
+          setLunes(() => []);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        setLunes(() => []);
+        notifications.show({
+          title: translate('FAIL'),
+          message: translate('API_DISK_LIST_GET_FAIL'),
+          color: 'danger.3',
+        });
+      });
+  }, [poolId]);
+  const more = (): void => {
+    setPaging((previousState) => ({
+      ...previousState,
+      page: previousState.page + 1,
+    }));
+  };
+
+  useEffect(() => {
+    if (poolId) {
+      setPaging((previousState) => ({ ...previousState, page: 0 }));
+      setLunes(() => []);
+      getLuneList();
+    }
+  }, [poolId]);
+
+  useEffect(() => {
+    getLuneList();
+  }, [paging.page]);
+
   const onClickHandler = useCallback(
     (value: Lune): void => {
       setSelectedLune(value);
     },
     [selectedLune],
   );
-  const { poolId } = useParams();
-  const params = new URLSearchParams({ page: '0', size: '50' });
-  const getLuneList = useCallback(() => api.post('/lun/search', { poolId }, { params }), [poolId]);
-
-  useEffect(() => {
-    if (poolId) {
-      getLuneList()
-        .then((items: AxiosResponse<HttpResponse<Lune[]>>) => {
-          const Lunes = items.data.data;
-
-          if (Lunes.length > 0) {
-            setLunes(Lunes);
-            if (!selectedLune) {
-              setSelectedLune(() => Lunes[0]);
-            }
-          } else {
-            setLunes(() => []);
-          }
-        })
-        .catch((error) => {
-          setLunes(() => []);
-        });
-    }
-  }, [poolId]);
 
   return (
     <>
@@ -71,7 +104,7 @@ export const LuneList = (): React.ReactElement => {
         {lunes.map((lune: any) => (
           <LuneCard value={lune} key={lune.id} onClick={onClickHandler.bind(null, lune)} selected={selectedLune?.id === lune.id} />
         ))}
-        <More onClick={getLuneList} />
+        {paging.page < paging.totalPage - 1 && <More onClick={more} count={paging.size} total={paging.totalPage} />}
       </div>
     </>
   );

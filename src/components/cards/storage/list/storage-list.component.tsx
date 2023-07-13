@@ -73,7 +73,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
         notifications.show({
           title: translate('FAIL'),
           autoClose: false,
-          message: error.response.data.message || translate('API_HOST_LIST_FAIL'),
+          message: error.response?.data.message || translate('API_STORAGE_LIST_FAIL'),
           color: 'danger.3',
         });
       });

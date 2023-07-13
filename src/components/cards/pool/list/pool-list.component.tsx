@@ -47,11 +47,13 @@ export const PoolList = (): React.ReactElement => {
 
           setLoading(false);
           if (Pools.length > 0) {
-            setState((previousState) => ({
-              ...previousState,
-              pools: previousState.paging.page > 0 ? [...previousState.pools, ...Pools] : Pools,
-              paging: { ...previousState.paging, totalPage: items.data.pagination.totalPages },
-            }));
+            setState(
+              (previousState): State => ({
+                ...previousState,
+                pools: previousState.paging.page > 0 ? [...previousState.pools, ...Pools] : Pools,
+                paging: { ...previousState.paging, totalPage: items.data.pagination.totalPages },
+              }),
+            );
             if (poolId) {
               const found = Pools.find((pool) => pool.id === poolId);
 
@@ -61,12 +63,12 @@ export const PoolList = (): React.ReactElement => {
               navigate(`/storage/${storageId}/${Pools[0].id}`);
             }
           } else {
-            setState((previousState) => ({ ...previousState, pools: [] }));
+            setState((previousState): State => ({ ...initial, storageId }));
           }
         })
         .catch((error) => {
           setLoading(false);
-          setState({ ...state, pools: [] });
+          setState((previousState): State => ({ ...initial, storageId }));
           notifications.show({
             title: translate('FAIL'),
             message: translate('API_POOL_LIST_GET_FAIL'),
@@ -99,7 +101,7 @@ export const PoolList = (): React.ReactElement => {
 
   useEffect(() => {
     getPoolList();
-  }, [state.paging.page, state.storageId]);
+  }, [state.storageId, state.paging.page]);
 
   return (
     <>

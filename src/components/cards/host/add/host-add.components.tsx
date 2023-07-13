@@ -100,7 +100,7 @@ export const HostAdd = ({ opened, closed, edit, host }: HostAddProps): React.Rea
           notifications.show({
             title: translate('FAIL'),
             autoClose: false,
-            message: error.response.data.message || translate('TEST_CONNECTION_FAIL'),
+            message: error.response?.data.message || translate('TEST_CONNECTION_FAIL'),
             color: 'danger.3',
           });
         });
@@ -129,7 +129,7 @@ export const HostAdd = ({ opened, closed, edit, host }: HostAddProps): React.Rea
         notifications.show({
           title: translate('FAIL'),
           autoClose: false,
-          message: error.response.data.message, // translate(edit === 'edit' ? 'API_STORAGE_EDIT_FAIL' : 'API_STORAGE_ADD_FAIL'),
+          message: error.response?.data.message, // translate(edit === 'edit' ? 'API_STORAGE_EDIT_FAIL' : 'API_STORAGE_ADD_FAIL'),
           color: 'danger.3',
         });
       });

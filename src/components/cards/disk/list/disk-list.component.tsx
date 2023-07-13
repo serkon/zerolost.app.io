@@ -13,72 +13,79 @@ import { Disk, DiskCard } from 'src/components/cards/disk/card/disk-card.compone
 import { useTranslate } from 'src/components/translate/translate.component';
 import { More } from 'src/screens/storage/overview/overview.component';
 
+interface State {
+  selectedDisk: Disk | null;
+  disks: Disk[];
+  paging: { page: number; size: number; totalPage: number };
+  poolId: string | undefined;
+}
+
+const initial: State = { selectedDisk: null, disks: [], paging: { page: 0, size: AppConfig.paging.size, totalPage: 0 }, poolId: undefined };
+
 export const DiskList = (): React.ReactElement => {
   const { translate } = useTranslate();
-  const [disks, setDisks] = useState<Disk[]>([]);
-  const [selectedDisk, setSelectedDisk] = useState<Disk | null>(null);
+  const [state, setState] = useState<State>(initial);
   const [loading, setLoading] = useState(false);
-  const [paging, setPaging] = useState<{ page: number; size: number; totalPage: number }>({ page: 0, size: AppConfig.paging.size, totalPage: 0 });
   const { poolId } = useParams();
   const getDiskList = useCallback(() => {
-    const params = new URLSearchParams({ page: paging.page.toString(), size: paging.size.toString() });
+    if (state.poolId !== undefined) {
+      const params = new URLSearchParams({ page: state.paging.page.toString(), size: state.paging.size.toString() });
 
-    setLoading(true);
-    api
-      .post('/disk/search', { id: poolId }, { params })
-      .then((items: AxiosResponse<HttpResponse<Disk[]>>) => {
-        const Disks = items.data.data;
+      setLoading(true);
+      api
+        .post('/disk/search', { id: poolId }, { params })
+        .then((items: AxiosResponse<HttpResponse<Disk[]>>) => {
+          const Disks = items.data.data;
 
-        setLoading(false);
-        setPaging((previousState) => ({
-          ...previousState,
-          totalPage: items.data.pagination.totalPages,
-        }));
+          setLoading(false);
+          if (Disks.length > 0) {
+            setState((previousState): State => {
+              const found = previousState.selectedDisk && [...previousState.disks, ...Disks].find((disk) => disk.id === state.selectedDisk?.id);
 
-        if (Disks.length > 0) {
-          setDisks((previousState) => (paging.page > 0 ? [...previousState, ...Disks] : Disks));
-          if (!selectedDisk) {
-            setSelectedDisk(() => Disks[0]);
+              return {
+                ...previousState,
+                disks: previousState.paging.page > 0 ? [...previousState.disks, ...Disks] : Disks,
+                paging: { ...previousState.paging, totalPage: items.data.pagination.totalPages },
+                selectedDisk: found ? found : [...previousState.disks, ...Disks][0],
+              };
+            });
+          } else {
+            setState((previousState) => ({ ...initial, poolId }));
           }
-        } else {
-          setDisks(() => []);
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        setDisks(() => []);
-        notifications.show({
-          title: translate('FAIL'),
-          message: translate('API_DISK_LIST_GET_FAIL'),
-          color: 'danger.3',
+        })
+        .catch((error) => {
+          setLoading(false);
+          setState((previousState) => ({ ...initial, poolId }));
+          notifications.show({
+            title: translate('FAIL'),
+            message: translate('API_DISK_LIST_GET_FAIL'),
+            color: 'danger.3',
+          });
         });
-      });
-  }, [poolId, paging.page]);
+    }
+  }, [state.poolId, state.paging.page]);
   const more = (): void => {
-    setPaging((previousState) => ({
+    setState((previousState) => ({
       ...previousState,
-      page: previousState.page + 1,
+      paging: { page: previousState.paging.page + 1, size: previousState.paging.size, totalPage: previousState.paging.totalPage },
     }));
   };
+  const onClickHandler = useCallback(
+    (value: Disk): void => {
+      setState((previousState) => ({ ...previousState, selectedDisk: value }));
+    },
+    [state.selectedDisk],
+  );
 
   useEffect(() => {
     if (poolId) {
-      setPaging((previousState) => ({ ...previousState, page: 0 }));
-      setDisks(() => []);
-      getDiskList();
+      setState((previousState) => ({ ...initial, poolId }));
     }
   }, [poolId]);
 
   useEffect(() => {
     getDiskList();
-  }, [paging.page]);
-
-  const onClickHandler = useCallback(
-    (value: Disk): void => {
-      setSelectedDisk(value);
-    },
-    [selectedDisk],
-  );
+  }, [state.poolId, state.paging.page]);
 
   return (
     <>
@@ -104,10 +111,10 @@ export const DiskList = (): React.ReactElement => {
       </div>
       <div className="disk-card-list mx-4 secondary-500  position-relative">
         <LoadingOverlay visible={loading} overlayBlur={2} />
-        {disks.map((disk: any) => (
-          <DiskCard value={disk} key={disk.id} onClick={onClickHandler.bind(null, disk)} selected={selectedDisk?.id === disk.id} />
+        {state.disks.map((disk: any) => (
+          <DiskCard value={disk} key={disk.id} onClick={onClickHandler.bind(null, disk)} selected={state.selectedDisk?.id === disk.id} />
         ))}
-        {paging.page < paging.totalPage - 1 && <More onClick={more} count={paging.size} total={paging.totalPage} />}
+        {state.paging.page < state.paging.totalPage - 1 && <More onClick={more} count={state.paging.size} total={state.paging.totalPage} />}
       </div>
     </>
   );

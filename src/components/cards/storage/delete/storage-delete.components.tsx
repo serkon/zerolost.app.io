@@ -33,7 +33,7 @@ export const StorageDelete = ({ opened, closed, storage }: StorageDeleteProps): 
         notifications.show({
           title: translate('FAIL'),
           autoClose: false,
-          message: error.response.data.message,
+          message: error.response?.data.message,
           color: 'danger.3',
         });
         closed();

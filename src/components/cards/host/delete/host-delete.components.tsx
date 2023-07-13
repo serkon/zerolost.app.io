@@ -33,7 +33,7 @@ export const HostDelete = ({ opened, closed, host }: HostDeleteProps): React.Rea
         notifications.show({
           title: translate('FAIL'),
           autoClose: false,
-          message: error.response.data.message,
+          message: error.response?.data.message,
           color: 'danger.3',
         });
         closed();
