@@ -273,7 +273,7 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
       >
         <LoadingOverlay visible={state.loading} overlayBlur={2} />
         <p className="secondary-500 body-14 mb-4">{translate('ADD_POOL_MODAL_DESCRIPTION')}</p>
-        <TextInput sx={{ flexBasis: '30%', flexGrow: 1 }} label={translate('NAME')} placeholder={translate('PLACEHOLDER_NAME')} name="name" {...form.getInputProps('name')} className="mb-4" />
+        <TextInput sx={{ flexBasis: '30%', flexGrow: 1 }} label={translate('NAME')} placeholder={translate('PLACEHOLDER_NAME')} name="name" {...form.getInputProps('name')} className="mb-4" disabled={edit === 'edit'} />
         <div className="d-flex flex-grow-1 gap-3 flex-column">
           {initial.formData.disks.map((disk, index) => (
             <React.Fragment key={index}>
