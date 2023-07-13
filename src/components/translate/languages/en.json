@@ -146,5 +146,6 @@
   "ADD_DISK": "Add Disk",
   "ADD": "Add",
   "API_HOST_LIST_FAIL": "Failed to get host list",
+  "API_DISK_LIST_GET_FAIL": "Failed to get disk list",
   "": ""
 }

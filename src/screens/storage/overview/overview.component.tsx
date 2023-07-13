@@ -34,15 +34,16 @@ export const ScreenStorageOverview = (): React.ReactElement => {
   );
 };
 
-export const More = ({ onClick }: { onClick: () => void }): React.ReactElement => {
+export const More = ({ onClick, count = 8, total = 0 }: { onClick: () => void; count?: number; total?: number }): React.ReactElement => {
   const { translate } = useTranslate();
   const onClickHandler = useCallback((): void => {
+    console.log('clicked');
     onClick();
   }, []);
 
   return (
     <div className={`pool-card card-more dash align-items-center justify-content-center`} onClick={onClickHandler}>
-      <span className="d-flex flex-grow-0 flex-shring-1 brand-500 caption-12 fw-medium">{translate('MORE_WITH_COUNT', { count: 5 })}</span>
+      <span className="d-flex flex-grow-0 flex-shring-1 brand-500 caption-12 fw-medium">{translate('MORE_WITH_COUNT', { count })}</span>
     </div>
   );
 };

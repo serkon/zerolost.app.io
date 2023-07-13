@@ -34,7 +34,7 @@ export const PoolList = (): React.ReactElement => {
   const navigate = useNavigate();
   const [state, setState] = useState<State>(initial);
   const { storageId, poolId } = useParams();
-  const getPoolList = useCallback(() => {
+  const getPoolList = useCallback((): void => {
     if (state.storageId !== undefined) {
       setLoading(true);
       const params = new URLSearchParams({ page: state.paging.page.toString(), size: state.paging.size.toString() });
