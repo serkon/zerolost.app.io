@@ -6,6 +6,7 @@ import { IconMinus, IconPlus, IconSearch, IconTrash } from '@tabler/icons-react'
 import { AxiosResponse } from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { AppConfig } from 'src/app.config';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
 import { Disk, DiskCard } from 'src/components/cards/disk/card/disk-card.component';
@@ -17,7 +18,7 @@ export const DiskList = (): React.ReactElement => {
   const [disks, setDisks] = useState<Disk[]>([]);
   const [selectedDisk, setSelectedDisk] = useState<Disk | null>(null);
   const [loading, setLoading] = useState(false);
-  const [paging, setPaging] = useState<{ page: number; size: number; totalPage: number }>({ page: 0, size: 5, totalPage: 0 });
+  const [paging, setPaging] = useState<{ page: number; size: number; totalPage: number }>({ page: 0, size: AppConfig.paging.size, totalPage: 0 });
   const { poolId } = useParams();
   const getDiskList = useCallback(() => {
     const params = new URLSearchParams({ page: paging.page.toString(), size: paging.size.toString() });

@@ -6,6 +6,7 @@ import { IconEdit, IconPlus, IconSearch, IconTrash } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AppConfig } from 'src/app.config';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
 import { DiskList } from 'src/components/cards/disk/list/disk-list.component';
@@ -26,7 +27,7 @@ interface State {
   storageId: string | undefined;
 }
 
-const initial: State = { mode: null, selectedPool: null, pools: [], paging: { page: 0, size: 8, totalPage: 0 }, storageId: undefined };
+const initial: State = { mode: null, selectedPool: null, pools: [], paging: { page: 0, size: AppConfig.paging.size, totalPage: 0 }, storageId: undefined };
 
 export const PoolList = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);

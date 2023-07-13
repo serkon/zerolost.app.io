@@ -1,4 +1,7 @@
 export const AppConfig = {
+  paging: {
+    size: 8,
+  },
   storage: {
     thresholds: {
       warning: 80,

@@ -7,6 +7,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'rea
 import { useSelector, useStore } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
+import { AppConfig } from 'src/app.config';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
 import { StorageAdd } from 'src/components/cards/storage/add/storage-add.components';
@@ -53,7 +54,7 @@ export const StorageList = forwardRef<ListRef, StorageProps>((props, ref): React
   };
   const getStorageList = (sorting: boolean = false): void => {
     // TODO: çoklu sort şu şekilde yapılıyormuş  -->   ?page=0&size=10&sort=name,desc&sort=port,asc
-    const params = { page: '0', size: '50', sort: ['name', `${sorting ? 'asc' : 'desc'}`].join(',') };
+    const params = { page: '0', size: AppConfig.paging.size, sort: ['name', `${sorting ? 'asc' : 'desc'}`].join(',') };
 
     store.dispatch(set_storages({ list: [], selected: null, loading: true }));
     api

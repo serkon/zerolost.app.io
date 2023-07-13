@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { api } from 'src/components/authentication/authenticator.interceptor';
-import { Pool, Profile } from 'src/components/cards/pool/card/pool-card.component';
+import { Pool, PoolDisk, Profile } from 'src/components/cards/pool/card/pool-card.component';
 import { CheckboxDropdown, Option } from 'src/components/multiselect/multiselect.component';
 import { useTranslate } from 'src/components/translate/translate.component';
 import useTextTransform from 'src/hooks/case';
@@ -217,19 +217,29 @@ export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.Rea
     form.setValues(value);
     // form.reset();
   };
-  const handleProfileChange = (value: Option[], disk: string): void => {
+  const handleProfileChange = (value: Option[], diskType: string): void => {
     api.get('/pool/profile/' + value.length).then((response) => {
-      const filteredProfile = [appState.find((item) => item.value === '')];
+      let filteredProfile = [appState.find((item) => item.value === '')];
 
-      response.data.data.forEach((value: string) => {
-        const match = appState.find((item) => item.value === value);
+      console.log(pool);
 
-        if (match) {
-          filteredProfile.push(match);
-        }
-      });
+      if (edit === 'edit') {
+        const profile: PoolDisk | undefined = pool?.disks.filter((item) => item.type === diskType)[0];
 
-      setState((previousState) => ({ ...previousState, profiles: { ...previousState.profiles, [`${disk}DiskList` as keyof ResponseMapper]: filteredProfile } }));
+        !!profile && (filteredProfile = appState.filter((item) => item.value === profile.profile));
+
+        console.log(filteredProfile);
+      } else {
+        response.data.data.forEach((value: string) => {
+          const match = appState.find((item) => item.value === value);
+
+          if (match) {
+            filteredProfile.push(match);
+          }
+        });
+      }
+
+      setState((previousState) => ({ ...previousState, profiles: { ...previousState.profiles, [`${diskType}DiskList` as keyof ResponseMapper]: filteredProfile } }));
     });
   };
 
