@@ -13,10 +13,10 @@ import { AppState } from 'src/store/reducers/app.reducer';
 import { RootState } from 'src/store/store';
 import * as Yup from 'yup';
 
-interface PoolAddProps {
+interface PoolManageProps {
   opened: boolean;
   closed: () => void;
-  edit: 'edit' | 'add';
+  edit: 'edit' | 'add' | 'delete';
   pool: Pool | null;
 }
 
@@ -61,7 +61,7 @@ interface Groups {
   [key: string]: Chassis;
 }
 
-export const PoolAdd = ({ opened, closed, edit, pool }: PoolAddProps): React.ReactElement => {
+export const PoolManage = ({ opened, closed, edit, pool }: PoolManageProps): React.ReactElement => {
   const { translate } = useTranslate();
   const { upperCase } = useTextTransform();
   const { storageId } = useParams();
