@@ -10,7 +10,7 @@ import { AppConfig } from 'src/app.config';
 import { api } from 'src/components/authentication/authenticator.interceptor';
 import { HttpResponse } from 'src/components/authentication/dto';
 import { DiskList } from 'src/components/cards/disk/list/disk-list.component';
-import { LuneList } from 'src/components/cards/lune/list/lune-list.component';
+import { LunList } from 'src/components/cards/lun/list/lun-list.component';
 import { PoolAdd } from 'src/components/cards/pool/add/pool-add.components';
 import { Pool, PoolCard } from 'src/components/cards/pool/card/pool-card.component';
 import { PoolDelete } from 'src/components/cards/pool/delete/pool-delete.components';
@@ -135,7 +135,7 @@ export const PoolList = (): React.ReactElement => {
             {state.paging.page < state.paging.totalPage - 1 && <More onClick={more} />}
           </ul>
           <DiskList />
-          <LuneList />
+          <LunList />
         </>
       ) : (
         <div className="empty-state dash d-flex m-auto align-items-center justify-content-center flex-column secondary-500">

@@ -1,8 +1,8 @@
-import './lune-card.component.scss';
+import './lun-card.component.scss';
 
 import { useTranslate } from 'src/components/translate/translate.component';
 
-export interface Lune {
+export interface Lun {
   lastModifiedDate: string;
   createdDate: string;
   id: string;
@@ -17,16 +17,16 @@ export interface Lune {
   host: string;
 }
 
-export interface LuneCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  value: Lune;
+export interface LunCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: Lun;
   selected: boolean;
 }
 
-export const LuneCard = ({ value, selected, ...rest }: LuneCardProps): React.JSX.Element => {
+export const LunCard = ({ value, selected, ...rest }: LunCardProps): React.JSX.Element => {
   const { translate } = useTranslate();
 
   return (
-    <div className={`lune-card d-flex flex-column gap-3 p-3 ${selected && 'selected'}`} {...rest}>
+    <div className={`lun-card d-flex flex-column gap-3 p-3 ${selected && 'selected'}`} {...rest}>
       <header className="d-flex flex-column">
         <h4 className="caption-16 fw-semibold d-flex gap-2 align-items-center">
           <span className="text-truncate lh-sm">{value?.name}</span>
