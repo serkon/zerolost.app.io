@@ -148,5 +148,6 @@
   "API_HOST_LIST_FAIL": "Failed to get host list",
   "API_STORAGE_LIST_FAIL": "Failed to get storage list",
   "API_DISK_LIST_GET_FAIL": "Failed to get disk list",
+  "API_LUN_LIST_GET_FAIL": "Failed to get lun list",
   "": ""
 }

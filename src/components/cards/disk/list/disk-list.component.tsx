@@ -89,26 +89,28 @@ export const DiskList = (): React.ReactElement => {
 
   return (
     <>
-      <div className="filter-area px-4 d-flex align-items-center">
-        <h5 className="fw-extra-bold secondary-600 flex-grow-1">
-          <span>{translate('PHYSICAL_DISKS_ON_SELECTED_POOL')}</span>
-        </h5>
-        {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
-        <TextInput type="text" placeholder={translate('SEARCH_IN_PHYSICAL_DISKS')} name="filter" size="sm" icon={<IconSearch size={16} />} className="filter-shadow" />
-        {
-          <div className="d-flex ms-2">
-            <button className="btn btn-brand btn-ghost btn-sm">
-              <IconMinus size={16} />
-            </button>
-            <button className="btn btn-brand btn-ghost btn-sm">
-              <IconPlus size={16} />
-            </button>
-            <button className="btn btn-brand btn-ghost btn-sm">
-              <IconTrash size={16} />
-            </button>
-          </div>
-        }
-      </div>
+      {state.disks && state.disks.length > 0 && (
+        <div className="filter-area px-4 d-flex align-items-center">
+          <h5 className="fw-extra-bold secondary-600 flex-grow-1">
+            <span>{translate('PHYSICAL_DISKS_ON_SELECTED_POOL')}</span>
+          </h5>
+          {/* <input type="text" className="form-control form-control-sm w-25" placeholder={translate('SEARCH')} /> */}
+          <TextInput type="text" placeholder={translate('SEARCH_IN_PHYSICAL_DISKS')} name="filter" size="sm" icon={<IconSearch size={16} />} className="filter-shadow" />
+          {
+            <div className="d-flex ms-2">
+              <button className="btn btn-brand btn-ghost btn-sm">
+                <IconMinus size={16} />
+              </button>
+              <button className="btn btn-brand btn-ghost btn-sm">
+                <IconPlus size={16} />
+              </button>
+              <button className="btn btn-brand btn-ghost btn-sm">
+                <IconTrash size={16} />
+              </button>
+            </div>
+          }
+        </div>
+      )}
       <div className="disk-card-list mx-4 secondary-500  position-relative">
         <LoadingOverlay visible={loading} overlayBlur={2} />
         {state.disks.map((disk: any) => (
